@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-deploy
+  labels:
+    k8s-app: dp-registry
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      k8s-app: xci-registry
+  replicas: 1
+  template:
+    metadata:
+      name: tp-docker-registry
+      labels:
+        k8s-app: xci-registry
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        resourceType: enough 
+      containers:
+      - name: ct-docker-registry
+        image: registry
+        ports:
+        - containerPort: 5000

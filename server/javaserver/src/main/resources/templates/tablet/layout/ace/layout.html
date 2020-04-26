@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/ace/ace::head">
+
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AceAdmin</title>
+
+</head>
+
+<body >
+
+<div th:replace="layout/ace/nav::#navbar"></div>
+<div th:replace="this::body"></div>
+
+<footer th:replace="layout/ace/ace::body">
+
+</footer>
+
+</body>
+
+</html>

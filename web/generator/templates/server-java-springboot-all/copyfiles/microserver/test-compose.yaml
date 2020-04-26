@@ -1,0 +1,19 @@
+
+mysql:
+  image: docker.io/mysql
+  container_name: mysql
+  environment:
+  - MYSQL_ROOT_PASSWORD=123456
+  - MYSQL_DATABASE=mydb
+  ports:
+  - 3306:3306
+myredis:
+  image: docker.io/redis
+  container_name: myredis
+  ports:
+  - 6379:6379
+mongodb:
+  image: docker.io/mongo
+  container_name: mongodb
+  ports:
+  - 27017:27017

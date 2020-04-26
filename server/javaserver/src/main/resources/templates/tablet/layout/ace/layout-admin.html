@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:include="layout/ace/ace::head">
+
+	<meta charset="utf-8" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+</head>
+
+<body class="no-skin">
+<!-- /section:basics/navbar.layout -->
+<div th:replace="layout/ace/nav::#navbar"></div>
+<div class="main-container" id="main-container">
+	<script type="text/javascript">
+		try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+	</script>
+    <div th:replace="layout/ace/sidebar::#sidebar"> </div>
+    
+    <div class="main-content">
+				<!-- #section:basics/content.breadcrumbs -->
+		<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+
+					<ul class="breadcrumb">
+						<li>
+							<i class="ace-icon fa fa-home home-icon"></i>
+							<a href="#">Home</a>
+						</li>
+
+						<li>
+							<a href="#">Other Pages</a>
+						</li>
+						<li class="active">Blank Page</li>
+					</ul><!-- /.breadcrumb -->
+
+					<!-- #section:basics/content.searchbox -->
+					<div class="nav-search" id="nav-search">
+						<form class="form-search">
+							<span class="input-icon">
+								<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+								<i class="ace-icon fa fa-search nav-search-icon"></i>
+							</span>
+						</form>
+					</div><!-- /.nav-search -->
+
+					<!-- /section:basics/content.searchbox -->
+				</div>
+
+				<!-- /section:basics/content.breadcrumbs -->
+		<div class="page-content">
+    
+			<div th:replace="this::body"></div>
+	    </div>
+    </div>
+</div>
+
+<footer th:replace="layout/ace/ace::body">
+
+</footer>
+
+
+</body>
+
+</html>

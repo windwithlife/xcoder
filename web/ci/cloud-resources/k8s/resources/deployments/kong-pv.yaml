@@ -1,0 +1,120 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: nfs-client-provisioner
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nfs-client-provisioner-runner
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "update", "patch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: run-nfs-client-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: nfs-client-provisioner
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: nfs-client-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: leader-locking-nfs-client-provisioner
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: leader-locking-nfs-client-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: nfs-client-provisioner
+    # replace with namespace where provisioner is deployed
+    namespace: default
+roleRef:
+  kind: Role
+  name: leader-locking-nfs-client-provisioner
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: nfs-provisioner
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nfs-provisioner
+    spec:
+      serviceAccount: nfs-client-provisioner  #这个要与刚才创建的serviceaccount 的名字一致
+      containers:
+        - name: nfs-provisioner
+          #image: registry.cn-hangzhou.aliyuncs.com/open-ali/nfs-client-provisioner
+          image: quay.io/external_storage/nfs-client-provisioner:latest
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s/nfs #这里名字自定义，要记住storageclass 后面要用到
+            - name: NFS_SERVER
+              value: k8s-master #[已配置的NFS系统的IP地址]
+            - name: NFS_PATH
+              value: /data/volumes #[已配置的NFS系统的挂载路径] 
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: k8s-master #[已配置的NFS系统的IP地址]
+            path: /data/volumes #已配置的NFS系统的挂载路径] #这里需要注意，如果用的公有云服务的nfs 或者nas，必须要提前创建好目录
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nfs
+  annotations:
+    storageclass.beta.kubernetes.io/is-default-class: "true"
+provisioner: k8s/nfs #这里的名字要跟之前创建nfs-client deployment里写的名字一样
+---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: my-pv
+#spec:
+#  capacity:
+#    storage: 1Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  local:
+#    path: /tmp/kong-pv
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: NotIn
+#          values:
+#          - test

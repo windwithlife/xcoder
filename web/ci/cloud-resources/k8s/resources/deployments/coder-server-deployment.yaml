@@ -1,0 +1,67 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8sApp: coder-server
+  name: coder-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8sApp: coder-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        k8sApp: coder-server
+      name: coder-server
+    spec:
+      containers:
+        - image: 'coder-server:0.1.1'
+          imagePullPolicy: IfNotPresent
+          name: default-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: coder-server
+  namespace: default
+  labels:
+    k8sApp: coder-server
+spec:
+  selector:
+    k8sApp: coder-server
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: coder-server-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+spec:
+  rules:
+    - host: gateway.zhangyongqiao.com
+      http:
+        paths:
+          - path: /coder/?(.*)
+            backend:
+              serviceName: coder-server
+              servicePort: 8080

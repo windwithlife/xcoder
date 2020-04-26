@@ -1,0 +1,121 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: oauth
+config:
+  #scopes: read,write
+  mandatory_scope: false
+  enable_password_grant: true
+  global_credentials: true
+  provision_key: XUscyiloz2Z19UTV8je4iFvLNGJK00j2
+plugin: oauth2
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: team-a
+username: goddy
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongCredential
+metadata:
+  name: credential-a
+consumerRef: team-a
+type: oauth2
+config:
+  name: goddy
+  client_id: student-client
+  client_secret: student-secret
+  redirect_uris: ["http://www.baidu.com"]
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: oauth-ingress
+  annotations:
+    plugins.konghq.com: oauth
+spec:
+  tls:
+  - hosts:
+    - auth.koudaibook.com
+    secretName: default-certs
+  rules:
+  - host: auth.koudaibook.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: coffee-svc
+          servicePort: 80
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: coffee
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coffee
+  template:
+    metadata:
+      labels:
+        app: coffee
+    spec:
+      containers:
+      - name: coffee
+        image: nginxdemos/hello:plain-text
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coffee-svc
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30008
+    protocol: TCP
+    name: http
+  selector:
+    app: coffee
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tea
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tea 
+  template:
+    metadata:
+      labels:
+        app: tea 
+    spec:
+      containers:
+      - name: tea 
+        image: nginxdemos/hello:plain-text
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tea-svc
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: tea

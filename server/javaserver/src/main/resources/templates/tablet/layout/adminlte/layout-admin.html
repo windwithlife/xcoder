@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/adminlte/adminlte::head">
+
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE test</title>
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+
+<div th:replace="layout/adminlte/nav::header"></div>
+ <aside class="main-sidebar" th:replace="layout/adminlte/sidebar::.main-sidebar"></aside>
+<div class="content-wrapper">
+ <span sec:authentication="name"></span> 
+	<div th:replace="this::body"></div>
+</div>
+<footer th:replace="layout/adminlte/adminlte::body">
+</footer>
+</div>
+</body>
+
+</html>
