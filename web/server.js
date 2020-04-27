@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 const rewrite = require('express-urlrewrite');
 
 //var gitTools = require('./ci/libs/git-tool');
-var dockerTools = require('./ci/libs/docker-tool');
-var shellTools = require('./ci/libs/shell-tool');
+//var dockerTools = require('./ci/libs/docker-tool');
+//var shellTools = require('./ci/libs/shell-tool');
 var releaseServer = require('./ci/libs/release');
 
 
@@ -91,7 +91,7 @@ app.prepare()
       console.log("begin deploy project-------------")
       console.log('current directory is:' + process.cwd());
 
-      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './files/MedialLive/server/liveserver-service/', name: "coder", lang: 'java', type: 'server', label: '1.0', cloneUrl: 'https://github.com/windwithlife/coder.git', branch: 'master' };
+      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/liveserver-service/', name: "coder", lang: 'java', type: 'server', label: '1.0', cloneUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;     
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
@@ -99,21 +99,21 @@ app.prepare()
         params.cloneUrl = req.body.repository.clone_url;
         params.sshUrl = req.body.repository.ssh_url;
         console.log(req.body.repository);
-        
-        params.name = request.name;
-        params.version = request.version;
-        params.codeName = request.name;
-        params.sideType = request.sideType;
-        params.lang = request.language;
-        params.framework = request.framework;
-        params.platform = request.platform;
-        params.serviceName = request.name;
-        params.webDomainName = request.webDN;
-        params.targetPath = request.targetPath?request.targetPath:"./";
-        params.label = request.label = 'lablex';
-        params.isSubWebSite = true;
-        //params.isUseOwnDeploymentFile = request.usedOwnReleaseFile;
+     
       }
+
+      params.name = "coder";
+      params.version = request.version=  "1.0.2";
+      params.codeName = request.name;
+      params.sideType = request.sideType;
+      params.language = request.language;
+      params.framework = request.framework;
+      params.platform = request.platform;
+      params.serviceName = request.name;
+      params.webDomainName = request.webDN;
+      params.targetPath = request.targetPath?request.targetPath:params.targetPath;
+      params.label = request.label = request.version;
+      params.isSubWebSite = true;
       
       console.log("release params is :", params);
       //res.send('begin to fetch source code.....')

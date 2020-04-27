@@ -30,6 +30,5 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-
       dnsPolicy: ClusterFirst
       restartPolicy: Always
