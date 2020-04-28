@@ -130,7 +130,7 @@ let TargetRoot = '../files/';
 
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
         cp("-r",serverPath,this.dockerWorkPath());
-        cp("-r",this.releaseTargetSrcPath(),this.dockerWorkPath());
+        cp("-r",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
        
 
     }

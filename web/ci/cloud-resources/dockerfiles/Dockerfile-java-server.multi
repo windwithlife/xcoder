@@ -1,7 +1,7 @@
 
 FROM windwithlife/maven-fast:1.0
 ADD ./server /tmp/build/server
-RUN cd /tmp/build/server && mvn -q dependency:resolve && mvn install -Dmaven.test.skip=true
+RUN cd /tmp/build/server && mvn install -Dmaven.test.skip=true
 
 ADD pom.xml /tmp/build/
 RUN cd /tmp/build && mvn -q dependency:resolve
