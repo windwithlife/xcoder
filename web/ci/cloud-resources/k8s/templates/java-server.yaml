@@ -47,7 +47,7 @@ metadata:
 spec:
 
   selector:
-    k8sApp: <%=data.serviceName%>
+    k8sApp: <%=data.applicationName%>
   ports:
   - port: 8080
     targetPort: 8080
