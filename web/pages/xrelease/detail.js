@@ -157,12 +157,12 @@ export default class EditPage extends React.Component {
                     </Form>
 
                 </Card>
-                <EditTable title="发布历史记录：" columns={that.tableHeader()} data={items}
+                {/* <EditTable title="发布历史记录：" columns={that.tableHeader()} data={items}
                     onAdd={that.handleLineAdd.bind(that)}
                     onDelete={that.handleLineDelete.bind(that)}
                     onUpdate={that.handleLineUpdate.bind(that)}
                     onDetail={that.handleLineDetail.bind(that)}
-                ></EditTable>
+                ></EditTable> */}
 
             </div>
         );
