@@ -234,7 +234,7 @@ function release2K8sCloud(params) {
     if(!buildServiceDockerImage(params)){
         return;
     }
-    if (params.useOwnDepolymentFile()){
+    if (paramsHelper.useOwnDepolymentFile()){
         //createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName);
     }else{
         //createK8sOperationFiles(serviceName,imageName,type,name,webDomainName,isSubWebSite,exName);
