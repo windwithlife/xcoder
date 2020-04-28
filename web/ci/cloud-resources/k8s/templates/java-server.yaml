@@ -41,7 +41,7 @@ spec:
   tls:
   - hosts:
     - gateway.koudaibook.com
-    secretName: default-certs
+    secretName: one-cert
   rules:
   - host: gateway.koudaibook.com
     http:
