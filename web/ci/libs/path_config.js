@@ -126,7 +126,8 @@ let TargetRoot = '../files/';
         return dockerWorkPath;
     }
     prepareSourceCode(){
-    
+        rm("-rf",this.dockerWorkPath());
+
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
         cp("-r",serverPath,dockerWorkPath());
         cp("-r",this.releaseTargetSrcPath(),dockerWorkPath());

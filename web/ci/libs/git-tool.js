@@ -77,7 +77,7 @@ function fetch_project_src(params) {
             result =  false;
         }
     }
-    pathConfig.copy();
+    pathConfig.prepareSourceCode();
     pathConfig.resetWorkPath();
 
     return result;
