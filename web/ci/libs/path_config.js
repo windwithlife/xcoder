@@ -119,6 +119,13 @@ let TargetRoot = '../files/';
         cd(this.currentRootPath);
         console.log("reset to web root " + process.cwd());
     }
+
+    prepareSourceCode(){
+        let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
+        let targetPath = path.join(this.releaseTargetSrcPath(),"/");
+
+        cp(serverPath,targetPath);
+    }
    
 }
 
