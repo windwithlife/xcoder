@@ -23,6 +23,7 @@ var codeTools = require('./code_tools');
         this.version = setting.version;
         this.label = setting.version;
         this.setting = setting;
+        this.isUseOwnDeploymentFile = setting.isUseOwnDeploymentFile;
     }
     buildGenericParams(){
        
@@ -73,6 +74,16 @@ var codeTools = require('./code_tools');
     deploymentfile(){
        return  this.language + "-" + this.sideType + "-" + this.version +".yaml";
     }
+
+    useOwnDepolymentFile(){
+        if((this.isUseOwnDeploymentFile)&&(true == this.isUseOwnDeploymentFile)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+   
 
 }
 
