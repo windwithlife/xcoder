@@ -84,7 +84,7 @@ var codeTools = require('./code_tools');
         }
 
     }
-    useOwnDockerfile(){
+    useOwnDockerFile(){
         if ((this.isUseOwnDockerFile)&&(true==this.isUseOwnDockerFile)){
             return true;
         }else{
