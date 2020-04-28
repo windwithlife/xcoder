@@ -3,13 +3,16 @@ FROM windwithlife/maven-fast:1.0
 ADD ./server /tmp/build/server
 RUN cd /tmp/build/server && mvn install -Dmaven.test.skip=true
 
-ADD pom.xml /tmp/build/
-RUN cd /tmp/build && mvn -q dependency:resolve
+RUN mkdir -p  /release/ 
+RUN mkdir -p /tmp/buildcode/
+ADD pom.xml /tmp/buildcode/
+RUN cd /tmp/buildcode && mvn -q dependency:resolve
 
-ADD src /tmp/build/src
-RUN mkdir -p /release/ 
-WORKDIR /release/   
-RUN cd /tmp/build && mvn clean package -q -Dmaven.test.skip=true   && mv target/*.jar /release/app.jar
+ADD src /tmp/buildcode/src
+
+
+  
+RUN cd /tmp/buildcode && mvn clean package -q -Dmaven.test.skip=true   && mv target/*.jar /release/app.jar
 
 
 FROM windwithlife/java-server-min:latest

@@ -57,7 +57,8 @@ public class <%=data.nameClassName%>Service {
 		
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		//this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 	
 	<%
