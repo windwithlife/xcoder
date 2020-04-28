@@ -120,11 +120,18 @@ let TargetRoot = '../files/';
         console.log("reset to web root " + process.cwd());
     }
 
+    dockerWorkPath(){
+        let dockerWorkPath = path.join(this.projectSrcRootPath(),"/dockerwork/");
+        checkPath(dockerWorkPath);
+        return dockerWorkPath;
+    }
     prepareSourceCode(){
+    
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
-        let targetPath = path.join(this.releaseTargetSrcPath(),"/");
+        cp("-r",serverPath,dockerWorkPath());
+        cp("-r",this.releaseTargetSrcPath(),dockerWorkPath());
+       
 
-        cp(serverPath,targetPath);
     }
    
 }
