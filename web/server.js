@@ -100,7 +100,7 @@ app.prepare()
       console.log("begin deploy project-------------")
       console.log('current directory is:' + process.cwd());
 
-      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/liveserver-service/', name: "coder", lang: 'java', type: 'server', label: '1.0', cloneUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
+      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/liveserver-service/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;     
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
@@ -111,9 +111,10 @@ app.prepare()
      
       }
 
-      params.name = "coder";
-      params.version = request.version=  "1.0.2";
-      params.codeName = request.name;
+      params.name = request.name;
+      params.version = request.version?request.version:"1.0.8";
+      //params.codeName = request.name;
+      params.targetPath = request.targetPath? request.targetPath:params.targetPath;
       params.sideType = request.sideType;
       params.language = request.language;
       params.framework = request.framework;
@@ -121,10 +122,10 @@ app.prepare()
       params.serviceName = request.name;
       params.webDomainName = request.webDN;
       params.targetPath = request.targetPath?request.targetPath:params.targetPath;
-      params.label = request.label = request.version;
-      params.isSubWebSite = true;
+      params.label = request.version;
+     
       
-      console.log("release params is :", params);
+      console.log("release request params is *****************8:", params);
       //res.send('begin to fetch source code.....')
       if (releaseServer.autoRelease(params)) {
         res.send('successful to auto release!')

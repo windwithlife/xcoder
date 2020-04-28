@@ -15,12 +15,6 @@ paramsHelper = new ParamsHelper();
 
 
 
-// function buildServiceDockerImage(name, label, lang, type, dockerfilePath,isUseOwnDockerFile) {
-    
-//     let buildResult = buildServiceImageByDockerFileMulti(name, label, lang, type, dockerfilePath,isUseOwnDockerFile);
-//     return buildResult;
-// }
-
 /**
  * 创建每个服务（soa或者web)发布到k8s所需要的deployment，service,ingress文件。
  */
@@ -155,14 +149,7 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
     return imageName;
 }
 
-/**
- * 获取最终使用发布到k8s的发布文件全路径名
- */
-// function getDeploymentFile(serviceName){
-//     let deployServicePath =  evnConfig.getDeploymentResourcesPath();
-//     let finalDeploymentFileName = deployServicePath + serviceName +'-deployment.yaml';
-//     return finalDeploymentFileName;
-// }
+
 /**
  * 根据Docker的multi-stage文件进行分段创建镜像
  */
@@ -183,6 +170,9 @@ function buildDockerByMultifile(workPath,dockfile, imageName){
 function buildServiceDockerImage(params) {
    
     let dockerfile = pathConfig.dockerfilesRootPath() + "/"  +paramsHelper.dockerfile();
+    if(paramsHelper.useOwnDockerFile()){
+        dockerfile = pathConfig.releaseTargetSrcPath() + "/Dockerfile" ;
+    }
     let imageName = paramsHelper.imageName();
     let workPath = pathConfig.dockerWorkPath();
     let buildResult = buildDockerByMultifile(workPath, dockerfile, imageName);
@@ -200,6 +190,9 @@ function createK8sDeploymentFiles(serviceName,imageName,type,name,webDomainName,
     codeTools.generateCode(templatefile,params,depolymentfile);
 }
 
+function modifyOwnDeploymentFile(){
+
+}
 
 
 /**
@@ -235,9 +228,8 @@ function release2K8sCloud(params) {
         return;
     }
     if (paramsHelper.useOwnDepolymentFile()){
-        //createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName);
+         modifyOwnDeploymentFile();
     }else{
-        //createK8sOperationFiles(serviceName,imageName,type,name,webDomainName,isSubWebSite,exName);
          createK8sDeploymentFiles();
     }
     

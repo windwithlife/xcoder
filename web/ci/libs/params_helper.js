@@ -24,6 +24,7 @@ var codeTools = require('./code_tools');
         this.label = setting.version;
         this.setting = setting;
         this.isUseOwnDeploymentFile = setting.isUseOwnDeploymentFile;
+        this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
     }
     buildGenericParams(){
        
@@ -82,6 +83,13 @@ var codeTools = require('./code_tools');
             return false;
         }
 
+    }
+    useOwnDockerfile(){
+        if ((this.isUseOwnDockerFile)&&(true==this.isUseOwnDockerFile)){
+            return true;
+        }else{
+            return false;
+        }      
     }
    
 

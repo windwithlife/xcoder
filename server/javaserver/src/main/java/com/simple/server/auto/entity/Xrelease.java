@@ -30,6 +30,7 @@ public class Xrelease implements Serializable {
     private String repository;
     private String repositoryBranch;
     private String releaseStatus;
+    private String releaseVersion;
 
     public Xrelease() {
     }
@@ -41,6 +42,15 @@ public class Xrelease implements Serializable {
     public void setId(Long id){
         this.id = id;
     }
+
+    //代码仓库
+    public String getReleaseVersion(){
+        return this.releaseVersion;
+    };
+    public void setReleaseVersion(String ver){
+        this.releaseVersion= ver;
+    }
+
 
     //代码仓库
     public String getRepository(){
