@@ -1,5 +1,5 @@
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -67,7 +67,7 @@ spec:
   - host: gateway.koudaibook.com
     http:
       paths:
-      - path: /
+      - path: /<%=data.serviceName%>
         backend:
           serviceName: <%=data.serviceName%>
           servicePort: 8080
