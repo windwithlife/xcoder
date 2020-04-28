@@ -198,8 +198,8 @@ function modifyOwnDeploymentFile(){
 /**
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
  */
-function deploy2Cloud(serviceName){
-    let finalDeploymentFileName = pathConfig.deploymentTargetFile();
+function deploy2Cloud(){
+    let finalDeploymentFileName = paramsHelper.deploymentfile();
     let runUnDeployCommand = 'kubectl delete -f  ' + finalDeploymentFileName;
     let runDeployCommand = 'kubectl create -f  ' + finalDeploymentFileName;
 
@@ -233,8 +233,9 @@ function release2K8sCloud(params) {
          createK8sDeploymentFiles();
     }
     
-    //deploy2Cloud(serviceName);
+    deploy2Cloud();
 }
+
 
 module.exports = {
     //buildServiceDockerImage:buildServiceDockerImage,

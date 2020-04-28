@@ -131,9 +131,9 @@ let TargetRoot = '../files/';
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
         cp("-r",serverPath,this.dockerWorkPath());
         cp("-r",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
-        console.log("****************xxxxxxxxxxxxxcurrent path" + process.cwd());
-        console.log("****************xxxxxxxxxxxxxtargetsrc path" + this.releaseTargetSrcPath());
-        console.log("****************xxxxxxxxxxxxx serverPathpath" + this.serverPath);
+        console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
+        console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
+        console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);
 
     }
    
