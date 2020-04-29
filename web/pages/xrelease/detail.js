@@ -130,7 +130,7 @@ export default class EditPage extends React.Component {
                         < Form.Item name="path" label="服务类应用PATH：">
                             {itemData.path}
                         </Form.Item>
-                        < Form.Item name="applicationName" label="服务类应用PATH：">
+                        < Form.Item name="applicationName" label="应用名称：">
                             {itemData.applicationName}
                         </Form.Item>
                         <Form.Item name="repository" label="代码仓库地址">

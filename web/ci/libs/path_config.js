@@ -18,8 +18,7 @@ function pathIsReady(pathName) {
 }
 
 
-let TemplateRoot = '/generator/templates/';
-let TargetRoot = '../files/';
+
 
  class PathConfig{
 
@@ -111,7 +110,8 @@ let TargetRoot = '../files/';
 
    
     haveClonedCode(){
-        let pathName  = this.releaseTargetSrcPath();
+        //let pathName  = this.releaseTargetSrcPath();
+        let pathName  = path.join(this.projectRootPath(), "src/");
         return pathIsReady(pathName);
     }
 
