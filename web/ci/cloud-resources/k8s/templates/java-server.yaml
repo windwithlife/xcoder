@@ -46,7 +46,7 @@ spec:
   - host: gateway.koudaibook.com
     http:
       paths:
-      - path: /<%=data.serviceName%>
+      - path: <%=data.applicationPath%>
         backend:
           serviceName: <%=data.serviceName%>
           servicePort: 80

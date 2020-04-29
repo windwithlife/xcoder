@@ -114,65 +114,65 @@ export default class EditPage extends React.Component {
         let isShowPage = itemData.sideType == 'server' ? false : true;
         return (
             < div >
-               
-                    <Card size="small" title="模块基本信息" style={{ width: 500 }}  >
+
+                <Card size="small" title="模块基本信息" style={{ width: 500 }}  >
 
 
 
-                        <Form ref={this.formRef} onFinish={that.onFinish.bind(that)}>
-                            <Form.Item
-                                name="id"
-                                noStyle='true'
-                            ></Form.Item>
-                            <Form.Item
-                                name="projectId"
-                                noStyle='true'
-                            ></Form.Item>
-                            <Form.Item name="name" label="名称(请用英文)"
-                                rules={[{
-                                    required: true,
-                                },]}>
-                                <Input />
-                            </Form.Item>
+                    <Form ref={this.formRef} onFinish={that.onFinish.bind(that)}>
+                        <Form.Item
+                            name="id"
+                            noStyle='true'
+                        ></Form.Item>
+                        <Form.Item
+                            name="projectId"
+                            noStyle='true'
+                        ></Form.Item>
+                        <Form.Item name="name" label="名称(请用英文)"
+                            rules={[{
+                                required: true,
+                            },]}>
+                            <Input />
+                        </Form.Item>
 
 
-                            < Form.Item name="sideType" label="项目类型:">
-                                < XSelect category="sideType" />
-                            </Form.Item>
-                            < Form.Item name="language" label="编程语言选择：">
-                                < XSelect category="language" />
-                            </Form.Item>
-                            < Form.Item name="framework" label="技术框架：">
-                                < XSelect category="framework" />
-                            </Form.Item>
-                            < Form.Item name="platform" label="目标操作系统">
-                                < XSelect category="os" />
-                            </Form.Item>
-                            <Form.Item name="path" label="发布应用PATH">
-                        <Input />
-                    </Form.Item>
-                            <Form.Item name="repository" label="代码仓库地址">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item name="repositoryBranch" label="代码分支">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item name="targetPath" label="待发布代码路径">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item name="releaaseVersion" label="发布版本">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item name="description" label="描述">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item >
-                                <Button type="primary" htmlType="submit" size="large">保存修改基本信息</Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-             
-            
+                        < Form.Item name="sideType" label="项目类型:">
+                            < XSelect category="sideType" />
+                        </Form.Item>
+                        < Form.Item name="language" label="编程语言选择：">
+                            < XSelect category="language" />
+                        </Form.Item>
+                        < Form.Item name="framework" label="技术框架：">
+                            < XSelect category="framework" />
+                        </Form.Item>
+                        < Form.Item name="platform" label="目标操作系统">
+                            < XSelect category="os" />
+                        </Form.Item>
+                        <Form.Item name="path" label="发布应用PATH">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="repository" label="代码仓库地址">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="repositoryBranch" label="代码分支">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="targetPath" label="待发布代码路径">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="releaseVersion" label="发布版本">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="description" label="描述">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item >
+                            <Button type="primary" htmlType="submit" size="large">保存修改基本信息</Button>
+                        </Form.Item>
+                    </Form>
+                </Card>
+
+
             </div >
         );
     }

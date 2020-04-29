@@ -8,7 +8,7 @@ export default class XList extends React.Component {
     constructor(props) {
         super(props);
         var options = this.props.options;
-        var selectedItem = this.props.id|| "-1";
+        var selectedItem = this.props.value|| "";
         if (!options) {
             options = []
         }
@@ -29,21 +29,10 @@ export default class XList extends React.Component {
             model.queryDictionaryByCategory(params, function (response) {
                 if (response && response.status===200) {
                 console.log(response.data);
-                that.setState({options: response.data});
+                that.setState({value:that.props.value,options: response.data});
                 }
             });
-        } else if(this.props.refer){
-
-            model.queryReferListByName(this.props.refer,function (response) {
-                if (response && response.status===200) {
-                    console.log(response.data);
-                    response.data.map(function (item, i){
-                        item.value = item.id;
-                    })
-                    that.setState({options: response.data});
-                }
-            });
-        }
+        } 
     }
 
     handleChange(event) {
@@ -58,18 +47,15 @@ export default class XList extends React.Component {
 
     render() {
         var that = this;
-        //console.log("current display property:" + this.props.display);
-        if (that.props.display == 'no'){
-            return(<div></div>);
-        }
+        
         if (!that.state.options){
-            return(<Select ref ="selectEL" value={this.state.value} onChange={this.handleChange}>
+            return(<Select ref ="selectEL" value={this.props.value} onChange={this.handleChange}>
                         <Select.Option value={"-1"}>无</Select.Option>
                    </Select >);
         }
         return (
 
-            <Select ref ="selectEL" value={this.state.value} onChange={this.handleChange}>
+            <Select ref ="selectEL" value={this.props.value} onChange={this.handleChange}>
                 <Select.Option value={"-1"}>无</Select.Option>
                 {that.state.options.map(function (item, i) {
                     return (<Select.Option value={item.value}>{item.name}</Select.Option>);

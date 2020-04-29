@@ -99,6 +99,7 @@ app.prepare()
     server.post('/releaseByParams/', function (req, res) {
       console.log("begin deploy project-------------")
       console.log('current directory is:' + process.cwd());
+      console.log('input params:' + req.body);
 
       var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/liveserver-service/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;     
@@ -112,7 +113,8 @@ app.prepare()
       }
 
       params.name = request.name;
-      params.version = request.version?request.version:"1.0.8";
+      params.path = request.path;
+      params.version = request.releaseVersion?request.version:"1.0.8";
       //params.codeName = request.name;
       params.targetPath = request.targetPath? request.targetPath:params.targetPath;
       params.sideType = request.sideType;

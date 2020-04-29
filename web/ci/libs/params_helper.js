@@ -45,6 +45,7 @@ var codeTools = require('./code_tools');
         params.imageName = this.imageName();
         params.serviceName = params.name + "-" + params.sideType;
         params.ingressName = params.name + "-ingress";
+        params.applicationPath = params.path;
         return params;
     }
 
