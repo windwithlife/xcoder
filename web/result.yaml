@@ -2,16 +2,16 @@
 apiVersion:  apps/v1
 kind: Deployment
 metadata:
-  name: <%=data.deploymentName%>
+  name: 
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: <%=data.applicationName%>
+      app: 
   template:
     metadata:
       labels:
-        app: <%=data.applicationName%>
+        app: 
     spec:
       containers:
       - name: tea 
@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: <%=data.serviceName%>
+  name: 
 spec:
   ports:
   - port: 80
@@ -30,7 +30,7 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: <%=data.applicationName%>
+    app: 
 
 ---
 apiVersion: extensions/v1beta1
@@ -45,8 +45,12 @@ spec:
   rules:
   - host: gateway.koudaibook.com
     http:
-      paths:<%data.routes.forEach(function(route){%>
-      - path: <%=route.path%>
+      paths:
+      - path: medicallive
         backend:
-          serviceName: <%=route.serviceName%>
-          servicePort: 80<%});%>
+          serviceName: test-service
+          servicePort: 80
+      - path: medicallive234
+        backend:
+          serviceName: test-service23
+          servicePort: 80

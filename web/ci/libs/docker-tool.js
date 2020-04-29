@@ -182,12 +182,17 @@ function buildServiceDockerImage(params) {
 
 
 function createK8sDeploymentFiles(serviceName,imageName,type,name,webDomainName,isSubWebSite,exName){
+
+     paramsHelper.updateRoute(); //新增一条当前路由记录。
     let templatefileName = paramsHelper.templatefile();
     let deploymentfileName = paramsHelper.deploymentfile();
     let templatefile = pathConfig.deploymentTemplateFile(templatefileName);
     let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
     let params = paramsHelper.buildParamsForDeployment();
     codeTools.generateCode(templatefile,params,depolymentfile);
+
+
+
 }
 
 function modifyOwnDeploymentFile(){
