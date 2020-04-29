@@ -20,6 +20,7 @@ var codeTools = require('./code_tools');
         this.framework = setting.framework;
         this.platform  = setting.platform;
         this.name = setting.name;
+        this.applicationName = setting.applicationName;
         this.version = setting.version;
         this.label = setting.version;
         this.setting = setting;
@@ -31,6 +32,7 @@ var codeTools = require('./code_tools');
         let params = {
             projectId:this.projectId,
             projectName:this.projectName, 
+            applicationName:this.applicationName,
             name: this.name,
             sideType:this.sideType,
             framework:this.framework,
@@ -40,11 +42,11 @@ var codeTools = require('./code_tools');
             gateway:this.gateway,
             
         }
-        params.deploymentName = params.name + "-deployment";
-        params.applicationName = params.name + "-app";
+        params.deploymentName = params.applicationName + "-deployment";
+        params.applicationName = params.applicationName + "-app";
         params.imageName = this.imageName();
-        params.serviceName = params.name + "-" + params.sideType;
-        params.ingressName = params.name + "-ingress";
+        params.serviceName = params.applicationName + "-" + params.sideType;
+        params.ingressName = params.applicationName + "-ingress";
         params.applicationPath = params.path;
         return params;
     }
@@ -65,7 +67,7 @@ var codeTools = require('./code_tools');
 
     imageName(){
         let imageName  = 'a/b:1.0.1';
-        imageName =  this.name +"-" + this.sideType + ":" + this.label;
+        imageName =  this.applicationName +"-" + this.sideType + ":" + this.label;
         console.log('imageName is ....................' + imageName);
        
         return imageName;

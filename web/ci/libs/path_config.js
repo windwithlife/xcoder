@@ -52,7 +52,7 @@ let TargetRoot = '../files/';
     }
    
     projectRootPath(){
-        let pathName  = path.join(this.rootPath(), this.projectConfig.name);
+        let pathName  = path.join(this.rootPath(), this.projectConfig.applicationName);
         checkPath(pathName);
         return pathName;
     }
