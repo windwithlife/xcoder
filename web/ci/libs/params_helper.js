@@ -108,7 +108,7 @@ class ParamsHelper {
         return imageName;
     }
     serviceName(){
-        let name = this.applicationName + "-" + params.sideType;
+        let name = this.applicationName + "-" + this.sideType;
         return name;
     }
     templatefile() {
