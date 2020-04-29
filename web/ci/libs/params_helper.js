@@ -20,6 +20,7 @@ var codeTools = require('./code_tools');
         this.framework = setting.framework;
         this.platform  = setting.platform;
         this.name = setting.name;
+        this.path = setting.path;
         this.applicationName = setting.applicationName;
         this.version = setting.version;
         this.label = setting.version;
@@ -32,7 +33,6 @@ var codeTools = require('./code_tools');
         let params = {
             projectId:this.projectId,
             projectName:this.projectName, 
-            applicationName:this.applicationName,
             name: this.name,
             sideType:this.sideType,
             framework:this.framework,
@@ -43,11 +43,11 @@ var codeTools = require('./code_tools');
             
         }
         params.deploymentName = params.applicationName + "-deployment";
-        params.applicationName = params.applicationName + "-app";
+        params.applicationName = this.applicationName + "-app";
         params.imageName = this.imageName();
-        params.serviceName = params.applicationName + "-" + params.sideType;
-        params.ingressName = params.applicationName + "-ingress";
-        params.applicationPath = params.path;
+        params.serviceName = this.applicationName + "-" + params.sideType;
+        params.ingressName = this.applicationName + "-ingress";
+        params.applicationPath = this.path;
         return params;
     }
 
