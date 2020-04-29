@@ -111,7 +111,7 @@ let TargetRoot = '../files/';
 
    
     haveClonedCode(){
-        let pathName  = releaseTargetSrcPath();
+        let pathName  = this.releaseTargetSrcPath();
         return pathIsReady(pathName);
     }
 
