@@ -7,7 +7,8 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('xreleasesStore') @observer
+@inject('xreleasesStore') @inject('releasesStore')
+@observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
 
@@ -22,6 +23,18 @@ export default class AddPage extends React.Component {
         this.state = {};
     }
 
+    componentDidMount() {
+        let that = this;
+        let appId = this.props.query.applicationId;
+        console.log('appid' + appId);
+        if (appId){
+            this.props.releasesStore.queryById(appId, function(values){
+                console.log(values);
+                that.formRef.current.setFieldsValue({ name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
+            });
+        }
+       
+    }
     onFinish = values => {
         var that = this;
         //let projectId = this.props.query.projectId;
@@ -56,6 +69,9 @@ export default class AddPage extends React.Component {
                     </Form.Item>
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
+                    </Form.Item>
+                    <Form.Item name="path" label="发布应用PATH">
+                        <Input />
                     </Form.Item>
                     <Form.Item name="repository" label="代码仓库地址">
                         <Input />

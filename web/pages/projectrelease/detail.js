@@ -85,7 +85,7 @@ export default class EditPage extends React.Component {
 
         this.Store().queryById(id, function (values) {
             console.log(values);
-            that.props.projectsStore.queryById(values.projectId, function(value){
+            that.props.projectsStore.queryById(values.projectId, function (value) {
                 that.projectName = value.name;
             });
             that.formRef.current.setFieldsValue(values);
@@ -102,6 +102,10 @@ export default class EditPage extends React.Component {
 
         NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
         console.log(finalParams);
+    }
+    createDeployment=()=>{
+        let applicationId = this.props.query.id;
+        router.push({ pathname:'/xrelease/add', query: {applicationId: applicationId} });
     }
     downloadCode = () => {
         //console.log(type);
@@ -121,10 +125,10 @@ export default class EditPage extends React.Component {
     handleLineAdd(type) {
         let releaseId = this.props.query.id;
         console.log('begin route to ' + type);
-        if('xmodule'==type){
-            router.push({ pathname:'/projectrelease/add_module', query: {id: releaseId } });
-        }else if('xpage' == type){
-            router.push({ pathname:'/xpage/add', query: {id: releaseId } });
+        if ('xmodule' == type) {
+            router.push({ pathname: '/projectrelease/add_module', query: { id: releaseId } });
+        } else if ('xpage' == type) {
+            router.push({ pathname: '/xpage/add', query: { id: releaseId } });
         }
     }
 
@@ -138,7 +142,7 @@ export default class EditPage extends React.Component {
         }
         if ('xmodule' == type) {
             let moduleId = record.id;
-            this.Store().deleteModule(releaseId, moduleId,function(value){
+            this.Store().deleteModule(releaseId, moduleId, function (value) {
                 console.log('remove module from release ID is:' + value);
             });
         }
@@ -154,7 +158,7 @@ export default class EditPage extends React.Component {
         console.log('render module edit page');
         return (
             < div >
-                <Card size="small" title="模块基本信息" style={{ width: 500 }} extra={<a href={editUrl}>编辑项目基本信息</a>} >
+                <Card size="small" title="基本信息" style={{ width: 500 }}  >
                     <Form ref={this.formRef}>
                         < Form.Item name="name" label="可发布项目名：">
                             {itemData.name}
@@ -175,15 +179,23 @@ export default class EditPage extends React.Component {
                         < Form.Item name="projectId" label="所属项目：">
                             {itemData.projectId}
                         </Form.Item>
+                        <Form.Item name="path" label="服务，站点类应用访问PATH">
+                            {itemData.path}
+                        </Form.Item>
+                        < Form.Item name="moduleName" label="关联模块名">
+                            {itemData.moduleName}
+                        </Form.Item>
+
                         < Form.Item name="description" label="描述信息：">
                             {itemData.description}
                         </Form.Item>
-                        <Card type="inner"> 
-                             <Form.Item>
-                             <Button type="primary" onClick={that.generateCode} size="large">生成项目代码</Button>
-                             <Button type="primary" onClick={that.downloadCode} size="large">下载项目代码</Button>
+                        <Card type="inner">
+                            <Form.Item>
+                                <Button type="primary" onClick={that.generateCode} size="large">生成项目代码</Button>
+                                <Button type="primary" onClick={that.downloadCode} size="large">下载项目代码</Button>
+                                <Button type="primary" onClick={that.createDeployment} size="large">创建发布单</Button>
                             </Form.Item>
-                    </Card>
+                        </Card>
 
                     </Form>
                 </Card>
@@ -194,12 +206,6 @@ export default class EditPage extends React.Component {
                     onUpdate={that.handleLineUpdate.bind(that, 'xpage')}
                     onDetail={that.handleLineDetail.bind(that, 'xpage')}
                 ></EditTable> : <div></div>}
-                <EditTable title="所使用模块：" columns={that.buildPageColumns()} data={itemData.modules}
-                    onAdd={that.handleLineAdd.bind(that, 'xmodule')}
-                    onDelete={that.handleLineDelete.bind(that, 'xmodule')}
-                    onUpdate={that.handleLineUpdate.bind(that, 'xmodule')}
-                    onDetail={that.handleLineDetail.bind(that, 'xmodule')}
-                ></EditTable>
 
             </div>
         );

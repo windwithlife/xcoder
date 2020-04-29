@@ -127,8 +127,8 @@ export default class EditPage extends React.Component {
                         < Form.Item name="platform" label="操作系统平台：">
                             {itemData.platform}
                         </Form.Item>
-                        < Form.Item name="description" label="描述信息：">
-                            {itemData.description}
+                        < Form.Item name="path" label="服务类应用PATH：">
+                            {itemData.path}
                         </Form.Item>
                         <Form.Item name="repository" label="代码仓库地址">
                         {itemData.repository}
@@ -144,6 +144,9 @@ export default class EditPage extends React.Component {
                         </Form.Item>
                         < Form.Item name="releaseStatus" label="当前发布状态：">
                             {itemData.releaseStatus}
+                        </Form.Item>
+                        < Form.Item name="description" label="描述信息：">
+                            {itemData.description}
                         </Form.Item>
                         <Card type="inner">
                             <Form.Item>

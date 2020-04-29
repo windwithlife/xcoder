@@ -7,16 +7,26 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('releasesStore') @observer
+@inject('releasesStore') @inject('modulesStore')
+@observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
 
     Store = () => {
         return this.props.releasesStore;
     }
+    StoreData = () => {
+        return this.props.releasesStore.dataObject;
+    }
     constructor(props) {
         super(props);
         this.state = {};
+    }
+    componentDidMount() {
+
+        console.log('DidMount');
+        let projectId = this.props.query.projectId;
+        this.props.modulesStore.queryByProjectId(projectId);
     }
 
     onFinish = values => {
@@ -26,7 +36,18 @@ export default class AddPage extends React.Component {
         console.log(values);
         this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
+    onChangeModule = (value) => {
+        let that = this;
+        console.log('Index:' + value);
+        let item = this.props.modulesStore.dataObject.list[value];
+        //let domainName = item.name;
+        let moduleId = item.id;
+        let moduleName = item.name;
 
+       console.log(moduleName);
+        this.formRef.current.setFieldsValue({ moduleId: moduleId, name: moduleName,path:"/"+moduleName });
+
+    }
     render() {
         var that = this;
 
@@ -39,8 +60,16 @@ export default class AddPage extends React.Component {
                         },]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="description" label="描述">
-                        <Input />
+                    <Form.Item
+                        name="moduleId"
+                        noStyle='true'
+                    ></Form.Item>
+                    < Form.Item name="selectModule" label="关联模块">
+                        <Select onChange={that.onChangeModule}>
+                            {that.props.modulesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={i}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
                     </Form.Item>
                     < Form.Item name="sideType" label="项目类型：">
                         < XSelect category="sideType" />
@@ -54,7 +83,13 @@ export default class AddPage extends React.Component {
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
                     </Form.Item>
-
+                    
+                    <Form.Item name="path" label="服务，站点类应用访问PATH">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="description" label="描述">
+                        <Input />
+                    </Form.Item>
                     <Card type="inner">
                         <Form.Item>
                             <Button type="primary" htmlType="submit" size="large">Save</Button>

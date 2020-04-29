@@ -6,6 +6,7 @@ var codeTools = require('./code_tools');
  class ParamsHelper {
     
     constructor(){
+        this.serviceVersion = 'v1';
         this.basePackage="com.simple.server.auto";
         this.apiServer ="127.0.0.1:8080";
         this.sideType ='web';
@@ -71,6 +72,7 @@ var codeTools = require('./code_tools');
 
         let params = this.buildGenericParams(moduleName,tableDefine.name);
         params.tableName = tableDefine.name;
+        params.requestPath = moduleName + "/" + tableDefine.name;
         params.tableClassName = codeTools.firstUpper(tableDefine.name);
         params.requestDtoClassName = tableDefine.requestDtoClassName;
         params.responseDtoClassName = tableDefine.responseDtoClassName;
@@ -94,6 +96,7 @@ var codeTools = require('./code_tools');
     buildParamsByDomain(moduleName,defineData){
         let params = this.buildGenericParams(moduleName,defineData.name);
         let domainType = defineData.domainType;
+        //params.requestPath = moduleName + "/" + tableDefine.name;
         params.define = defineData;
         params.fields = defineData.tableFields;
         params.refers = defineData.refers;

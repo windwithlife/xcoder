@@ -26,12 +26,12 @@ import EditTable from '../common/components/EditableTable';
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
-   
+
     constructor() {
         super();
     }
 
-    Store=()=>{
+    Store = () => {
         return this.props.releasesStore;
     }
     startHeader() {
@@ -50,16 +50,16 @@ export default class EditPage extends React.Component {
             dataIndex: 'description',
             key: 'description'
         });
-      return fieldColumns;
+        return fieldColumns;
     }
 
-  
-   
+
+
 
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-      
+
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.formRef.current.setFieldsValue(values);
@@ -77,39 +77,39 @@ export default class EditPage extends React.Component {
         values.project = projectId;
         this.Store().update(values, () => { console.log('finished update row'); router.back(); });
     }
-    handleLineUpdate(type,index, record) {
+    handleLineUpdate(type, index, record) {
         let that = this;
-        let path= '/'+ type+'/edit';
-        router.push({ pathname: path, query: { id: record.id ,moduleId:this.props.query.moduleId} });
+        let path = '/' + type + '/edit';
+        router.push({ pathname: path, query: { id: record.id, moduleId: this.props.query.moduleId } });
 
     }
-    handleLineDetail(type,record) {
-        let path= '/'+ type+'/detail';
+    handleLineDetail(type, record) {
+        let path = '/' + type + '/detail';
         console.log(path);
         router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd(type) {
         let moduleId = this.props.query.moduleId;
-        let path= '/'+ type+'/add';
+        let path = '/' + type + '/add';
         router.push({ pathname: path, query: { moduleId: moduleId } });
 
     }
 
-    handleLineDelete(type,index, record) {
-        if('xpage'==type){
+    handleLineDelete(type, index, record) {
+        if ('xpage' == type) {
             //console.log('inde')
-            this.props.pagesStore.removeById(index, record.id,function(value){
+            this.props.pagesStore.removeById(index, record.id, function (value) {
                 that.props.modulesStore.queryById(moduleId);
             });
         }
-        
+
     }
 
 
     render() {
         let that = this;
         let itemData = that.Store().dataObject.currentItem;
-        let isShowPage = itemData.sideType =='server'?false:true;
+        let isShowPage = itemData.sideType == 'server' ? false : true;
         return (
             < div >
                 <div>
@@ -122,8 +122,12 @@ export default class EditPage extends React.Component {
                                 name="id"
                                 noStyle='true'
                             ></Form.Item>
-                           <Form.Item
+                            <Form.Item
                                 name="projectId"
+                                noStyle='true'
+                            ></Form.Item>
+                            <Form.Item
+                                name="moduleId"
                                 noStyle='true'
                             ></Form.Item>
                             <Form.Item name="name" label="名称(请用英文)"
@@ -132,7 +136,11 @@ export default class EditPage extends React.Component {
                                 },]}>
                                 <Input />
                             </Form.Item>
-
+                            <Form.Item
+                                name="moduleName" label="关联模块"
+                            >
+                                {itemData.moduleName}
+                            </Form.Item>
 
                             < Form.Item name="sideType" label="项目类型:">
                                 < XSelect category="sideType" />
@@ -146,28 +154,26 @@ export default class EditPage extends React.Component {
                             < Form.Item name="platform" label="目标操作系统">
                                 < XSelect category="os" />
                             </Form.Item>
+                            <Form.Item name="path" label="服务，站点类应用访问PATH">
+                                <Input />
+                            </Form.Item>
                             <Form.Item name="description" label="描述">
                                 <Input />
                             </Form.Item>
+
                             <Form.Item >
                                 <Button type="primary" htmlType="submit" size="large">保存修改基本信息</Button>
                             </Form.Item>
                         </Form>
                     </Card>
                 </div>
-                {isShowPage?<EditTable title="页面：" columns={that.startHeader()} data={itemData.pages} 
-                onAdd={that.handleLineAdd.bind(that,'xpage')} 
-                onDelete={that.handleLineDelete.bind(that,'xpage')}
-                onUpdate={that.handleLineUpdate.bind(that,'xpage')}
-                onDetail={that.handleLineDetail.bind(that,'xpage')}
-                ></EditTable>:<div></div>}
-                <EditTable title="所使用模块：" columns={that.startHeader()} data={itemData.modules} 
-                onAdd={that.handleLineAdd.bind(that,'xmoudle')} 
-                onDelete={that.handleLineDelete.bind(that,'xmoudle')}
-                onUpdate={that.handleLineUpdate.bind(that,'xmoudle')}
-                onDetail={that.handleLineDetail.bind(that,'xmoudle')}
-                ></EditTable>
-               
+                {isShowPage ? <EditTable title="页面：" columns={that.startHeader()} data={itemData.pages}
+                    onAdd={that.handleLineAdd.bind(that, 'xpage')}
+                    onDelete={that.handleLineDelete.bind(that, 'xpage')}
+                    onUpdate={that.handleLineUpdate.bind(that, 'xpage')}
+                    onDetail={that.handleLineDetail.bind(that, 'xpage')}
+                ></EditTable> : <div></div>}
+              
             </div >
         );
     }

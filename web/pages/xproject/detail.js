@@ -76,14 +76,15 @@ export default class DetailPage extends React.Component {
 
    
     handleLineUpdate(type, index, record) {
-        if('xmodule'==type){
-            router.push({ pathname: '/xmodule/edit', query: {moduleId: record.id } });
-        }
-        
+        console.log(type + index);
         if('projectrelease'==type){
-            router.push({ pathname: '/projectrelease/edit', query: {id: record.id } });
+            console.log(type +record.id);
+            router.push({pathname:'/projectrelease/edit',query:{id:record.id}});
+        
+        }else if('xmodule'==type){
+            router.push({pathname:'/xmodule/edit',query:{id:record.id}});
         }
-       
+    
     }
     
     handleLineDetail(type,record) {
