@@ -111,7 +111,7 @@ let TargetRoot = '../files/';
 
    
     haveClonedCode(){
-        let pathName  = path.join(this.rootPath(), this.projectConfig.name,"src/");
+        let pathName  = releaseTargetSrcPath();
         return pathIsReady(pathName);
     }
 
@@ -133,7 +133,7 @@ let TargetRoot = '../files/';
         cp("-r",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
         console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
         console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
-        console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);
+        console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);   
 
     }
    

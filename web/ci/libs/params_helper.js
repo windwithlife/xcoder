@@ -43,7 +43,7 @@ var codeTools = require('./code_tools');
         params.deploymentName = params.name + "-deployment";
         params.applicationName = params.name + "-app";
         params.imageName = this.imageName();
-        params.serviceName = params.name + "-svc";
+        params.serviceName = params.name + "-" + params.sideType;
         params.ingressName = params.name + "-ingress";
         return params;
     }
