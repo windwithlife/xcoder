@@ -30,7 +30,7 @@ export default class AddPage extends React.Component {
         if (appId){
             this.props.releasesStore.queryById(appId, function(values){
                 console.log(values);
-                that.formRef.current.setFieldsValue({ name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
+                that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
         }
        
@@ -69,6 +69,9 @@ export default class AddPage extends React.Component {
                     </Form.Item>
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
+                    </Form.Item>
+                    <Form.Item name="applicationName" label="发布应用名称">
+                        <Input />
                     </Form.Item>
                     <Form.Item name="path" label="发布应用PATH">
                         <Input />

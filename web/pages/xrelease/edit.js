@@ -151,6 +151,9 @@ export default class EditPage extends React.Component {
                         <Form.Item name="path" label="发布应用PATH">
                             <Input />
                         </Form.Item>
+                        <Form.Item name="applicationName" label="发布应用名称">
+                            <Input />
+                        </Form.Item>
                         <Form.Item name="repository" label="代码仓库地址">
                             <Input />
                         </Form.Item>
