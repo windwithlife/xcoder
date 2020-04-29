@@ -55,7 +55,7 @@ class ParamsHelper {
             .write()
     }
     updateRoute(){
-        this.addWebRouteRecord(this.path,this.this.serviceName());
+        this.addWebRouteRecord(this.path,this.serviceName());
     }
     getRoutes() {
         let data = db.read().get('routetable').filter({ host: 'gateway.koudaibook.com' }).value();
