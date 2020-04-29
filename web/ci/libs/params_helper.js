@@ -42,7 +42,7 @@ var codeTools = require('./code_tools');
             gateway:this.gateway,
             
         }
-        params.deploymentName = params.applicationName + "-deployment";
+        params.deploymentName = this.applicationName + "-deployment";
         params.applicationName = this.applicationName + "-app";
         params.imageName = this.imageName();
         params.serviceName = this.applicationName + "-" + params.sideType;
