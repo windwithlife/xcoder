@@ -101,7 +101,7 @@ app.prepare()
       console.log('current directory is:' + process.cwd());
       console.log(req.body.defines);
 
-      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/liveserver-service/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
+      var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;     
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
