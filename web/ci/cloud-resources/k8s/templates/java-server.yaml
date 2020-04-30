@@ -18,6 +18,9 @@ spec:
         image: <%=data.imageName%>
         ports:
         - containerPort: 80
+        envFrom:
+            - configMapRef:
+                name: common-config
 ---
 apiVersion: v1
 kind: Service
