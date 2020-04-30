@@ -3,7 +3,7 @@ FROM windwithlife/maven-fast:1.0
 ADD ./server /tmp/build/server
 RUN cd /tmp/build/server && mvn clean install -Dmaven.test.skip=true
 
-RUN mkdir -p  /release/ 
+RUN mkdir -p  /app/ 
 RUN mkdir -p /tmp/buildcode/
 ADD pom.xml /tmp/buildcode/
 RUN cd /tmp/buildcode && mvn -q dependency:resolve
@@ -12,14 +12,15 @@ ADD src /tmp/buildcode/src
 
 
   
-RUN cd /tmp/buildcode && mvn clean package -q -Dmaven.test.skip=true   && mv target/*.jar /release/app.jar
+RUN cd /tmp/buildcode && mvn clean package -q -Dmaven.test.skip=true   && mv target/*.jar /app/app.jar
 
 
-FROM windwithlife/java-server-min:latest
+#FROM windwithlife/java-server-min:latest
+FROM java:8-jdk-alpine
 
 RUN mkdir -p /deployment/
-#ADD ./release/app.jar /deployment/
-COPY --from=0 /release /deployment
+
+COPY --from=0 /app /deployment
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/deployment/app.jar","--spring.profiles.active=docker"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/deployment/app.jar"]
 
