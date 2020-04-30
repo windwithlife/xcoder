@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: tea 
-        image: nginxdemos/hello:plain-text
+        image: <%=data.imageName%>
         ports:
         - containerPort: 80
 ---

@@ -1,7 +1,7 @@
 
 FROM windwithlife/maven-fast:1.0
 ADD ./server /tmp/build/server
-RUN cd /tmp/build/server && mvn install -Dmaven.test.skip=true
+RUN cd /tmp/build/server && mvn clean install -Dmaven.test.skip=true
 
 RUN mkdir -p  /release/ 
 RUN mkdir -p /tmp/buildcode/
