@@ -1,6 +1,7 @@
 package <%=data.packageName%>.service;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,12 +94,13 @@ public class <%=data.nameClassName%>Service {
 	public <%=data.responseListDtoClassName%> transferEntity2ResponseListDto(List<<%=data.nameClassName%>> entityObjs){
 
 		<%=data.responseListDtoClassName%> responseList = new <%=data.responseListDtoClassName%>();
-
+        List<<%=responseDtoClassName%>> items = new ArrayList<<%=responseDtoClassName%>>();
 	    for(int i=0; i< entityObjs.size(); i++){
 			<%=data.responseDtoClassName%> response = transferEntity2ResponseDto(entityObjs.get(i));
+			items.add(response);
 			
-			responseList.getItems().add(response);
 		}
+		responseList.setItems(items);
 		responseList.setItemsCount(new Long(entityObjs.size()));
 		return responseList;
 		

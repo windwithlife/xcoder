@@ -41,13 +41,15 @@ class ModuleDefines {
 
     loadDefinesFromParams(release) {
 
-        let that = this;
-        console.log(release);
-        release.modules.forEach(function (module) {
-            module.pages = release.pages;
-            that.adjustModulesData(module);
-        });
-        this.defines = release.modules;
+        // let that = this;
+        // console.log(release);
+        // release.modules.forEach(function (module) {
+        //     module.pages = release.pages;
+        //     that.adjustModulesData(module);
+        // });
+        this.defines = release.module;
+        this.defines.pages = release.pages;
+        this.adjustModulesData(this.defines);
     }
     parseInterfaceParams(params) {
         let fields = [];

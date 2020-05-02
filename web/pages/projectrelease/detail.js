@@ -88,6 +88,9 @@ export default class EditPage extends React.Component {
             that.props.projectsStore.queryById(values.projectId, function (value) {
                 that.projectName = value.name;
             });
+            that.props.modulesStore.queryById(values.moduleId, function (value) {
+                //that.projectName = value.name;
+            });
             that.formRef.current.setFieldsValue(values);
         });
     }
@@ -96,6 +99,7 @@ export default class EditPage extends React.Component {
         //console.log(type);
         let itemData = this.Store().dataObject.currentItem;
         itemData.projectName = this.projectName;
+        itemData.module = this.props.modulesStore.dataObject.currentItem;
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;

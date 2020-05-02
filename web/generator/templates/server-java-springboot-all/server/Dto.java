@@ -5,6 +5,7 @@ import java.io.Serializable;
 import <%=data.packageName%>.entity.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class <%=data.nameClassName%> implements Serializable {
 	private static final long serialVersionUID = 1L;
