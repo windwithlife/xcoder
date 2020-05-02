@@ -34,7 +34,6 @@ spec:
     name: http
   selector:
     app: <%=data.applicationName%>
-
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
