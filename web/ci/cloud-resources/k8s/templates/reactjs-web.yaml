@@ -14,10 +14,10 @@ spec:
         app: <%=data.applicationName%>
     spec:
       containers:
-      - name: <%=data.applicationName%> 
+      - name: <%=data.applicationName%>
         image: <%=data.imageName%>
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         envFrom:
             - configMapRef:
                 name: common-config
@@ -29,7 +29,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
     protocol: TCP
     name: http
   selector:
@@ -38,7 +38,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: services-ingress
+  name: web-ingress
   annotations:
     nginx.ingress.kubernetes.io/cors-allow-headers: >-
       DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
@@ -48,10 +48,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - gateway.koudaibook.com
+    - www.koudaibook.com
     secretName: one-cert
   rules:
-  - host: gateway.koudaibook.com
+  - host: www.koudaibook.com
     http:
       paths:<%data.routes.forEach(function(route){%>
       - path: <%=route.path%>

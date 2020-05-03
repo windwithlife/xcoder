@@ -19,6 +19,7 @@ class ParamsHelper {
         this.language = 'js';
         this.framework = 'nextjs';
         this.gateway = 'gateway.koudaibook.com';
+        this.website = 'www.koudaibook.com';
 
         console.log('init project config')
 
@@ -40,25 +41,46 @@ class ParamsHelper {
         this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
     }
 
-    addServiceRouteRecord(path, serviceName) {
-        db.get('routetable')
-            .push({ host: 'gateway.koudaibook.com', path: path, serviceName: serviceName })
-            .write()
-    }
-    addWebRouteRecord(path, serviceName) {
-        let data = db.read().get('routetable').find({path:path }).value();
+    // addServiceRouteRecord(endpint, path, serviceName) {
+    //     let data = db.read().get('routetable').find({path:path,host:this.gateway}).value();
+    //     if (data){
+    //         db.read().get('routetable').remove({path:path,host:this.gateway}).write();
+    //     }
+    //     db.get('routetable')
+    //         .push({ host: this.gateway, path: path, serviceName: serviceName })
+    //         .write()
+    // }
+    // addWebRouteRecord(endpint,path, serviceName) {
+    //     let data = db.read().get('routetable').find({path:path,host:this.website}).value();
+    //     if (data){
+    //         db.read().get('routetable').remove({path:path,host:this.website}).write();
+    //     }
+    //     db.get('routetable')
+    //         .push({ host: this.website, path: path, serviceName: serviceName })
+    //         .write()
+    // }
+    addRouteRecord(host,path, serviceName) {
+        let data = db.read().get('routetable').find({path:path,host:host}).value();
         if (data){
-            db.read().get('routetable').remove({path:path}).write();
+            db.read().get('routetable').remove({path:path,host:host}).write();
         }
         db.get('routetable')
-            .push({ host: 'gateway.koudaibook.com', path: path, serviceName: serviceName })
+            .push({ host: host, path: path, serviceName: serviceName })
             .write()
     }
     updateRoute(){
-        this.addWebRouteRecord(this.path,this.serviceName());
+        let host = this.gateway;
+        if(this.sideType=='web'){
+            host=this.website;
+        }
+        this.addRouteRecord(host,this.path,this.serviceName());
     }
     getRoutes() {
-        let data = db.read().get('routetable').filter({ host: 'gateway.koudaibook.com' }).value();
+        let host = this.gateway;
+        if(this.sideType=='web'){
+            host=this.website;
+        }
+        let data = db.read().get('routetable').filter({ host: host }).value();
         console.log(data);
         return data;
     }

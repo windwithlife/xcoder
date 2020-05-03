@@ -162,11 +162,11 @@ class ModuleDefines {
 
             //创建缺省的接口,用于生成微服务的内部调用client.
             domainItem.interfaces = [];
-            domainItem.interfaces.push(that.buildInterface("queryAll","get","",responseListDtoClass,table.name));
-            domainItem.interfaces.push(that.buildInterface("queryById","get","Long",responseDtoClass,table.name));
-            domainItem.interfaces.push(that.buildInterface("save","post",requestDtoClass,responseDtoClass,table.name));
-            domainItem.interfaces.push(that.buildInterface("update","post",requestDtoClass,responseDtoClass,table.name));
-            domainItem.interfaces.push(that.buildInterface("remove","post","Long","Long",table.name));
+            // domainItem.interfaces.push(that.buildInterface("queryAll","get","",responseListDtoClass,table.name));
+            // domainItem.interfaces.push(that.buildInterface("queryById","get","Long",responseDtoClass,table.name));
+            // domainItem.interfaces.push(that.buildInterface("save","post",requestDtoClass,responseDtoClass,table.name));
+            // domainItem.interfaces.push(that.buildInterface("update","post",requestDtoClass,responseDtoClass,table.name));
+            // domainItem.interfaces.push(that.buildInterface("remove","post","Long","Long",table.name));
             module.tableDomains.push(domainItem);
 
             table.requestDtoClassName = requestDtoClass;

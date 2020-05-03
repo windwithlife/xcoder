@@ -23,7 +23,7 @@ export default class AddPage extends React.Component {
         let projectId = this.props.query.projectId;
         values.projectId = projectId;
         console.log(values);
-        this.Store().save(values, () => { console.log('finished add row'); router.back(); });
+        this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
 
     render() {

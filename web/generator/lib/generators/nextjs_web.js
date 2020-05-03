@@ -19,6 +19,18 @@ function createStore(moduleName,defineData){
 
 };
 
+
+function createBaseStore(moduleName,defineData){
+    let templateFilename =   "/model.js";
+    let targetFileName = codeTools.firstUpper(defineData.name) + "Store.js";
+
+    templateFilename = pathConfig.templateModel() + templateFilename ;
+    targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+    var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
+    codeTools.generateCode(templateFilename,params,targetFileName);
+
+};
+
 function generatePage(moduleName,defineData){
     let targetFileName = pathConfig.targetView(moduleName) + codeTools.firstUpper(defineData.name) + ".js";
     templateText = defineData.defineText;
@@ -53,6 +65,7 @@ function generateModuleByName(moduleDefine){
          createView(moduleDefine.name,table,'detail');
          createView(moduleDefine.name,table,'add');
          createView(moduleDefine.name,table,'edit');
+         //createBaseStore(moduleDefine.name,table);
      });
     moduleDefine.storeDomains.forEach(function(domainItem){
         generateStoreByInterfaces(moduleDefine.name,domainItem);

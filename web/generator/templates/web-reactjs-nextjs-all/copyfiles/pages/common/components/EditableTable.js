@@ -93,10 +93,17 @@ export default class EditableTable extends React.Component {
         let keywork = this.state.searchText
 
     }
+    filterData(input){
+        input.forEach(function(itemData){
+            itemData.key=itemData.id;
+        });
+        return input;
+    }
     render() {
         let that = this;
         let headerTitle = this.props.title;
-        let list = this.props.data;
+        let list = this.props.data?this.props.data:[];
+        list = this.filterData(list);
         return (
                 <Collapse  accordion>
                     <Panel header={headerTitle} key="4" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>

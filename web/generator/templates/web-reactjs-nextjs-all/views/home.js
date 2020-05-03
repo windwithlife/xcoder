@@ -67,24 +67,27 @@ export default class HomePage extends React.Component {
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-        this.Store().queryById(id, function (values) {
+        this.Store().queryAll(function (values) {
             console.log(values);
-            that.formRef.current.setFieldsValue(values);
+            that.filterData();
+            //that.formRef.current.setFieldsValue(values);
         });
     }
+    filterData(){
 
+    }
     handleLineUpdate(index, record) {
-        let path ="<%=data.pageBasePath%>/<%data.pagePrefixName%>edit";
+        let path ="<%=data.pageBasePath%><%=data.pagePrefixName%>edit";
         router.push({ pathname: path, query: { id: record.id } });
 
     }
     handleLineDetail(record) {
-        let path ="<%=data.pageBasePath%>/<%data.pagePrefixName%>detail";
+        let path ="<%=data.pageBasePath%><%=data.pagePrefixName%>detail";
         console.log(path);
         router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd() {
-        let path ="<%=data.pageBasePath%>/<%data.pagePrefixName%>add";
+        let path ="<%=data.pageBasePath%><%=data.pagePrefixName%>add";
         router.push({ pathname:path});
     }
 
@@ -107,7 +110,7 @@ export default class HomePage extends React.Component {
                 <Card size="small" title="基本信息" style={{ width: 500 }}  >
                         <Form >
 <%data.fields.forEach(function(field){%>
-                          < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                          < Form.Item  label="<%=field.description%>">
                             {itemData.<%=field.name%>}
                           </Form.Item>
 <%});%>

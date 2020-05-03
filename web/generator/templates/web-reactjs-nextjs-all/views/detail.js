@@ -19,7 +19,7 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-import NetworkHelper from '../common/components/models/network';
+import NetworkHelper from '../common/models/network';
 
 @inject('<%=data.tableName%>Store')
 @observer
@@ -108,10 +108,10 @@ export default class DetailPage extends React.Component {
         console.log('render module edit page');
         return (
             < div >
-                <Card size="small" title="基本信息" style={{ width: 500 }} extra={<a href={editUrl}>基本信息</a>} >
+                <Card size="small" title="基本信息" style={{ width: 800 }}  >
                         <Form >
 <%data.fields.forEach(function(field){%>
-                          < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                          < Form.Item label="<%=field.description%>">
                             {itemData.<%=field.name%>}
                           </Form.Item>
 <%});%>
