@@ -1,9 +1,6 @@
 
 var model = require('./modelBase');
-var config = require('../../../config');
-
-//var serverPath = 'http://127.0.0.1:8080/';
-//var envCurrent = process.env.NODE_ENV;
+var config = require('../../config');
 var serverPath = config['current'].SOA_GATE;
 console.log(" current env:========" + serverPath);
 

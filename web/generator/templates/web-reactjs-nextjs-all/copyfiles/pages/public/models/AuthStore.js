@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import BaseStore from "./BaseStore";
+import BaseStore from "../../common/models/BaseStore";
 
 class AuthStore extends BaseStore{
  

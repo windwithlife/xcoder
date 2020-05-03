@@ -4,15 +4,14 @@ import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
 import XSelect from '../common/components/form/select';
 const { TextArea } = Input;
-//const FormItem = Form.Item;
 
-
-@inject('releasesStore') @observer
+@inject('roomStore')
+@observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
 
     Store = () => {
-        return this.props.releasesStore;
+        return this.props.roomStore;
     }
     constructor(props) {
         super(props);
@@ -33,27 +32,18 @@ export default class AddPage extends React.Component {
         return (
             <Card>
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
-                    <Form.Item name="name" label="名称"
-                        rules={[{
-                            required: true,
-                        },]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="description" label="描述">
-                        <Input />
-                    </Form.Item>
-                    < Form.Item name="sideType" label="项目类型：">
-                        < XSelect category="sideType" />
-                    </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language" />
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework" />
-                    </Form.Item>
-                    < Form.Item name="platform" label="目标操作系统">
-                        < XSelect category="os" />
-                    </Form.Item>
+
+   
+   
+                          < Form.Item name="name" label="Name">
+                           <Input />
+                          </Form.Item>
+
+   
+                          < Form.Item name="title" label="Title">
+                           <Input />
+                          </Form.Item>
+
 
                     <Card type="inner">
                         <Form.Item>
@@ -66,6 +56,6 @@ export default class AddPage extends React.Component {
     }
 }
 AddPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
+    return { query: context.query };
 }
 
