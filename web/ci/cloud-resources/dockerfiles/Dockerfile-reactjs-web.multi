@@ -1,5 +1,5 @@
 #FROM node:8.10.0-slim
-FROM node:alpine 
+FROM node:latest 
 MAINTAINER Joe
 
 RUN mkdir -p /runDIR/web
