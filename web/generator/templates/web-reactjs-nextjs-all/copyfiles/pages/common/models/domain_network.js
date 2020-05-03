@@ -26,7 +26,7 @@ console.log(" current env:========" + serverPath);
 
 class DomainNetwork {
     constructor(moduleName) {
-        super();
+        //super();
         if (moduleName) {
             this.moduleName = moduleName;
         } else {
