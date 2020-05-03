@@ -3,8 +3,6 @@ var path = require('path');
 var fs   = require('fs');
 require('shelljs/global');
 
-//let sourcecodePath = '/projects';
-
 function checkPath(pathName) {
     var isExist = fs.existsSync(pathName);
     if(!isExist){
@@ -41,8 +39,6 @@ function pathIsReady(pathName) {
         this.projectConfig = projectConfig;
         console.log(this.projectConfig);
     }
-    
-  
     rootPath(){
         let pathName  = path.join(this.currentRootPath, this.srcRoot);
         checkPath(pathName);
@@ -138,7 +134,6 @@ function pathIsReady(pathName) {
     }
    
 }
-
 
 module.exports = PathConfig;
 
