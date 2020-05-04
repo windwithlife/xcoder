@@ -156,6 +156,8 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 function buildDockerByMultifile(workPath,dockfile, imageName){
     let compileCommand = "docker build " + workPath + " -t " + imageName + " -f " + dockfile;
     console.log('compile command:' + compileCommand);
+    let removeCommand = "docker rmi  " + imageName;
+    exec(removeCommand);
     let result = exec(compileCommand);
     if (result.code !== 0) {
         console.log('failed to compile  compile command:[' + compileCommand +']');
