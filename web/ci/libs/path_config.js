@@ -142,7 +142,6 @@ function pathIsReady(pathName) {
         }else{
             console.log('successful command:' + cpCommand);
         }
-      
         //cp("-R",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
         console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
         console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
