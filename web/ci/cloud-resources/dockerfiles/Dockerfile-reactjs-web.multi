@@ -2,9 +2,9 @@ FROM node:8.10.0-slim
 #FROM node:latest 
 MAINTAINER Joe
 
+RUN rm -rf /runDIR/web/
 RUN mkdir -p /runDIR/web
 WORKDIR /runDIR/web
-RUN rm -rf /runDIR/web/*
 COPY ./ /runDIR/web 
 RUN cd /runDIR/web && npm install
 RUN cd /runDIR/web && npm run build
