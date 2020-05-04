@@ -4,7 +4,7 @@ MAINTAINER Joe
 
 RUN mkdir -p /runDIR/web
 WORKDIR /runDIR/web
-
+RUN rm -rf /runDIR/web/*
 COPY ./ /runDIR/web 
 RUN cd /runDIR/web && npm install
 RUN cd /runDIR/web && npm run build
