@@ -125,8 +125,8 @@ function pathIsReady(pathName) {
         rm("-rf",this.dockerWorkPath());
 
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
-        cp("-r",serverPath,this.dockerWorkPath());
-        cp("-r",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
+        cp("-ra",serverPath,this.dockerWorkPath());
+        cp("-ra",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
         console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
         console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
         console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);   
