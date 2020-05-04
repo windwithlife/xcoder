@@ -1,5 +1,5 @@
-#FROM node:8.10.0-slim
-FROM node:latest 
+FROM node:8.10.0-slim
+#FROM node:latest 
 MAINTAINER Joe
 
 RUN mkdir -p /runDIR/web
@@ -7,11 +7,11 @@ WORKDIR /runDIR/web
 
 COPY ./ /runDIR/web 
 RUN cd /runDIR/web && npm install
-#RUN cd /runDIR/web && npm run build
+RUN cd /runDIR/web && npm run build
 
 ENV HOST 0.0.0.0
 ENV PORT 8080
 #ENV NODE_ENV production
 
 EXPOSE 8080
-ENTRYPOINT ["npm","run","devx"]
+ENTRYPOINT ["npm","start"]
