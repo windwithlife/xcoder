@@ -1,11 +1,9 @@
 
 
 import React from 'react';
-//import model from './models/model.js';
-
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
 import {
+    Icon,
+    Button,
     Collapse,
     Modal,
     Form,

@@ -1,11 +1,10 @@
 
 
 import React from 'react';
-//import model from './models/model.js';
 
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
 import {
+    Icon,
+    Button,
     Collapse,
     Modal,
     Form,
@@ -14,12 +13,12 @@ import {
     Select,
 } from 'antd';
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
+//import { SettingOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-import NetworkHelper from '../common/models/network';
+//import NetworkHelper from '../common/models/network';
 
 @inject('<%=data.tableName%>Store')
 @observer
