@@ -18,7 +18,7 @@ import AddPage from './AddDialog.js';
 
 const rowSelection = {
 };
-@inject('dictionarysStore') 
+@inject('dictionaryStore') 
 @observer
 export default class DetailPage extends React.Component {
     state = {

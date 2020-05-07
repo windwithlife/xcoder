@@ -1,8 +1,10 @@
 package com.simple.server.auto.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.List;
 
 
 @Entity
@@ -20,9 +22,9 @@ public class BuildRecord implements Serializable {
     //说明
     private String description;
 
-    private Long releaseId;
     private String buildNumber;
     private String releaseStatus;
+    private String releaseVersion;
 
     public BuildRecord() {
     }
@@ -35,14 +37,6 @@ public class BuildRecord implements Serializable {
         this.id = id;
     }
 
-    public String getBuildNumber(){
-        return this.buildNumber;
-    };
-    public void setBuildNumber(String number){
-        this.buildNumber = number;
-    }
-
-
     //发布状态
     public String getReleaseStatus(){
         return this.releaseStatus;
@@ -51,12 +45,23 @@ public class BuildRecord implements Serializable {
         this.releaseStatus= status;
     }
 
-    public Long getReleaseId(){
-        return this.releaseId;
+    public String getBuildNumber(){
+        return this.buildNumber;
     };
-    public void setReleaseId(Long id){
-        this.releaseId = id;
+    public void setBuildNumber(String number){
+        this.buildNumber= number;
     }
+    //发布状态
+    public String getReleaseVersion(){
+        return this.releaseVersion;
+    };
+    public void setReleaseVersion(String version){
+        this.releaseVersion= version;
+    }
+
+
+
+
     //名称
     public String getName(){
         return this.name;
@@ -72,5 +77,6 @@ public class BuildRecord implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
 }

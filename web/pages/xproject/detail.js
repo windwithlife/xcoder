@@ -53,6 +53,14 @@ export default class DetailPage extends React.Component {
 
     }
 
+    componentDidMount() {
+  
+        let id = this.props.query.id;
+        console.log("edit id:=" + id);
+       
+        this.props.projectsStore.queryById(id);
+    }
+
    
     generateCode=()=>{
        
@@ -62,18 +70,16 @@ export default class DetailPage extends React.Component {
         finalParams.defines = projectData;
         NetworkHelper.webPost("generateCodeByProjectId/",finalParams);
     }
-    downloadCode=()=>{
-        console.log(type);
+    onGotoApplications=()=>{
+        let pId = this.props.query.id;
+        router.push({pathname:'/projectrelease/home',query:{projectId:pId}});
     }
     
-    componentDidMount() {
-  
-        let id = this.props.query.id;
-        console.log("edit id:=" + id);
-       
-        this.props.projectsStore.queryById(id);
+    onGotoReleases=()=>{
+        let pId = this.props.query.id;
+        router.push({pathname:'/xrelease/home',query:{projectId:pId}});
     }
-
+  
    
     handleLineUpdate(type, index, record) {
         console.log(type + index);
@@ -145,19 +151,19 @@ export default class DetailPage extends React.Component {
                         </Form>
                         <Card type="inner"> 
                              <Form.Item>
-                             <Button type="primary" onClick={that.generateCode} size="large">生成项目代码</Button>
-                             <Button type="primary" onClick={that.downloadCode} size="large">下载项目代码</Button>
+                             <Button type="primary" onClick={that.onGotoApplications} size="large">项目应用管理</Button>
+                             <Button type="primary" onClick={that.onGotoReleases} size="large">项目发布管理</Button>
                             </Form.Item>
                     </Card>
                     </Card>
                 
-                
+{/*                 
                  <EditTable title="此项目中的所有可发布应用" columns={that.Header()} data={itemData.releases} 
                 onAdd={that.handleLineAdd.bind(that,'projectrelease')} 
                 onDelete={that.handleLineDelete.bind(that,'projectrelease')}
                 onUpdate={that.handleLineUpdate.bind(that,'projectrelease')}
                 onDetail={that.handleLineDetail.bind(that,'projectrelease')}
-                ></EditTable>
+                ></EditTable> */}
                 <EditTable title="此项目中的所有模块" columns={that.Header()} data={itemData.modules} 
                 onAdd={that.handleLineAdd.bind(that,'xmodule')} 
                 onDelete={that.handleLineDelete.bind(that,'xmodule')}

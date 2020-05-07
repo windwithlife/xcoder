@@ -69,43 +69,43 @@ public class ProjectReleaseController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/addModule", method = RequestMethod.GET)
-    public Long addModule(@RequestParam("id") Long id, @RequestParam("moduleId") Long moduleId) {
-        try {
-            ProjectRelease release = service.findById(id);
-            Xmodule obj = xmoduleService.findById(moduleId);
-            if((null != release) &&(null!= obj)){
-                release.getModules().add(obj);
-                service.save(release);
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return  -1L;
-        }
-        return moduleId;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/deleteModule", method = RequestMethod.GET)
-    public Long deleteModule(@RequestParam("id") Long id, @RequestParam("moduleId") Long moduleId) {
-
-        try {
-            ProjectRelease release = service.findById(id);
-            Xmodule obj = xmoduleService.findById(moduleId);
-            if((null != release) &&(null!= obj)){
-                release.getModules().remove(obj);
-                service.save(release);
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return  -1L;
-        }
-        return moduleId;
-
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/addModule", method = RequestMethod.GET)
+//    public Long addModule(@RequestParam("id") Long id, @RequestParam("moduleId") Long moduleId) {
+//        try {
+//            ProjectRelease release = service.findById(id);
+//            Xmodule obj = xmoduleService.findById(moduleId);
+//            if((null != release) &&(null!= obj)){
+//                release.getModules().add(obj);
+//                service.save(release);
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return  -1L;
+//        }
+//        return moduleId;
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/deleteModule", method = RequestMethod.GET)
+//    public Long deleteModule(@RequestParam("id") Long id, @RequestParam("moduleId") Long moduleId) {
+//
+//        try {
+//            ProjectRelease release = service.findById(id);
+//            Xmodule obj = xmoduleService.findById(moduleId);
+//            if((null != release) &&(null!= obj)){
+//                release.getModules().remove(obj);
+//                service.save(release);
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return  -1L;
+//        }
+//        return moduleId;
+//
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/queryByName", method = RequestMethod.GET)

@@ -21,7 +21,7 @@ const tailLayout = {
 
 
 
-@inject('columnsStore') @inject('tablesStore') 
+@inject('columnsStore') @inject('tablesStore') @inject('categorysStore') 
 @observer 
 export default class AddPage extends React.Component {
   formRef = React.createRef();
@@ -35,6 +35,9 @@ export default class AddPage extends React.Component {
   }
   Store=()=>{
     return this.props.columnsStore;
+  }
+  componentDidMount() {
+    this.props.categorysStore.queryAll();
   }
   onFinish = values => {
     var that = this;
@@ -90,6 +93,16 @@ export default class AddPage extends React.Component {
         < XSelect  category="fieldType"  />
         </Form.Item>
 
+        <Form.Item
+          name="choose"
+          label="字典表中进行选择"
+        >
+        <Select >       
+           {that.props.categorysStore.dataObject.list.map(function (item, i) {
+               return (<Select.Option value={item.nme}>{item.name}</Select.Option>);
+           })}
+         </Select>
+        </Form.Item>
         <Form.Item
           name="map"
           label="外关联关系"

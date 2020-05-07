@@ -150,7 +150,7 @@ class ModuleDefines {
             let responseListDtoName = table.name + "sResponse";
             let responseListDtoClass = codeTools.firstUpper(responseListDtoName);
             let fieldDefines = [];
-            fieldDefines.push({ name: "itemsCount", className: "ItemsCount", type: "Long"})
+            fieldDefines.push({ name: "itemsCount", className: "ItemsCount", type: "int"})
             fieldDefines.push({ name: 'items', className: "Items", type: "List<"+ responseDtoClass +">" })
             let responseListDto = { name: responseListDtoName,nameClassName: responseListDtoClass,className: responseListDtoClass, defines: fieldDefines};
             module.dtos.push(responseListDto);

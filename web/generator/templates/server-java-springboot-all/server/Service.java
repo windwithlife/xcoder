@@ -94,14 +94,14 @@ public class <%=data.nameClassName%>Service {
 	public <%=data.responseListDtoClassName%> transferEntity2ResponseListDto(List<<%=data.nameClassName%>> entityObjs){
 
 		<%=data.responseListDtoClassName%> responseList = new <%=data.responseListDtoClassName%>();
-        List<<%=responseDtoClassName%>> items = new ArrayList<<%=responseDtoClassName%>>();
+        List<<%=data.responseDtoClassName%>> items = new ArrayList<<%=data.responseDtoClassName%>>();
 	    for(int i=0; i< entityObjs.size(); i++){
 			<%=data.responseDtoClassName%> response = transferEntity2ResponseDto(entityObjs.get(i));
 			items.add(response);
 			
 		}
 		responseList.setItems(items);
-		responseList.setItemsCount(new Long(entityObjs.size()));
+		responseList.setItemsCount(entityObjs.size());
 		return responseList;
 		
 	}

@@ -21,7 +21,7 @@ const tailLayout = {
 
 
 
-@inject('categorysStore') 
+@inject('categoryStore') 
 @observer 
 export default class AddPage extends React.Component {
   formRef = React.createRef();

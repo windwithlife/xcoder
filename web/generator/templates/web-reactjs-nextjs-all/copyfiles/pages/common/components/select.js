@@ -2,7 +2,8 @@
  * Created by zhangyq on 2016/11/11.
  */
 import { Input,Select} from 'antd';
-import model from './models/modelCommon.js';
+//import model from '../../../models/modelCommon.js';
+import model from '../../../models/modelCommon';
 
 export default class XList extends React.Component {
     constructor(props) {

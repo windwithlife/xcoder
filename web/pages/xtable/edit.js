@@ -90,7 +90,7 @@ export default class ListPage extends React.Component {
     onFinish = values => {
         var that = this;
         let moduleId = this.props.query.moduleId;
-        values.module = moduleId;
+        values.moduleId = moduleId;
         this.props.tablesStore.update(values, () => { console.log('finished update table'); router.back(); });
     }
     componentDidMount=()=>{

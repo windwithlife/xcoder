@@ -3,7 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 import router from 'next/router';
-import '../../../asserts/styles.less'
+//import '../../../assets/styles.less'
 //import PublicLayout from './layout_public';
 import ProjectLayout from './layout_project';
 

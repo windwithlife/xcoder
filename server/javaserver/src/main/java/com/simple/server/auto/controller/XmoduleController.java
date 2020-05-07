@@ -105,11 +105,18 @@ public class XmoduleController {
  	@ResponseBody
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public Xmodule updateSave(@RequestBody Xmodule item,@PathVariable Long id) {
+        Xmodule old = service.findById(id);
+        old.setName(item.getName());
+        old.setDescription(item.getDescription());
+        try {
+            return service.save(old);
 
-     	 System.out.println("input device params:" + item.toString());
-     	 Xmodule result = service.save(item);
-     	 System.out.println("output device result data:" + result.toString());
-     	 return result;
+        }catch (Exception e){
+            System.out.println("***************failed to update item*****************");
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
 

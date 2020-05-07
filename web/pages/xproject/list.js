@@ -4,6 +4,7 @@ import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
 import Popconfirm from 'antd/lib/popconfirm';
 import {
+    Card,
     Form,
     Select,
     Input
@@ -11,86 +12,63 @@ import {
 
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-//import Layout from '../common/pages/layout';
-import '../common/styles/TableSearch.less';
+import EditTable from '../common/components/EditableTable';
 
 
-
-
-
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-};
-
-@inject('modulesStore') @inject('projectsStore') 
+@inject('projectsStore')
 @observer
-export default class ListPage extends React.Component{
-    constructor(){
+export default class ListPage extends React.Component {
+    constructor() {
         super();
-        this.startHeader();
+        //this.startHeader();
         //this.store = this.props.modulesStore;
-        
-    }
-    startHeader() {
-        var that = this;
-        var fieldColumns=[];
-        
-                fieldColumns.push({
-                  title: "项目名称",
-                  dataIndex: 'name',
-                  key: 'name'
-                });
-                
-                fieldColumns.push({
-                  title: "模块描述",
-                  dataIndex: 'description',
-                  key: 'description'
-                });
-                
-                fieldColumns.push({
-                  title: "状态",
-                  dataIndex: 'status',
-                  key: 'status'
-                });
-                
-
-
-
-
-        this.columns = [ ...fieldColumns, {
-            title: 'Action',
-            key: 'action',
-            render: (text, record, index) => (
-                <span >
-                   
-                    <span className = "ant-divider" />
-                    <Popconfirm title = "Sure to delete?" onConfirm = {that.handleLineDelete.bind(that,index, record)} >
-                        < a href = "#" > Delete </a>
-                    </Popconfirm>
-                    <span className = "ant-divider" />
-                    <a href = "#" onClick = {that.handleLineUpdate.bind(that,index, record)} > Edit </a>
-                    <span className = "ant-divider" />
-                    <a href = "#" onClick = {that.handleLineDetail.bind(that,record)} > Detail </a>
-                </span>
-            )
-        }];
 
 
     }
 
-    onFooterBack(){
+    Store = () => {
+        return this.props.projectsStore;
+    }
 
-        
-        router.back();
-        
+    StoreData = () => {
+        return this.Store().dataObject;
+    }
+
+    filterData = (list) => {
+        let result = [];
+       list.forEach(function(item){
+           if(item.status >=0){
+                result.push(item);
+           }
+       });
+
+       return result;
+    }
+    Header = () => {
+
+        var fieldColumns = [];
+
+        fieldColumns.push({
+            title: "名称",
+            dataIndex: 'name',
+            key: 'name'
+        });
+        fieldColumns.push({
+            title: "说明",
+            dataIndex: 'description',
+            key: 'description'
+        });
+
+        return fieldColumns;
+
     }
 
     componentDidMount() {
         //this.props.tablesStore.queryAll();
-        
-        this.props.projectsStore.queryAll();
+        let that = this;
+        this.props.projectsStore.queryAll(function(values){
+            //that.filterData();
+        });
     }
 
     pagination() {
@@ -101,78 +79,48 @@ export default class ListPage extends React.Component{
     }
     handleLineUpdate(index, record) {
         let that = this;
-        router.push({pathname:'/xproject/edit',query:{id:record.id}});
+        router.push({ pathname: '/xproject/edit', query: { id: record.id } });
 
     }
     handleLineDetail(record) {
         let that = this;
-        router.push({pathname:'/xproject/detail',query:{id:record.id}});
-
-
+        router.push({ pathname: '/xproject/detail', query: { id: record.id } });
     }
-   
+
     handleLineAdd() {
         let that = this;
-        router.push({pathname:'/xproject/add',query:{...that.props.query}});
+        router.push({ pathname: '/xproject/add', query: { ...that.props.query } });
     }
     handleLineDelete(index, record) {
         var that = this;
-        this.props.projectsStore.removeById(index,record.id);
-    }
-
-    handleSearchChange(e){
-        console.log("search text;" + e.target.value);
-        this.setState({searchText: e.target.value,name: e.target.value});
-    }
-    handleSearch(e) {
-        e.preventDefault();
-        console.log("begin to send search2...");
-        var that = this;
-
-        const data = {keywork: this.state.searchText};
-        console.log(JSON.stringify(data));
-        that.executeSearch(data);
-
-    }
-    executeSearch(param) {
-        var that = this;
+        this.props.projectsStore.removeById(index, record.id);
     }
     render() {
-        var that = this;
-        console.log('render xproject list');
+        let that = this;
+        let items = this.filterData(this.Store().dataObject.list);
         return (
-            < div >
             <div>
-            < Form layout="inline" onSubmit = {this.handleSearch.bind(this)} >
-                < Form.Item  >
-                    <Input type = "text" onChange={this.handleSearchChange.bind(this)} />
-                < /Form.Item>
-                < Form.Item  >
-                    < Button style = {{marginRight: '10px'}} type = "primary" htmlType = "submit" > 搜索 </Button>
-                < /Form.Item>
-                < Form.Item  >
-                    <Button onClick = {this.handleLineAdd.bind(this)} > 添加 </Button>
-                < /Form.Item>
+                <Card size="small" title="项目管理首页" style={{ width: 800 }}>
+                    <Card type="inner">
+                        <p>
+                            项目基本定义管理，有模块管理，每个模块包含表定义及接口定义，
+                            首先要先创建一个项目来管理各模块定义，针对每个项目创建应用
+                            代码框架，有了框架代码，就可以在上面进行编码，并创建自动构建的发布（CI,CD)
+                        </p>
+                        <Button type="primary" onClick={that.onGotoApplications} size="large">项目应用管理</Button>
+                        <Button type="primary" onClick={that.onGotoReleases} size="large">项目发布管理</Button>
 
-            < /Form>
-            < /div>
-< Table rowSelection = {
-                rowSelection
-            }
-            columns = {
-                this.columns
-            }
-            dataSource = {
-                this.props.projectsStore.dataObject.list.slice()
-            }
-            pagination = {
-                this.pagination()
-            }
-            bordered title = {
-                this.title
-            }
-            
-            />
+                    </Card>
+                </Card>
+
+                <EditTable title="项目列表" columns={that.Header()} data={items}
+                    onAdd={that.handleLineAdd.bind(that)}
+                    onDelete={that.handleLineDelete.bind(that)}
+                    onUpdate={that.handleLineUpdate.bind(that)}
+                    onDetail={that.handleLineDetail.bind(that)}
+                ></EditTable>
+
+
 
             </div>
         );
@@ -180,6 +128,6 @@ export default class ListPage extends React.Component{
 }
 
 
-ListPage.getInitialProps = async function(context){
-    return {query:context.query,path:context.pathname};
+ListPage.getInitialProps = async function (context) {
+    return { query: context.query, path: context.pathname };
 }

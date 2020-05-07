@@ -1,5 +1,6 @@
 import React from 'react';
 //import model from './models/model.js';
+import '../../../assets/styles.less';
 import Table from 'antd/lib/table';
 import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';

@@ -39,19 +39,6 @@ export default class AddPage extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    < Form.Item name="sideType" label="编程语言选择：">
-                        < XSelect category="sideType"  />
-                    </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language"  />
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework"  />
-                    </Form.Item>
-                    < Form.Item name="platform" label="目标操作系统">
-                        < XSelect category="os"  />
-                    </Form.Item>
-                
                     <Card type="inner">
                         <FormItem className="form-item-clear" >
                             <Button type="primary" htmlType="submit" size="large">Save</Button>

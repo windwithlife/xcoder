@@ -19,7 +19,7 @@ const layout = {
 
 
 
-@inject('dictionarysStore') 
+@inject('dictionaryStore') 
 @observer 
 export default class EditPage extends React.Component {
   formRef = React.createRef();

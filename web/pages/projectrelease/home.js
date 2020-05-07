@@ -1,9 +1,9 @@
-
 import React from 'react';
 //import model from './models/model.js';
-
+import Table from 'antd/lib/table';
 import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
+import Popconfirm from 'antd/lib/popconfirm';
 import {
     Collapse,
     Modal,
@@ -18,11 +18,13 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-//import NetworkHelper from '../common/components/models/network';
+import NetworkHelper from '../common/components/models/network';
+//import AddorEditPage from './AddorEditColumn';
 
-@inject('roomStore')
+
+@inject('releasesStore') 
 @observer
-export default class HomePage extends React.Component {
+export default class EditPage extends React.Component {
     formRef = React.createRef();
     state = {
         editMode: false,
@@ -32,10 +34,10 @@ export default class HomePage extends React.Component {
         this.projectName = "tempName";
     }
     Store = () => {
-        return this.props.roomStore;
+        return this.props.releasesStore;
     }
-    StoreData = () => {
-        return this.props.roomStore.dataObject;
+    StoreData=()=>{
+        return this.props.releasesStore.dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
@@ -49,11 +51,21 @@ export default class HomePage extends React.Component {
         var fieldColumns = [];
 
         fieldColumns.push({
-            title: "表的名称",
+            title: "名称",
             dataIndex: 'name',
             key: 'name'
         });
 
+        fieldColumns.push({
+            title: "应用类型",
+            dataIndex: 'sideType',
+            key: 'sideType'
+        });
+        fieldColumns.push({
+            title: "基于模块",
+            dataIndex: 'moduleId',
+            key: 'moduleName'
+        });
         fieldColumns.push({
             title: "说明",
             dataIndex: 'description',
@@ -63,86 +75,73 @@ export default class HomePage extends React.Component {
         return fieldColumns;
     }
 
-   
+    
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-        this.Store().queryAll(function (values) {
+        this.Store().queryAll(id, function (values) {
             console.log(values);
-            that.filterData();
-            //that.formRef.current.setFieldsValue(values);
         });
     }
-    filterData(){
 
+    generateCode = () => {
+        //console.log(type);
+        let itemData = this.Store().dataObject.currentItem;
+        itemData.projectName = this.projectName;
+        let finalParams = {};
+        finalParams.type = 'release';
+        finalParams.defines = itemData;
+
+        NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
+        console.log(finalParams);
     }
+   
+
     handleLineUpdate(index, record) {
-        let path ="/MedicalLive/room_edit";
+        
+        let path = '/projectrelease/edit';
         router.push({ pathname: path, query: { id: record.id } });
 
     }
     handleLineDetail(record) {
-        let path ="/MedicalLive/room_detail";
+        let path = '/projectrelease/detail';
         console.log(path);
         router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd() {
-        let path ="/MedicalLive/room_add";
-        router.push({ pathname:path});
+        let path = '/projectrelease/add';
+        console.log(path);
+        router.push({ pathname: path });
     }
 
     handleLineDelete(index, record) {
-        let that = this;
         let id = record.id;
-        this.Store().removeById(id,function(value){
-            console.log('removed item ID is:' + id);
+        this.Store().removeById(index, record.id, function (value) {
+           console.log('sucessful to detele one xrlease');
         });
     }
 
     render() {
-
         let that = this;
-        let itemData = that.StoreData().currentItem;
         let items = that.StoreData().list;
         console.log('render module edit page');
         return (
             < div >
-                <Card size="small" title="基本信息" style={{ width: 500 }}  >
-                        <Form >
-
-                          < Form.Item  label="Id">
-                            {itemData.id}
-                          </Form.Item>
-
-                          < Form.Item  label="Name">
-                            {itemData.name}
-                          </Form.Item>
-
-                          < Form.Item  label="Title">
-                            {itemData.title}
-                          </Form.Item>
-
-                        </Form>
+                <Card size="small" title="基本信息" style={{ width: 800 }}  >
+                 应用管理首页   
                 </Card>
-
-                <EditTable title="列表" columns={that.tableHeader()} data={items}
+                <EditTable title="当前项目所有可发布应用：" columns={that.tableHeader()} data={items}
                     onAdd={that.handleLineAdd.bind(that)}
                     onDelete={that.handleLineDelete.bind(that)}
                     onUpdate={that.handleLineUpdate.bind(that)}
                     onDetail={that.handleLineDetail.bind(that)}
                 ></EditTable>
-               
+
             </div>
         );
     }
 }
 
-HomePage.getInitialProps = async function (context) {
+EditPage.getInitialProps = async function (context) {
     return { query: context.query };
 }
-
-
-
-
-
-

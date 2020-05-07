@@ -1,6 +1,6 @@
 
 var model = require('./modelBase');
-var config = require('../../config');
+var config = require('../config/config');
 var serverPath = config['current'].SOA_GATE;
 console.log(" current env:========" + serverPath);
 

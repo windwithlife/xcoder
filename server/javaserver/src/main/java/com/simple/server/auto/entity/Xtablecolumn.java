@@ -55,7 +55,8 @@ public class Xtablecolumn implements Serializable {
         
     //关联表
     private String referModule;
-       
+
+    private String choose;
 
     private Long map;
         
@@ -80,6 +81,14 @@ public class Xtablecolumn implements Serializable {
      public void setName(String name){
          this.name = name;
      }
+
+    //列名称
+    public String getChoose(){
+        return this.choose;
+    };
+    public void setChoose(String chooseType){
+        this.choose = chooseType;
+    }
      
      //表说明
      public String getDescription(){

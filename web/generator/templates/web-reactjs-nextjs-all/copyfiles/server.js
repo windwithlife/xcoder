@@ -1,7 +1,7 @@
 const express = require('express')
 const next = require('next')
 ///const generator = require('./generator')
-const port = parseInt(process.env.PORT, 10) || 8088
+const port = parseInt(process.env.PORT, 10) || 8080
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
@@ -19,6 +19,10 @@ app.prepare()
     // server.get('/a', (req, res) => {
     //   return app.render(req, res, '/b', req.query)
     // })
+    server.use(function(req, res, next) {
+      req.url = req.originalUrl.replace('MedicalLive/_next', '_next');
+      next(); // be sure to let the next middleware handle the modified request. 
+   });
 
     server.get('/test', (req, res) => {
         console.log(req.body);

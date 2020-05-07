@@ -14,7 +14,7 @@ import {
 
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-import '../../../asserts/styles.less'
+//import '../../../assets/styles.less'
 
 @inject("menuStore")
 @observer

@@ -1,8 +1,8 @@
 
 
-var envhelper = require('./envhelper');
-var codeTools = require('./code_tools');
-var config = require('../../../config');
+//var envhelper = require('./envhelper');
+//var codeTools = require('./code_tools');
+var config = require('../config');
 var axios = require('axios');
 
 var getRequest = function (path, params) {

@@ -1,6 +1,6 @@
 import App, {Container} from 'next/app'
 import React from 'react'
-import { initializeStore } from './stores/index'
+import { initializeStore } from '../models/index';
 import { Provider } from 'mobx-react'
 import Layout from './common/pages/layout.js'
 

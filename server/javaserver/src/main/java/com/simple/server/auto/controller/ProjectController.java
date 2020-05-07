@@ -27,8 +27,8 @@ public class ProjectController {
 	@Autowired
 	ProjectService service;
 
-	@Autowired
-    ProjectQueryDao queryDao;
+//	@Autowired
+////    ProjectQueryDao queryDao;
 
     
 
@@ -57,14 +57,14 @@ public class ProjectController {
 
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<Project> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<Project> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -83,13 +83,8 @@ public class ProjectController {
     public Project updateSave(@RequestBody Project item,@PathVariable Long id) {
 		Project old = service.findById(id);
 		old.setName(item.getName());
-		old.setWebLanguage(item.getWebLanguage());
-		old.setWebFramework(item.getWebFramework());
 		old.setWebsite(item.getWebsite());
-
-		old.setServerFramework(item.getServerFramework());
-		old.setServerLanguage(item.getServerLanguage());
-		old.setServerPlatform(item.getServerPlatform());
+		old.setSoaIp(item.getSoaIp());
 		System.out.println("input update params Id:" + String.valueOf(id));
 		Project result = null;
      	 try {
@@ -97,9 +92,9 @@ public class ProjectController {
 		 }catch (Exception e){
      	 	System.out.println("***************failed to update item*****************");
      	 	e.printStackTrace();
-		 }finally {
-			 return result;
 		 }
+
+		return result;
 
     }
 
@@ -114,7 +109,10 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     public Long removeById(@PathVariable Long id) {
-    	service.remove(id);
+		Project old = service.findById(id);
+		old.setStatus(-1L);
+		service.save(old);
+    	//service.remove(id);
     	return id;
     }
 

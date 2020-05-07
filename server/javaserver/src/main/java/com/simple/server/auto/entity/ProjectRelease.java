@@ -36,7 +36,9 @@ public class ProjectRelease implements Serializable {
     private String description;
 
     private Long projectId;
-
+    private Long moduleId;
+    private String applicationName;
+    private String path;
     private String sideType;
     private String language;
     private String framework;
@@ -46,10 +48,10 @@ public class ProjectRelease implements Serializable {
     @JoinColumn(name="releaseId")
     private List<Xpage> pages;
 
-    @ManyToMany
-    @JoinTable(name = "release_module",joinColumns = @JoinColumn(name = "releaseId"),
-            inverseJoinColumns = @JoinColumn(name = "moduleId"))
-    private List<Xmodule> modules;
+//    @ManyToMany
+//    @JoinTable(name = "release_module",joinColumns = @JoinColumn(name = "releaseId"),
+//            inverseJoinColumns = @JoinColumn(name = "moduleId"))
+//    private List<Xmodule> modules;
 
     public ProjectRelease() {
     }
@@ -62,6 +64,12 @@ public class ProjectRelease implements Serializable {
         this.id = id;
     }
 
+    public Long getModuleId(){
+        return this.moduleId;
+    };
+    public void setModuleId(Long id){
+        this.moduleId = id;
+    }
 
     public List<Xpage> getPages(){
         return this.pages;
@@ -70,13 +78,19 @@ public class ProjectRelease implements Serializable {
         this.pages = pages;
     }
 
-    public List<Xmodule> getModules(){
-        return this.modules;
-    };
-    public void setModules(List<Xmodule> modules){
-        this.modules = modules;
-    }
+//    public List<Xmodule> getModules(){
+//        return this.modules;
+//    };
+//    public void setModules(List<Xmodule> modules){
+//        this.modules = modules;
+//    }
 
+    public String getPath(){
+        return this.path;
+    };
+    public void setPath(String path){
+        this.path = path;
+    }
     //编号
     public String getLanguage(){
         return this.language;
@@ -120,6 +134,13 @@ public class ProjectRelease implements Serializable {
         this.name = name;
     }
 
+    //名称
+    public String getApplicationName(){
+        return this.applicationName;
+    };
+    public void setApplicationName(String name){
+        this.applicationName = name;
+    }
     //说明
     public String getDescription(){
         return this.description;

@@ -17,6 +17,7 @@ const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
+import EditTable from '../common/components/EditableTable';
 
 
 const rowSelection = {
@@ -33,10 +34,10 @@ export default class EditPage extends React.Component {
     constructor() {
         super();
         //var that = this;
-        this.startHeader();
+        //this.startHeader();
 
     }
-    startHeader() {
+    tableHeader() {
         var that = this;
 
         var fieldColumns = [];
@@ -52,41 +53,32 @@ export default class EditPage extends React.Component {
             dataIndex: 'description',
             key: 'description'
         });
+        
+        return fieldColumns;
+    }
+
+    buildPageColumns() {
+        let fieldColumns = [];
+
         fieldColumns.push({
-            title: "当前状态",
-            dataIndex: 'status',
-            key: 'status'
+            title: "模块名称",
+            dataIndex: 'name',
+            key: 'name'
+        });
+        fieldColumns.push({
+            title: "说明",
+            dataIndex: 'description',
+            key: 'description'
         });
 
-
-        this.columns = [...fieldColumns, {
-            title: 'Action',
-            key: 'action',
-            render: (text, record, index) => (
-                <span  >
-
-                    <span className="ant-divider" />
-                    <Popconfirm title="Sure to delete?" onConfirm={that.handleLineDelete.bind(that, index, record)} >
-                        < a href="#" > Delete </a>
-                    </Popconfirm>
-                    <span className="ant-divider" />
-                    <a href="#" onClick={that.handleLineUpdate.bind(that, index, record)} > Edit </a>
-                    <span className="ant-divider" />
-                    <a href="#" onClick={that.handleLineDetail.bind(that, record)} > Detail </a>
-                </span>
-            )
-        }];
-
+        return fieldColumns;
 
     }
-
-    onFooterBack() {
-        router.back();
-    }
+   
     componentDidMount() {
         let that = this;
         console.log('DidMount');
-        let id = this.props.query.moduleId;
+        let id = this.props.query.id;
         console.log("edit id:=" + id);
         this.props.tablesStore.queryByModuleId(id);
         this.props.modulesStore.queryById(id, function (values) {
@@ -95,49 +87,67 @@ export default class EditPage extends React.Component {
         });
     }
 
-    pagination() {
-        return {
-            //total: this.props.tablesStore.dataLength,
-            showSizeChanger: true
-        }
-    }
+   
     onFinish = values => {
         var that = this;
         let projectId = this.props.query.projectId;
         values.project = projectId;
         this.props.modulesStore.add(values, () => { console.log('finished add row'); router.back(); });
     }
-    handleLineDetail(record) {
-        //router.push({ pathname: '/xtable/detail', query: { ...that.props.query, pxtableId: record.id } });
-    }
-    handleLineUpdate(index, record) {
+    handleLineUpdate(type,index, record) {
         let that = this;
-        router.push({ pathname: '/xtable/edit', query: { tableId: record.id } });
+        let path= '/'+ type+'/edit';
+        router.push({ pathname: path, query: { id: record.id ,moduleId:this.props.query.moduleId} });
 
     }
-    handleLineDetail(record) {
-        router.push({ pathname: '/xtable/detail', query: { tableId: record.id } });
+    handleLineDetail(type,record) {
+        let path= '/'+ type+'/detail';
+        console.log(path);
+        router.push({ pathname: path, query: { id: record.id } });
     }
-    handleLineAdd() {
-        let moduleId = this.props.query.moduleId;
-        router.push({ pathname: '/xtable/add', query: { moduleId: moduleId } });
+    handleLineAdd(type) {
+        let moduleId = this.props.query.id;
+        let path= '/'+ type+'/add';
+        router.push({ pathname: path, query: { moduleId: moduleId } });
 
     }
 
-    handleLineDelete(index, record) {
+    handleLineDelete(type,index, record) {
         console.log(record.id);
-        this.props.tablesStore.removeById(record.id, index);
+        let that = this;
+        let moduleId = this.props.query.moduleId;
+        if('xtable'==type){
+            //console.log('inde')
+            this.props.tablesStore.removeById(index, record.id,function(value){
+                that.props.modulesStore.queryById(moduleId);
+            });
+        }
+
+        if('xinterface'==type){
+            //console.log('inde')
+            this.props.interfacesStore.removeById(index, record.id,function(value){
+                that.props.modulesStore.queryById(moduleId);
+            });
+        }
+        if('xpage'==type){
+            //console.log('inde')
+            this.props.pagesStore.removeById(index, record.id,function(value){
+                that.props.modulesStore.queryById(moduleId);
+            });
+        }
+        
     }
 
 
     render() {
         let that = this;
         let itemData = that.props.modulesStore.dataObject.currentItem;
+     
         console.log('render module edit page');
         return (
             < div >
                 <div>
-                    <Card size="small" title="模块基本信息" style={{ width: 500 }}  >
+                    <Card size="small" title="模块基本信息" style={{ width: 800 }}  >
 
                         <Form ref={this.formRef} onFinish={that.onFinish.bind(that)}>
                             <Form.Item
@@ -167,29 +177,19 @@ export default class EditPage extends React.Component {
                         </Form>
                     </Card>
                 </div>
-                <Collapse >
-                    <Panel header="此模块中的所有表" key="1" extra={<SettingOutlined ></SettingOutlined>}>
-                        < Form.Item  >
-                            <Button type="primary" onClick={this.handleLineAdd.bind(this)} > 添加 </Button>
-                        </Form.Item>
-                        < Table rowSelection={
-                            rowSelection
-                        }
-                            columns={
-                                this.columns
-                            }
-                            dataSource={
-                                //that.props.tablesStore.items.slice()
-                                that.props.tablesStore.dataObject.list.slice()
-                            }
-                            pagination={
-                                this.pagination()
-                            }
-
-
-                        />
-                    </Panel>
-                </Collapse>
+                <EditTable title="此模块中的所有表" columns={that.tableHeader()} data={itemData.tables} 
+                onAdd={that.handleLineAdd.bind(that,'xtable')} 
+                onDelete={that.handleLineDelete.bind(that,'xtable')}
+                onUpdate={that.handleLineUpdate.bind(that,'xtable')}
+                onDetail={that.handleLineDetail.bind(that,'xtable')}
+                ></EditTable>
+                
+                <EditTable title="接口：" columns={that.buildPageColumns()} data={itemData.interfaces} 
+                onAdd={that.handleLineAdd.bind(that,'xinterface')} 
+                onDelete={that.handleLineDelete.bind(that,'xinterface')}
+                onDetail={that.handleLineDetail.bind(that,'xinterface')}
+                onUpdate={that.handleLineUpdate.bind(that,'xinterface')}
+                ></EditTable>
             </div>
         );
     }

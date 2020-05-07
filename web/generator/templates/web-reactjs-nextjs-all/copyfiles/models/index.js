@@ -1,8 +1,10 @@
 import { useStaticRendering } from 'mobx-react';
 //import Store from './Store';
-import AuthStore from "../public/models/AuthStore";
-import MenuStore from "../public/models/MenuStore";
-import RoomStore from "../MedicalLive/models/RoomStore";
+import AuthStore from "./AuthStore";
+import MenuStore from "./MenuStore";
+import DictionaryStore from "../pages/public/dictionary/models/DictionaryStore";
+import CategoryStore from "../pages/public/category/models/CategoryStore";
+//import RoomStore from "../pages/MedicalLive/models/RoomStore";
 
 
 const isServer = typeof window === 'undefined'
@@ -10,9 +12,11 @@ useStaticRendering(isServer)
 
 let stores = {
     //network:new Store(),
+    categoryStore: new CategoryStore(),
+    dictionaryStore: new DictionaryStore(),
     authStore:new AuthStore(),
     menuStore: new MenuStore(),
-    roomStore: new RoomStore(),
+    //roomStore: new RoomStore(),
 }   
 
 

@@ -52,6 +52,15 @@ function generateDTO(moduleName,defineData){
     codeTools.generateCode(templateFilename,params,targetFileName);
 };
 
+function generatePOMFile(moduleName,defineData){
+    let templateFilename =   pathConfig.templateServer() + "/pom.xml"; 
+    let targetFileName = pathConfig.targetApplicationRoot()  + "/pom.xml";
+    var params = paramsHelper.buildParamsByServiceInterfaces(moduleName,defineData);
+    codeTools.generateCode(templateFilename,params,targetFileName);
+
+};
+
+
 function generateClientAPI(moduleName,defineData){
     let templateFilename =   pathConfig.templateServer() + "/ServiceClient.java";
     let targetFileName = pathConfig.targetServer(moduleName,'client') + codeTools.firstUpper(defineData.name) + "Client.java";
@@ -103,12 +112,15 @@ function generateModuleByName(moduleDefine){
         //generateStore(moduleDefine.name,domainItem);
     });
 
+    generatePOMFile(moduleDefine.name,moduleDefine);
     //创建MicroService 的接口项目
     let srcRootPath =  "/" + projectConfig.name + "-api" + "/src/main/java/";
     pathConfig.switchSourceRootPath(srcRootPath);
     moduleDefine.dtos.forEach(function(item){
         generateDTO(moduleDefine.name,item);
     });
+
+   
 
     generateClientAPI(moduleDefine.name,moduleDefine);
 
@@ -120,7 +132,7 @@ function generateFramework(release){
     if (!pathConfig.targetMicroServicesIsReady()){
         xtools.copyDirEx(pathConfig.templateMicroServicesCopyFiles(),pathConfig.targetMicroServicesCopyFiles());
     }
-    let microServiceName = release.name+ "-service";
+    let microServiceName = release.name+ "-svc";
     let microServiceAPIName = release.name+ "-api";
     xtools.copyDirEx(pathConfig.templateCopyFiles("microserver"),pathConfig.targetCopyFiles(microServiceName));
     xtools.copyDirEx(pathConfig.templateCopyFiles("microserver-api"),pathConfig.targetCopyFiles(microServiceAPIName));
@@ -129,7 +141,7 @@ function generateFramework(release){
 
 
 function initPathEnv(proConfig){
-    let srcRootPath =  "/" + proConfig.name + "-service" + "/src/main/java/";
+    let srcRootPath =  "/" + proConfig.name + "-svc" + "/src/main/java/";
     pathConfig.initWithRootPath(srcRootPath,proConfig);
     paramsHelper.initParamsFromProject(proConfig);
     projectConfig = proConfig;

@@ -21,12 +21,23 @@ export default class AddPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.hasModuleInfo = false;
     }
     componentDidMount() {
-
+        let that = this;
         console.log('DidMount');
         let projectId = this.props.query.projectId;
-        this.props.modulesStore.queryByProjectId(projectId);
+        let moduleId = this.props.query.moduleId;
+        if (moduleId){
+            this.hasModuleInfo = true;
+            this.props.modulesStore.queryById(moduleId,function(values){
+                that.formRef.current.setFieldsValue({ moduleId: moduleId, name: values.name,selectModule:values.name,path:"/"+values.name });
+            });
+        }else{
+            this.props.modulesStore.queryByProjectId(projectId);
+        }
+       
+        
     }
 
     onFinish = values => {
@@ -65,7 +76,7 @@ export default class AddPage extends React.Component {
                         noStyle='true'
                     ></Form.Item>
                     < Form.Item name="selectModule" label="关联模块">
-                        <Select onChange={that.onChangeModule}>
+                       <Select onChange={that.onChangeModule}>
                             {that.props.modulesStore.dataObject.list.map(function (item, i) {
                                 return (<Select.Option value={i}>{item.name}</Select.Option>);
                             })}

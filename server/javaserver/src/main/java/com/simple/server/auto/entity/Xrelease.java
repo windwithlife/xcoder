@@ -27,10 +27,13 @@ public class Xrelease implements Serializable {
     private String framework;
     private String platform;
 
+    private String path;
     private String repository;
     private String repositoryBranch;
+    private String targetPath;
     private String releaseStatus;
     private String releaseVersion;
+    private String applicationName;
 
     public Xrelease() {
     }
@@ -43,15 +46,12 @@ public class Xrelease implements Serializable {
         this.id = id;
     }
 
-    //代码仓库
-    public String getReleaseVersion(){
-        return this.releaseVersion;
+    public String getPath(){
+        return this.path;
     };
-    public void setReleaseVersion(String ver){
-        this.releaseVersion= ver;
+    public void setPath(String path){
+        this.path = path;
     }
-
-
     //代码仓库
     public String getRepository(){
         return this.repository;
@@ -60,7 +60,12 @@ public class Xrelease implements Serializable {
         this.repository= repo;
     }
 
-
+    public String getTargetPath(){
+        return this.targetPath;
+    };
+    public void setTargetPath(String path){
+        this.targetPath = path;
+    }
     //代码仓库
     public String getRepositoryBranch(){
         return this.repositoryBranch;
@@ -76,6 +81,14 @@ public class Xrelease implements Serializable {
     };
     public void setReleaseStatus(String status){
         this.releaseStatus= status;
+    }
+
+    //发布状态
+    public String getReleaseVersion(){
+        return this.releaseVersion;
+    };
+    public void setReleaseVersion(String version){
+        this.releaseVersion= version;
     }
 
     //编程语言
@@ -121,6 +134,13 @@ public class Xrelease implements Serializable {
         this.name = name;
     }
 
+    //名称
+    public String getApplicationName(){
+        return this.applicationName;
+    };
+    public void setApplicationName(String name){
+        this.applicationName = name;
+    }
     //说明
     public String getDescription(){
         return this.description;

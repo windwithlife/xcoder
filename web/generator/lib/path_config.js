@@ -45,6 +45,8 @@ let TargetRoot = '../files/';
         this.srcRoot = srcRoot;
         this.currentRootPath = process.cwd();
         this.projectConfig = projectConfig;
+        this.applicationName = projectConfig.name;
+        this.sideType = projectConfig.sideType;
         console.log(this.projectConfig);
     }
     javaPackageToPath(packageName){
@@ -94,6 +96,21 @@ let TargetRoot = '../files/';
     targetRoot(){
         //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
         let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType);
+        checkPath(pathName);
+        return pathName;
+    }
+    targetApplicationRoot(){
+        //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
+        let appName  =this.applicationName;
+        if (this.sideType =='server'){
+            appName = this.applicationName + "-svc";
+        }else if("web"==this.sideType){
+            appName = this.applicationName;
+        }else{
+            appName  ="/";
+        }
+
+        let pathName  = path.join(this. targetRoot(),appName);
         checkPath(pathName);
         return pathName;
     }

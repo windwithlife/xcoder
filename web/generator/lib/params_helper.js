@@ -62,7 +62,7 @@ var codeTools = require('./code_tools');
             // Field Type
             //let fieldType = col.fieldType;
             let fieldColumnType = col.fieldType;
-            if (col.fieldType == 'int'){col.fieldColumnType = 'Long'};
+            //if (col.fieldType == 'int'){col.fieldColumnType = 'Long'};
             if (col.fieldType == 'Text'){col.fieldColumnType = 'String'};
         });
         return params;
@@ -71,6 +71,8 @@ var codeTools = require('./code_tools');
     buildParamsForServerTable(moduleName,tableDefine){
 
         let params = this.buildGenericParams(moduleName,tableDefine.name);
+        params.serviceName = moduleName + "-svc";
+        params.serviceAPIName = moduleName + "-api";
         params.tableName = tableDefine.name;
         params.requestPath = moduleName + "/" + tableDefine.name;
         params.tableClassName = codeTools.firstUpper(tableDefine.name);
@@ -87,7 +89,7 @@ var codeTools = require('./code_tools');
             // Field Type
             //let fieldType = col.fieldType;
             col.fieldTypeClassName = col.fieldColumnType = col.fieldType;
-            if (col.fieldType == 'int'){col.fieldTypeClassName = 'Long'};
+            //if (col.fieldType == 'int'){col.fieldTypeClassName = 'Long'};
             if (col.fieldType == 'Text'){col.fieldTypeClassName = 'String'};
         });
         return params;
@@ -125,6 +127,8 @@ var codeTools = require('./code_tools');
 
     buildParamsByServiceInterfaces(moduleName,defineData){
         let params = this.buildGenericParams(moduleName,defineData.name);
+        params.serviceName = moduleName + "-svc";
+        params.serviceAPIName = moduleName + "-api";
         params.define = defineData;
         params.clientPath = "/v1/" + defineData.name;
         params.clientServiceEndPoint = "/" + defineData.endPoint;
@@ -158,7 +162,7 @@ var codeTools = require('./code_tools');
         params.fields.forEach(function(col){
            
             col.fieldTypeClassName =col.fieldType = col.type;
-            if (col.type == 'int'){col.fieldTypeClassName = 'Long'};
+            //if (col.type == 'int'){col.fieldTypeClassName = 'Long'};
             if (col.type == 'Text'){col.fieldTypeClassName = 'String'};
             col.nameClassName = codeTools.firstUpper(col.name);
         });

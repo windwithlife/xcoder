@@ -34,9 +34,9 @@ public class Project implements Serializable {
        
     //说明
     private String description;
-       
 
-    private Long channel;
+    private Long status;
+//    private Long channel;
         
     //站点
     private String website;
@@ -44,18 +44,18 @@ public class Project implements Serializable {
     //SOA地址
     private String soaIp;
 
-    //SOA地址
-    private String frontendLanguage;
-    private String frontendFramework;
-    private String frontendPlatform;
-
-    private String serverLanguage;
-    private String serverFramework;
-    private String serverPlatform;
-
-    private String  webLanguage;
-    private String webFramework;
-    private String webPlatform;
+//    //SOA地址
+//    private String frontendLanguage;
+//    private String frontendFramework;
+//    private String frontendPlatform;
+//
+//    private String serverLanguage;
+//    private String serverFramework;
+//    private String serverPlatform;
+//
+//    private String  webLanguage;
+//    private String webFramework;
+//    private String webPlatform;
 
     @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="projectId")
@@ -112,71 +112,78 @@ public class Project implements Serializable {
          this.id = id;
      }
 
-    //编号
-    public String getFrontendLanguage(){
-        return this.frontendLanguage;
+    public Long getStatus(){
+        return this.status;
     };
-    public void setFrontendLanguage(String id){
-        this.frontendLanguage = id;
+    public void setStatus(Long status){
+        this.status = status;
     }
+//
+//    //编号
+//    public String getFrontendLanguage(){
+//        return this.frontendLanguage;
+//    };
+//    public void setFrontendLanguage(String id){
+//        this.frontendLanguage = id;
+//    }
+//
+//    //编号
+//    public String getFrontendFramework(){
+//        return this.frontendFramework;
+//    };
+//    public void setFrontendFramework(String id){
+//        this.frontendFramework = id;
+//    }
+//
+//    //编号
+//    public String getFrontendPlatform(){
+//        return this.frontendPlatform;
+//    };
+//    public void setFrontendPlatform(String id){
+//        this.frontendPlatform = id;
+//    }
 
-    //编号
-    public String getFrontendFramework(){
-        return this.frontendFramework;
-    };
-    public void setFrontendFramework(String id){
-        this.frontendFramework = id;
-    }
-
-    //编号
-    public String getFrontendPlatform(){
-        return this.frontendPlatform;
-    };
-    public void setFrontendPlatform(String id){
-        this.frontendPlatform = id;
-    }
-
-    //后端编程语言
-    public String getServerLanguage(){
-        return this.serverLanguage;
-    };
-    public void setServerLanguage(String id){
-        this.serverLanguage = id;
-    }
-
-
-    //后端编程框架
-    public String getServerFramework(){
-        return this.serverFramework;
-    };
-    public void setServerFramework(String id){
-        this.serverFramework = id;
-    }
-
-    //后端编程框架
-    public String getServerPlatform(){
-        return this.serverFramework;
-    };
-    public void setServerPlatform(String name){
-        this.serverFramework = name;
-    }
-
-    //Web站点编程语言
-    public String getWebLanguage(){
-        return this.webLanguage;
-    };
-    public void setWebLanguage(String id){
-        this.webLanguage = id;
-    }
-
-
-    //Web编程框架
-    public String getWebFramework(){
-        return this.webFramework;
-    };
-    public void setWebFramework(String id){
-        this.webFramework = id;
-    }
+//    //后端编程语言
+//    public String getServerLanguage(){
+//        return this.serverLanguage;
+//    };
+//    public void setServerLanguage(String id){
+//        this.serverLanguage = id;
+//    }
+//
+//
+//    //后端编程框架
+//    public String getServerFramework(){
+//        return this.serverFramework;
+//    };
+//    public void setServerFramework(String id){
+//        this.serverFramework = id;
+//    }
+//
+//    //后端编程框架
+//    public String getServerPlatform(){
+//        return this.serverFramework;
+//    };
+//    public void setServerPlatform(String name){
+//        this.serverFramework = name;
+//    }
+//
+//    //Web站点编程语言
+//    public String getWebLanguage(){
+//        return this.webLanguage;
+//    };
+//    public void setWebLanguage(String id){
+//        this.webLanguage = id;
+//    }
+//
+//
+//    //Web编程框架
+//    public String getWebFramework(){
+//        return this.webFramework;
+//    };
+//    public void setWebFramework(String id){
+//        this.webFramework = id;
+//    }
 
 
     //名称
@@ -195,15 +202,15 @@ public class Project implements Serializable {
          this.description = description;
      }
      
-
-
-    public Long getChannel(){
-         return this.channel;
-    };
-    public void setChannel(Long channel){
-         this.channel = channel;
-    }
-
+//
+//
+//    public Long getChannel(){
+//         return this.channel;
+//    };
+//    public void setChannel(Long channel){
+//         this.channel = channel;
+//    }
+//
 
           
      //站点

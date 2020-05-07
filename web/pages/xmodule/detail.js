@@ -26,7 +26,7 @@ const rowSelection = {
 
 
 
-@inject('modulesStore') @inject('tablesStore') @inject('pagesStore') @inject('interfacesStore')
+@inject('modulesStore') @inject('tablesStore') @inject('interfacesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -35,9 +35,15 @@ export default class EditPage extends React.Component {
     }
     constructor() {
         super();
-       
-        //this.startHeader();
 
+    }
+
+    Store=()=>{
+        return this.props.modulesStore;
+    }
+
+    StoreData=()=>{
+        return this.Store().dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
@@ -94,17 +100,17 @@ export default class EditPage extends React.Component {
         });
     }
 
-    pagination() {
-        return {
-            //total: this.props.tablesStore.dataLength,
-            showSizeChanger: true
-        }
+    createApplicationByModule=()=>{
+        let moduleId = this.props.query.id;
+        let pId = this.StoreData().currentItem.projectId;
+        router.push({ pathname: "/projectrelease/add", query: { moduleId: moduleId ,projectId:pId}});
     }
 
     handleLineUpdate(type,index, record) {
         let that = this;
+        let moduleId = this.props.query.id;
         let path= '/'+ type+'/edit';
-        router.push({ pathname: path, query: { id: record.id ,moduleId:this.props.query.moduleId} });
+        router.push({ pathname: path, query: { id: record.id ,moduleId:moduleId} });
 
     }
     handleLineDetail(type,record) {
@@ -153,7 +159,7 @@ export default class EditPage extends React.Component {
     }
     render() {
         let that = this;
-        let editUrl = "/xmodule/edit?moduleId=" + this.props.query.moduleId;
+        let editUrl = "/xmodule/edit?id=" + this.props.query.id;
         let itemData = that.props.modulesStore.dataObject.currentItem;
         
         console.log('render module edit page');
@@ -164,27 +170,19 @@ export default class EditPage extends React.Component {
                         < Form.Item name="name" label="模块名：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="sideType" label="项目端点类型：">
-                            {itemData.sideType}
-                        </Form.Item>
                         < Form.Item name="description" label="描述信息：">
                             {itemData.description}
-                        </Form.Item>
-                        < Form.Item name="language" label="编程语言：">
-                            {itemData.language}
-                        </Form.Item>
-                        < Form.Item name="framework" label="框架：">
-                            {itemData.framework}
-                        </Form.Item>
-                        < Form.Item name="platform" label="操作系统平台：">
-                            {itemData.platform}
                         </Form.Item>
                         < Form.Item name="projectId" label="所属项目：">
                             {itemData.projectId}
                         </Form.Item>
-                       
 
                     </Form>
+                    <Card type="inner"> 
+                             <Form.Item>
+                             <Button type="primary" onClick={that.createApplicationByModule} size="large">创建基于当前模块的新应用</Button>
+                            </Form.Item>
+                    </Card>
                 </Card>
 
 
