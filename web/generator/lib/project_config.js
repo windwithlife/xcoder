@@ -4,7 +4,7 @@ var fs   = require('fs');
 
  class ProjectConfig {
     
-    ProjectConfig(){
+    constructor(){
         this.basePackage="com.simple.bz.auto";
         this.apiServer ="127.0.0.1:8080";
         this.sideType ='web';

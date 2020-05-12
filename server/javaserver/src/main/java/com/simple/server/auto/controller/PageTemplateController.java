@@ -21,8 +21,8 @@ public class PageTemplateController {
 	@Autowired
     PageTemplateService service;
 
-	@Autowired
-    PageTemplateQueryDao queryDao;
+//	@Autowired
+//    PageTemplateQueryDao queryDao;
 
     
     @Autowired
@@ -68,14 +68,14 @@ public class PageTemplateController {
 
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<PageTemplate> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<PageTemplate> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

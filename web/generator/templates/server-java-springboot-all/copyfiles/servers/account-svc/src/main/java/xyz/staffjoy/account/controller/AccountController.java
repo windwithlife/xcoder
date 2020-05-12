@@ -1,5 +1,6 @@
 package xyz.staffjoy.account.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,17 +8,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.staffjoy.account.dto.*;
+import xyz.staffjoy.account.props.AppProps;
 import xyz.staffjoy.account.service.AccountService;
 import xyz.staffjoy.common.api.BaseResponse;
-import xyz.staffjoy.common.auth.AuthConstant;
-import xyz.staffjoy.common.auth.AuthContext;
-import xyz.staffjoy.common.auth.Authorize;
-import xyz.staffjoy.common.auth.PermissionDeniedException;
+import xyz.staffjoy.common.auth.*;
+import xyz.staffjoy.common.crypto.Sign;
 import xyz.staffjoy.common.env.EnvConfig;
 import xyz.staffjoy.common.env.EnvConstant;
 import xyz.staffjoy.common.error.ServiceException;
 import xyz.staffjoy.common.validation.PhoneNumber;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -34,6 +36,11 @@ public class AccountController {
 
     @Autowired
     private EnvConfig envConfig;
+
+    @Autowired
+    private AppProps appProps;
+//    @Autowired
+//    private HelperService helperService;
 
     // GetOrCreate is for internal use by other APIs to match a user based on their phonenumber or email.
     @PostMapping(path = "/get_or_create")
@@ -218,6 +225,76 @@ public class AccountController {
         return baseResponse;
     }
 
+
+    @RequestMapping(value = "/login")
+    public BaseResponse login(@RequestParam(value="return_to", required = false) String returnTo, // POST and GET are in the same handler - reset
+                        @RequestParam(value="email", required = false) String email,
+                        @RequestParam(value="password", required = false) String password,
+                        // rememberMe=True means that the session is set for a month instead of a day
+                        @RequestParam(value="remember-me", required = false) String rememberMe,
+                        HttpServletRequest request,
+                        HttpServletResponse response) {
+
+
+            AccountDto account = null;
+            GenericAccountResponse genericAccountResponse = null;
+            try {
+                VerifyPasswordRequest verifyPasswordRequest = VerifyPasswordRequest.builder()
+                        .email(email)
+                        .password(password)
+                        .build();
+                genericAccountResponse = this.verifyPassword(verifyPasswordRequest);
+            } catch (Exception ex) {
+                //helperService.logException(logger, ex, "fail to verify user password");
+            }
+            if (genericAccountResponse != null) {
+                if (!genericAccountResponse.isSuccess()) {
+                    //helperService.logError(logger, genericAccountResponse.getMessage());
+                } else {
+                    account = genericAccountResponse.getAccount();
+                }
+            }
+
+            if (account != null) { // login success
+                // set cookie
+                Sessions.loginUser(account.getId(),
+                        account.isSupport(),
+                        !StringUtils.isEmpty(rememberMe),
+                        appProps.getSigningSecret(),
+                        envConfig.getExternalApex(),
+                        response);
+            }
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("login success");
+
+        return baseResponse;
+    }
+
+    @GetMapping(path = "/verifyJWTToken")
+    public BaseResponse verifyJWTToken(@RequestHeader("Authorization") String tokenString,
+            //@RequestParam(value="") String tokenString,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response){
+        //String token = Sessions.getToken(request);
+        //if (token == null) return null;
+        String userId = "";
+        try {
+            DecodedJWT decodedJWT = Sign.verifySessionToken(tokenString, appProps.getSigningSecret());
+            userId = decodedJWT.getClaim(Sign.CLAIM_USER_ID).asString();
+            //boolean support = decodedJWT.getClaim(Sign.CLAIM_SUPPORT).asBoolean();
+
+        } catch (Exception e) {
+            //log.error("fail to verify token");
+            System.out.println("fail to verify token");
+            e.printStackTrace();
+            return null;
+        }
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("login success" + userId);
+        return baseResponse;
+    }
     private void validateAuthenticatedUser(String userId) {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             String currentUserId = AuthContext.getUserId();
@@ -238,4 +315,9 @@ public class AccountController {
             }
         }
     }
+
+
+
+
+
 }

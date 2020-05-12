@@ -28,13 +28,15 @@ public class XtablecolumnService {
     	}
 
 	public Xtablecolumn findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
+		//return dao.findOne(id);
 	}
 	public Xtablecolumn save(Xtablecolumn item){
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
+		//this.dao.delete(id);
 	}
 
 

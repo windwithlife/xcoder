@@ -5,6 +5,7 @@ var codeTools = require('../code_tools');
 var xtools = require('../xtools');
 var PathConfig = require('../path_config');
 var ParamsHelper = require('../params_helper');
+var archiver = require('../archiver');
 pathConfig = new PathConfig();
 paramsHelper = new ParamsHelper();
 
@@ -74,6 +75,9 @@ function generateModuleByName(moduleDefine){
     moduleDefine.pages.forEach(function(pageItem){
         generatePage(moduleDefine.name,pageItem);
     });
+
+    archiver.compress(pathConfig.targetRoot()+ "/**", "test.zip");
+    
 }
 
 

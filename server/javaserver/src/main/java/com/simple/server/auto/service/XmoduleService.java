@@ -28,7 +28,7 @@ public class XmoduleService {
     	}
 
 	public Xmodule findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 
 	public List<Xmodule> findByProjectId(Long id){
@@ -38,7 +38,7 @@ public class XmoduleService {
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 
 

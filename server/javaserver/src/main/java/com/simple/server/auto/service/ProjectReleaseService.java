@@ -27,13 +27,13 @@ public class ProjectReleaseService {
     	}
 
 	public ProjectRelease findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 	public ProjectRelease save(ProjectRelease item){
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 
 //    public  List<ProjectRelease> findByReleaseId(Long id){

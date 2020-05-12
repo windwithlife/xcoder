@@ -28,13 +28,13 @@ public class ProjectService {
     	}
 
 	public Project findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 	public Project save(Project item){
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 
 

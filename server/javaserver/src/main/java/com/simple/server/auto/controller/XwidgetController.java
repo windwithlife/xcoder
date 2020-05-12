@@ -21,8 +21,8 @@ public class XwidgetController {
 	@Autowired
     XwidgetService service;
 
-	@Autowired
-    XwidgetQueryDao queryDao;
+//	@Autowired
+//    XwidgetQueryDao queryDao;
 
     
     @Autowired
@@ -66,13 +66,13 @@ public class XwidgetController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<Xwidget> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<Xwidget> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

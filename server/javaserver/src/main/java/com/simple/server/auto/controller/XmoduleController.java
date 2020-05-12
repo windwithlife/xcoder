@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.simple.core.base.user.entity.*;
-import com.simple.core.base.user.service.*;
+//import com.simple.core.base.user.entity.*;
+//import com.simple.core.base.user.service.*;
 
 import com.simple.server.bz.entity.*;
 import com.simple.server.bz.service.*;
@@ -27,8 +27,8 @@ public class XmoduleController {
 	@Autowired
 	XmoduleService service;
 
-	@Autowired
-    XmoduleQueryDao queryDao;
+//	@Autowired
+//    XmoduleQueryDao queryDao;
 
     
     @Autowired
@@ -82,13 +82,13 @@ public class XmoduleController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<Xmodule> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<Xmodule> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

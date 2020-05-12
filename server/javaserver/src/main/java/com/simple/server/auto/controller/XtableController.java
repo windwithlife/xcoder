@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.servlet.ModelAndView;
-
-import com.simple.core.base.user.entity.*;
-import com.simple.core.base.user.service.*;
+//
+//import com.simple.core.base.user.entity.*;
+//import com.simple.core.base.user.service.*;
 
 import com.simple.server.bz.entity.*;
 import com.simple.server.bz.service.*;
@@ -27,8 +27,8 @@ public class XtableController {
 	@Autowired
 	XtableService service;
 
-	@Autowired
-    XtableQueryDao queryDao;
+//	@Autowired
+//    XtableQueryDao queryDao;
 
     
     @Autowired
@@ -77,13 +77,13 @@ public class XtableController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<Xtable> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<Xtable> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

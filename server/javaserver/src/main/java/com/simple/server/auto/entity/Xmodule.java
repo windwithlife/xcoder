@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.simple.core.base.user.entity.*;
+//import com.simple.core.base.user.entity.*;
 import com.simple.server.bz.entity.*;
 import com.simple.server.auto.entity.*;
 

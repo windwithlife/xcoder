@@ -47,13 +47,13 @@ export default class HomePage extends React.Component {
         var fieldColumns = [];
 
         fieldColumns.push({
-            title: "表的名称",
+            title: "名称",
             dataIndex: 'name',
             key: 'name'
         });
 
         fieldColumns.push({
-            title: "说明",
+            title: "说明描述",
             dataIndex: 'description',
             key: 'description'
         });
@@ -106,13 +106,6 @@ export default class HomePage extends React.Component {
         return (
             < div >
                 <Card size="small" title="基本信息" style={{ width: 500 }}  >
-                        <Form >
-<%data.fields.forEach(function(field){%>
-                          < Form.Item  label="<%=field.description%>">
-                            {itemData.<%=field.name%>}
-                          </Form.Item>
-<%});%>
-                        </Form>
                 </Card>
 
                 <EditTable title="列表" columns={that.tableHeader()} data={items}

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.simple.core.base.user.entity.*;
-import com.simple.core.base.user.service.*;
+//import com.simple.core.base.user.entity.*;
+//import com.simple.core.base.user.service.*;
 
 import com.simple.server.bz.entity.*;
 import com.simple.server.bz.service.*;
@@ -27,8 +27,8 @@ public class XtablecolumnController {
 	@Autowired
 	XtablecolumnService service;
 
-	@Autowired
-    XtablecolumnQueryDao queryDao;
+//	@Autowired
+//    XtablecolumnQueryDao queryDao;
 
     
     @Autowired
@@ -99,14 +99,14 @@ public class XtablecolumnController {
 
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<Xtablecolumn> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<Xtablecolumn> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

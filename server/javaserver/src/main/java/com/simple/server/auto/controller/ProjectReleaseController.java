@@ -21,8 +21,8 @@ public class ProjectReleaseController {
 	@Autowired
     ProjectReleaseService service;
 
-	@Autowired
-    ProjectReleaseQueryDao queryDao;
+//	@Autowired
+//    ProjectReleaseQueryDao queryDao;
 
     @Autowired
     XmoduleService xmoduleService;
@@ -106,14 +106,14 @@ public class ProjectReleaseController {
 //        return moduleId;
 //
 //    }
-
-    @ResponseBody
-    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
-    public List<ProjectRelease> findByName(@RequestParam("name") String name ) {
-           	System.out.println("input param Name:" + name);
-            return queryDao.findByName(name);
-
-    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/queryByName", method = RequestMethod.GET)
+//    public List<ProjectRelease> findByName(@RequestParam("name") String name ) {
+//           	System.out.println("input param Name:" + name);
+//            return queryDao.findByName(name);
+//
+//    }
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

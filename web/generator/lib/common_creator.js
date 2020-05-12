@@ -133,13 +133,13 @@ function generateCode(release) {
     //console.log(moduleDefines.defines);
   
     //moduleDefines.defines.forEach(function (module) {
-        generator.generateModuleByName(moduleDefines.defines);
+    generator.generateModuleByName(moduleDefines.defines);
     //});
 
     // moduleDefines.contracts.forEach(function (contractName) {
     //     generator.generateContractByName(contractName, moduleDefines.getServiceContractDefineByName(contractName),platformName);
     // });
-
+    
     console.log("generated code by define file in modules directory\n");
 
 }

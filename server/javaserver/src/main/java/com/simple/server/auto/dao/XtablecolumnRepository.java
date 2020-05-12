@@ -13,7 +13,7 @@ public interface XtablecolumnRepository extends JpaRepository<Xtablecolumn, Long
 
        //@Query(value="SELECT * from Xtablecolumn where tableId=?1",nativeQuery=true)
        public List<Xtablecolumn> findByTableId(Long id);
-
+       //public Xtablecolumn findById(Long id);
                    
        public List<Xtablecolumn> findByFieldType(Long id);
 

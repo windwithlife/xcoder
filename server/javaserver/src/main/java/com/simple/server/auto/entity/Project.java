@@ -12,8 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.*;
-
-import com.simple.core.base.user.entity.*;
+//
+//import com.simple.core.base.user.entity.*;
 import com.simple.server.bz.entity.*;
 import com.simple.server.auto.entity.*;
 

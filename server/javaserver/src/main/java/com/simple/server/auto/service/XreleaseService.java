@@ -29,13 +29,13 @@ public class XreleaseService {
     	}
 
 	public Xrelease findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 	public Xrelease save(Xrelease item){
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 
 //    public  List<ProjectRelease> findByReleaseId(Long id){

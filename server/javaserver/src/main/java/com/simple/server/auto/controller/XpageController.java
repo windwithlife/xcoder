@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.simple.core.base.user.entity.*;
-import com.simple.core.base.user.service.*;
+//import com.simple.core.base.user.entity.*;
+//import com.simple.core.base.user.service.*;
 
 import com.simple.server.bz.entity.*;
 import com.simple.server.bz.service.*;

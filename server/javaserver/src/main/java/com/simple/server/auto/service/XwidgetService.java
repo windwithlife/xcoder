@@ -28,13 +28,13 @@ public class XwidgetService {
     	}
 
 	public Xwidget findById(Long id){
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 	public Xwidget save(Xwidget item){
 		return this.dao.save(item);
 	}
 	public void remove(Long id){
-		this.dao.delete(id);
+		this.dao.deleteById(id);
 	}
 
 
