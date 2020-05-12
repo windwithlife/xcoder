@@ -15,7 +15,7 @@ const layout = {
 };
 
 
-@inject('dictionarysStore')
+@inject('dictionarysStore') @inject('categorysStore')
 @observer
 export default class AddPage extends React.Component {
   formRef = React.createRef();
@@ -35,12 +35,16 @@ export default class AddPage extends React.Component {
   };
 
   componentDidMount() {
-
+    let that = this;
+    this.props.categorysStore.queryAll(function(values){
+      that.setState();
+    });
     console.log('DidMount');
   }
 
 
   render = () => {
+    let that = this;
 
     return (
 
@@ -69,7 +73,12 @@ export default class AddPage extends React.Component {
           <Input />
         </Form.Item>
         <Form.Item name="category" label="所属分类">
-          < XSelect category="" refer="category" display="yes" />
+
+          <Select >
+            {that.props.categorysStore.dataObject.list.map(function (item, i) {
+              return (<Select.Option value={item.id}>{item.description}</Select.Option>);
+            })}
+          </Select>
         </Form.Item>
 
         <Form.Item >
