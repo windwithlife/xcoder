@@ -6,12 +6,29 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
+var multer = require('multer');
+
 const rewrite = require('express-urlrewrite');
 
 //var gitTools = require('./ci/libs/git-tool');
 //var dockerTools = require('./ci/libs/docker-tool');
 //var shellTools = require('./ci/libs/shell-tool');
 var releaseServer = require('./ci/libs/release');
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/tmp/my-uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now()+ '-' + Math.round(Math.random() * 1E9);
+    let name = file.originalname.split('.')[0];
+    let extName = file.originalname.split('.')[1];
+    let filename = uniqueSuffix + "." + extName;
+    cb(null, filename)
+  }
+})
+
+var upload = multer({ storage: storage })
 
 
 
@@ -21,17 +38,17 @@ app.prepare()
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
 
-    server.use(rewrite(/^\/coder\/?(.*)/,'/$1'));
+    server.use(rewrite(/^\/coder\/?(.*)/, '/$1'));
     server.get('/a', (req, res) => {
       return app.render(req, res, '/b', req.query)
     })
-    server.all('*', function(req, res, next) {
+    server.all('*', function (req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
-      res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+      res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
       next();
-  });
-  
+    });
+
 
     server.get('/generateCode', (req, res) => {
       console.log(req.query);
@@ -100,32 +117,32 @@ app.prepare()
       console.log(req.body.defines);
 
       var params = { isUseOwnDockerFile: false, isSubWebSite: true, isUseOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
-      let request = req.body.defines;     
+      let request = req.body.defines;
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
         params.gitUrl = req.body.repository.git_url;
         params.cloneUrl = req.body.repository.clone_url;
         params.sshUrl = req.body.repository.ssh_url;
         console.log(req.body.repository);
-     
+
       }
 
       params.name = request.name;
       params.applicationName = request.applicationName;
       params.path = request.path;
-      params.version = request.releaseVersion?request.releaseVersion:"1.0.8";
+      params.version = request.releaseVersion ? request.releaseVersion : "1.0.8";
       //params.codeName = request.name;
-      params.targetPath = request.targetPath? request.targetPath:params.targetPath;
+      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
       params.sideType = request.sideType;
       params.language = request.language;
       params.framework = request.framework;
       params.platform = request.platform;
       params.serviceName = request.name;
       params.webDomainName = request.webDN;
-      params.targetPath = request.targetPath?request.targetPath:params.targetPath;
+      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
       params.label = params.version;
-     
-      
+
+
       console.log("release request params is *****************8:", params);
       //res.send('begin to fetch source code.....')
       if (releaseServer.autoRelease(params)) {
@@ -135,6 +152,16 @@ app.prepare()
       }
     })
 
+
+    server.post('/profile', upload.single('avatar'), function (req, res, next) {
+      // req.file is the `avatar` file
+      // req.body will hold the text fields, if there were any
+      console.log('upload file.....[filename:' + JSON.stringify(req.file) + "]");
+      res.json({
+        code: true,
+        msg: '上传成功'
+      });
+    });
     server.get('/', function (req, res) {
       res.send('Hello,world! simple version 0.2.3')
     })
@@ -143,7 +170,7 @@ app.prepare()
     //   shellTools.execScript(script);
     //   res.send('Hello,K8s!')
     // })
-   
+
 
 
     // server.get('/test', function (req, res) {

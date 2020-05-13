@@ -2,6 +2,11 @@
 var fs = require('fs');
 var archiver = require('archiver');
 
+var archive = archiver('zip', {
+    zlib: { level: 9 } // Sets the compression level.
+  });
+  
+
  class FileArchiver {
     
     constructor(){
@@ -21,9 +26,9 @@ var archiver = require('archiver');
         }
         var output = fs.createWriteStream(destFile);
         archive.pipe(output);
-        archive.bulk([
-            { src: sources}
-        ]);
+        sources.forEach(function(path){
+            archive.directory(path, false);
+        });
         archive.finalize();
     }
     
