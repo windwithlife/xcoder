@@ -154,9 +154,9 @@ function compileAndBuild(params) {
     let compileCommand = "";
     let workPath = pathConfig.dockerWorkPath();
     if (paramsHelper.isWeb()){
-        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim npm install && npm run build';
+        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
     }else{
-        compileCommand = 'docker run -i --rm --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine mvn clean install';  
+        compileCommand = 'docker run -i --rm --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install"';  
     }
    
     console.log('compile command:' + compileCommand);

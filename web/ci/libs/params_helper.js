@@ -137,7 +137,7 @@ class ParamsHelper {
         return this.language + "-" + this.sideType + ".yaml";
     }
     deploymentfile() {
-        return this.language + "-" + this.sideType + "-" + this.version + ".yaml";
+        return this.language + "-" + this.sideType + "-" + this.applicationName + "-" + this.version + ".yaml";
     }
 
     useOwnDepolymentFile() {
