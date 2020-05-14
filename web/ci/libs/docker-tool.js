@@ -152,7 +152,7 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 function compileAndBuild(params) {
     let workPath = pathConfig.dockerWorkPath();
 
-    let getPermissionCommand = "sudo chmod -R 777 " + workPath + " && sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker";
+    let getPermissionCommand = "sudo chmod -R 777 " + workPath + " && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker";
     console.log(getPermissionCommand);
 
     exec(getPermissionCommand);
