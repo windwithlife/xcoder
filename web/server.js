@@ -18,10 +18,10 @@ app.prepare()
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
 
-    server.use(rewrite(/^\/coder\/?(.*)/, '/$1'));
-    server.get('/a', (req, res) => {
-      return app.render(req, res, '/b', req.query)
-    })
+    // server.use(rewrite(/^\/coder\/?(.*)/, '/$1'));
+    // server.get('/a', (req, res) => {
+    //   return app.render(req, res, '/b', req.query)
+    // })
     server.all('*', function (req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
@@ -164,7 +164,11 @@ app.prepare()
     })
 
     server.get('/', function (req, res) {
-      res.send('Hello,world! simple version 0.2.3')
+      res.send('Hello,world! simple version 1.0.0')
+    })
+
+    server.get('/test/', function (req, res) {
+      res.send('Hello,world! just for testing!');
     })
     // server.get('/initK8s', function (req, res) {
     //   let script = "/bin/sh ./initK8s-master.sh";
