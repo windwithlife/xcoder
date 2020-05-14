@@ -152,7 +152,7 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 function compileAndBuild(params) {
     let workPath = pathConfig.dockerWorkPath();
 
-    let getPermissionCommand = "sudo chmod -R 777 " + workPath;
+    let getPermissionCommand = "sudo chmod -R 777 " + workPath + " && sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker";
     console.log(getPermissionCommand);
 
     exec(getPermissionCommand);
@@ -161,9 +161,9 @@ function compileAndBuild(params) {
     
     if (paramsHelper.isWeb()){
         //compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
-        compileCommand= 'sudo docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim  npm install';
+        compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim  npm install';
         exec(compileCommand);
-        compileCommand= 'sudo docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim npm run build';
+        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim npm run build';
         exec(compileCommand);
         return true;
     }else{
