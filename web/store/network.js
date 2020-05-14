@@ -6,13 +6,6 @@ let apiserver = config['current'].SOA_GATE;
 let webServer = config['current'].WEB_GATE;
 console.log(" current env:========" + webServer);
 
-function firstUpperCase(str) {
-    //return str.toLowerCase().replace(/^\S/g,function(s){return s.toUpperCase();});
-    if(!str){return ''}
-    var strResult = str.substring(0,1).toUpperCase()+str.substring(1);
-    return strResult;
-}
-
 function NetworkClass() {
     this.webServer = webServer;  
 }
@@ -24,6 +17,9 @@ NetworkClass.prototype.webPost = function (path, params,cb) {
     model.post(webServer + "/" + path, params, cb);
 };
 
+NetworkClass.prototype.switchService = function (newHost) {
+    this.webServer = newHost;
+};
 
 module.exports = new NetworkClass();
 
