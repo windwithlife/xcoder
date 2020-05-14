@@ -95,6 +95,7 @@ export default class EditPage extends React.Component {
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
+        NetworkHelper.switchService("http://www.koudaibook.com:8080/");
         NetworkHelper.webPost("releaseByParams/", finalParams);
         console.log(finalParams);
     }

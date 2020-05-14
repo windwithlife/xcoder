@@ -7,18 +7,18 @@ let webServer = config['current'].WEB_GATE;
 console.log(" current env:========" + webServer);
 
 function NetworkClass() {
-    this.webServer = webServer;  
+    this.server = webServer;  
 }
 
 NetworkClass.prototype.webGet = function (path, params,cb) {
-    model.get(webServer + "/" + path, params, cb);
+    model.get(this.server + "/" + path, params, cb);
 };
 NetworkClass.prototype.webPost = function (path, params,cb) {
-    model.post(webServer + "/" + path, params, cb);
+    model.post(this.server + "/" + path, params, cb);
 };
 
 NetworkClass.prototype.switchService = function (newHost) {
-    this.webServer = newHost;
+    this.server = newHost;
 };
 
 module.exports = new NetworkClass();
