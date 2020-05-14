@@ -1,5 +1,5 @@
 import { observable, action, computed,toJS,runInAction } from "mobx";
-import BaseStore from '../../common/models/BaseStore';
+import BaseStore from '../../../store/BaseStore';
 let  DataItem = {
     <% data.fields.forEach(function(field){
        if(field.fieldType =='int'){%>
