@@ -150,13 +150,15 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 }
 
 function compileAndBuild(params) {
+    let getPermissionCommand = "sudo groupadd docker && sudo gpasswd -a $USER docker && newgrp docker";
 
     let compileCommand = "";
     let workPath = pathConfig.dockerWorkPath();
+
     if (paramsHelper.isWeb()){
-        compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
+        compileCommand= 'sudo docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
     }else{
-        compileCommand = 'docker run -i --rm -u root --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install"';  
+        compileCommand = 'sudo docker run -i --rm -u root --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install"';  
     }
    
     console.log('compile command:' + compileCommand);
