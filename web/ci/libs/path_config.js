@@ -124,7 +124,7 @@ function pathIsReady(pathName) {
 
         let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
         //cp("-R",serverPath,this.dockerWorkPath());
-        let cpCommand = 'cp -ar ' + serverPath + '. ' +  this.dockerWorkPath();
+        let cpCommand = 'cp -ar ' + serverPath + '/. ' +  this.dockerWorkPath();
         let result = exec(cpCommand);
         if (result.code !== 0) {
             console.log('failed! command:' + cpCommand);
@@ -132,7 +132,7 @@ function pathIsReady(pathName) {
         }else{
             console.log('successful command:' + cpCommand);
         }
-        cpCommand = 'cp -ar ' + this.releaseTargetSrcPath()+ "."  + ' ' +  this.dockerWorkPath();
+        cpCommand = 'cp -ar ' + this.releaseTargetSrcPath()+ "/."  + ' ' +  this.dockerWorkPath();
         result = exec(cpCommand);
         if (result.code !== 0) {
             console.log('failed! command:' + cpCommand);

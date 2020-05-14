@@ -167,7 +167,7 @@ function compileAndBuild(params) {
         exec(compileCommand);
         return true;
     }else{
-        compileCommand = 'docker run -i --rm -u root --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven:Z -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install"';  
+        compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven:Z -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install"';  
     }
    
     console.log('compile command:' + compileCommand);

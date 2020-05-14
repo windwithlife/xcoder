@@ -44,9 +44,9 @@ render(){
                 </Form.Item>
         
                  <Card type="inner">
-                 <FormItem className="form-item-clear" >
+                 <Form.Item>
                     <Button type="primary" htmlType="submit" size="large">Save</Button>
-                 </FormItem>
+                 </Form.Item>
                  </Card>
             </Form>
         </Card>
