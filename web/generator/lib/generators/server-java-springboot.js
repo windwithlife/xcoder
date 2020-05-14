@@ -54,7 +54,7 @@ function generateDTO(moduleName,defineData){
 
 function generatePOMFile(moduleName,defineData){
     let templateFilename =   pathConfig.templateServer() + "/pom.xml"; 
-    let targetFileName = pathConfig.targetApplicationRoot()  + "/pom.xml";
+    let targetFileName = pathConfig.targetRoot() + "/pom.xml";
     var params = paramsHelper.buildParamsByServiceInterfaces(moduleName,defineData);
     codeTools.generateCode(templateFilename,params,targetFileName);
 
@@ -114,7 +114,7 @@ function generateModuleByName(moduleDefine){
 
     generatePOMFile(moduleDefine.name,moduleDefine);
     //创建MicroService 的接口项目
-    let srcRootPath =  "/" + projectConfig.name + "-api" + "/src/main/java/";
+    let srcRootPath =  "../" + projectConfig.name + "-api" + "/src/main/java/";
     pathConfig.switchSourceRootPath(srcRootPath);
     moduleDefine.dtos.forEach(function(item){
         generateDTO(moduleDefine.name,item);
@@ -129,29 +129,46 @@ function generateModuleByName(moduleDefine){
 
 
 function generateFramework(release){
+    // if (!pathConfig.targetMicroServicesIsReady()){
+    //     xtools.copyDirEx(pathConfig.templateMicroServicesCopyFiles(),pathConfig.targetMicroServicesCopyFiles());
+    // }
+    // let microServiceName = release.name+ "-svc";
+    // let microServiceAPIName = release.name+ "-api";
+    // xtools.copyDirEx(pathConfig.templateCopyFiles("microserver"),pathConfig.targetCopyFiles(microServiceName));
+    // xtools.copyDirEx(pathConfig.templateCopyFiles("microserver-api"),pathConfig.targetCopyFiles(microServiceAPIName));
+    //let microServiceName = release.name+ "-svc";
     if (!pathConfig.targetMicroServicesIsReady()){
         xtools.copyDirEx(pathConfig.templateMicroServicesCopyFiles(),pathConfig.targetMicroServicesCopyFiles());
     }
-    let microServiceName = release.name+ "-svc";
-    let microServiceAPIName = release.name+ "-api";
-    xtools.copyDirEx(pathConfig.templateCopyFiles("microserver"),pathConfig.targetCopyFiles(microServiceName));
+    let microServiceAPIName = "../" + release.name+ "-api";
+    xtools.copyDirEx(pathConfig.templateCopyFiles("microserver"),pathConfig.targetCopyFiles());
     xtools.copyDirEx(pathConfig.templateCopyFiles("microserver-api"),pathConfig.targetCopyFiles(microServiceAPIName));
 
 }
 
 
 function initPathEnv(proConfig){
-    let srcRootPath =  "/" + proConfig.name + "-svc" + "/src/main/java/";
+    //let srcRootPath =  "/" + proConfig.name + "-svc" + "/src/main/java/";
+    let srcRootPath =  "/src/main/java/";
     pathConfig.initWithRootPath(srcRootPath,proConfig);
     paramsHelper.initParamsFromProject(proConfig);
     projectConfig = proConfig;
     console.log("workRootPath:" + pathConfig.rootPath()+'templateroot' + pathConfig.templateRoot()+ "Code-targetServerPath:" + pathConfig.targetRoot());   
 }
 
+function getAllSourceCodes(){
+
+    let apiSource = path.join(pathConfig.targetRoot(), "../", projectConfig.name + "-api") + "/";
+    
+    return [pathConfig.targetRoot()+"/", apiSource];
+}
+
+
+
 exports.generateFramework = generateFramework;
 exports.generateModuleByName = generateModuleByName;
 exports.initEnv = initPathEnv;
-
+exports.sources = getAllSourceCodes;
 exports.coderDefine = {name:"server-java-springboot-all",desc:"create a springboot framework server code"};
 
 

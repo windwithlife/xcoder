@@ -5,14 +5,14 @@ MAINTAINER Joe
 RUN npm config set registry http://registry.npm.taobao.org
 #RUN rm -rf /runDIR/web/
 RUN mkdir -p /runDIR/web
-WORKDIR /runDIR/web
+
 COPY ./ /runDIR/web 
-RUN cd /runDIR/web && npm install
-RUN cd /runDIR/web && npm run build
+#RUN cd /runDIR/web && npm install
+#RUN cd /runDIR/web && npm run build
 
 ENV HOST 0.0.0.0
 ENV PORT 8080
 #ENV NODE_ENV production
-
+WORKDIR /runDIR/web
 EXPOSE 8080
 ENTRYPOINT ["npm","start"]

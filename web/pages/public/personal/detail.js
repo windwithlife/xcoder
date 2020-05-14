@@ -18,6 +18,7 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import Upload from '../../common/components/FileUpload';
+import AvatarUpload from '../../common/components/AvatarUpload';
 //import EditTable from '../common/components/EditableTable';
 //import AddorEditPage from './AddorEditColumn';
 
@@ -92,6 +93,7 @@ export default class EditPage extends React.Component {
                  <Card type="inner">
                         <Upload filename="avatar" uploadAction='/profile' />
                     </Card>
+                    < AvatarUpload />
                 </Card>
             </div>
         );

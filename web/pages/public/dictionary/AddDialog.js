@@ -2,7 +2,7 @@
 
 import { Form, Input, Button, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
-import XSelect from '../../common/components/form/select';
+import XSelect from '../../common/components/select';
 
 const { Option } = Select;
 const layout = {

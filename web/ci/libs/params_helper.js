@@ -117,7 +117,7 @@ class ParamsHelper {
     }
     dockerfile() {
 
-        let dockerfile = "Dockerfile-" + this.language + "-" + this.sideType + ".multi";
+        let dockerfile = "Dockerfile-" + this.language + "-" + this.sideType + ".single";
         //checkPath(pathName);
         return dockerfile;
     }
@@ -150,6 +150,13 @@ class ParamsHelper {
     }
     useOwnDockerFile() {
         if ((this.isUseOwnDockerFile) && (true == this.isUseOwnDockerFile)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    isWeb() {
+        if ((this.sideType) && ('web' == this.sideType)) {
             return true;
         } else {
             return false;

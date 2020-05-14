@@ -1,9 +1,5 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
 import {
     Collapse,
     Modal,
@@ -16,10 +12,9 @@ const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-//import AddorEditPage from './AddorEditColumn';
-import NetworkHelper from '../common/components/models/network';
+
+import NetworkHelper from '../../store/network';
 import EditTable from '../common/components/EditableTable';
-//import EditTable from '../common/components/EditableTable';
 
 const rowSelection = {
 };

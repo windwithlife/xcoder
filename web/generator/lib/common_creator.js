@@ -3,8 +3,11 @@ var fs = require('fs');
 var codeTools = require('./code_tools');
 var ModuleDefine = require('./module_define');
 var ProjectConfig = require('./project_config');
+var Archiver = require('./archiver');
+var archiver = new Archiver();
 var moduleDefines = new ModuleDefine();
 var projectConfig = new ProjectConfig();
+var git_helper = require('../../ci/libs/git-tool');
 
 var generatorList = [];
 //var moduleDefines = {basePackage:"com.simple.bz",apiServer:"127.0.0.1:8080",enables: [], modules: {}};
@@ -116,6 +119,9 @@ function generateCode(release) {
         return;
     }
 
+    let gitWorkPath = path.join(process.cwd(), "../../projects/");
+
+    git_helper.pushPrepare(gitWorkPath);
     generator.initEnv(release);
 
 
@@ -135,10 +141,20 @@ function generateCode(release) {
     //moduleDefines.defines.forEach(function (module) {
     generator.generateModuleByName(moduleDefines.defines);
     //});
-    
+
+    //生成代碱后，压缩上传到服务器，方便下载源代码
+    if (generator.sources){
+        let zipFile = "application-" +  release.name + "-" + release.id + "-" + release.sideType + "-" + release.language  + ".zip";
+        let sources = generator.sources();
+        //archiver.compress(sources,zipFile);
+        console.log(sources);
+    }
     // moduleDefines.contracts.forEach(function (contractName) {
     //     generator.generateContractByName(contractName, moduleDefines.getServiceContractDefineByName(contractName),platformName);
     // });
+    
+    git_helper.pushDo(gitWorkPath);
+
     console.log("generated code by define file in modules directory\n");
 
 }

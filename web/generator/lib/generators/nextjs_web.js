@@ -76,8 +76,9 @@ function generateModuleByName(moduleDefine){
     moduleDefine.pages.forEach(function(pageItem){
         generatePage(moduleDefine.name,pageItem);
     });
-
-    archiver.compress(pathConfig.targetRoot()+"/", "test.zip");
+    
+    let zipFile = "application_" + pathConfig.getPrjectPath() + "_" + moduleDefine.name + ".zip";
+    //archiver.compress(pathConfig.targetRoot()+"/",zipFile);
     
 }
 
@@ -96,10 +97,15 @@ function initPathEnv(proConfig){
     console.log("workRootPath:" + pathConfig.rootPath()+'templateroot' + pathConfig.templateRoot()+ "Code-targetServerPath:" + pathConfig.targetRoot());   
 }
 
+function getAllSourceCodes(){
+
+    return [pathConfig.targetRoot()+"/"];
+}
 exports.generateFramework = generateFramework;
 exports.generateModuleByName = generateModuleByName;
 //exports.generateCommon = generateCommon;
 exports.initEnv = initPathEnv;
+exports.sources = getAllSourceCodes;
 
 exports.coderDefine = {name:"web-reactjs-nextjs-all",desc:"create a react js framework and related project code"};
 

@@ -149,6 +149,28 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
     return imageName;
 }
 
+function compileAndBuild(params) {
+
+    let compileCommand = "";
+    let workPath = pathConfig.dockerWorkPath();
+    if (parmasHelper.isWeb()){
+        compileCommand= 'docker run -it --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim npm install && npm run build';
+    }else{
+        compileCommand = 'docker run -it --rm --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine mvn clean install';  
+    }
+   
+    console.log('compile command:' + compileCommand);
+   
+    //exec(compileCommand);
+    let result = exec(compileCommand);
+    if (result.code !== 0) {
+        console.log('failed to compile  compile command:[' + compileCommand +']');
+        console.log(result.stderr); 
+        return false;
+    }
+    return true;
+
+}
 
 /**
  * 根据Docker的multi-stage文件进行分段创建镜像
@@ -180,6 +202,7 @@ function buildServiceDockerImage(params) {
     let buildResult = buildDockerByMultifile(workPath, dockerfile, imageName);
     return buildResult;
 }
+
 
 
 
@@ -231,6 +254,9 @@ function release2K8sCloud(params) {
     pathConfig.init(params);
     paramsHelper.init(params);
    
+    if(!compileAndBuild(params)){
+        return;
+    }
 
     if(!buildServiceDockerImage(params)){
         return;

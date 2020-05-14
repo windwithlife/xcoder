@@ -28,11 +28,9 @@ function pathIsReady(pathName) {
         this.currentRootPath = process.cwd();
         console.log('current sourcecode root path:' + this.currentRootPath);
     }
-  
     switchSourceRootPath(srcRoot){
         this.srcRoot = srcRoot;
     }
-   
     init(projectConfig){
         //this.srcRoot = srcRoot;
         //this.currentRootPath = process.cwd();

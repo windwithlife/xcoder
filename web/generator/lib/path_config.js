@@ -22,13 +22,14 @@ function pathIsReady(pathName) {
 
 
 let TemplateRoot = '/generator/templates/';
-let TargetRoot = '../files/';
+let TargetRoot = '../../projects/';
+//const DOWNLOAD_PATH = '/tmp/my-uploads/';
 
  class PathConfig{
 
    
     constructor(){
-        
+        //this.downloadRootPath = DOWNLOAD_PATH;
         this.basePackage="com.simple.server.auto";
         this.languageExt = 'js';
         this.srcRoot = '/pages/';
@@ -49,6 +50,7 @@ let TargetRoot = '../files/';
         this.sideType = projectConfig.sideType;
         console.log(this.projectConfig);
     }
+   
     javaPackageToPath(packageName){
         if (packageName) {
             var pathtmp;
@@ -95,25 +97,31 @@ let TargetRoot = '../files/';
     }
     targetRoot(){
         //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
-        let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType);
-        checkPath(pathName);
-        return pathName;
-    }
-    targetApplicationRoot(){
-        //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
-        let appName  =this.applicationName;
-        if (this.sideType =='server'){
-            appName = this.applicationName + "-svc";
-        }else if("web"==this.sideType){
-            appName = this.applicationName;
+        let finalPath = "/";
+        if(this.sideType == 'server'){
+            finalPath = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType, this.applicationName + "-svc");
         }else{
-            appName  ="/";
+            finalPath  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType,this.applicationName);
         }
-
-        let pathName  = path.join(this. targetRoot(),appName);
-        checkPath(pathName);
-        return pathName;
+        
+        checkPath(finalPath);
+        return finalPath;
     }
+    // targetApplicationRoot(){
+    //     //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
+    //     let appName  =this.applicationName;
+    //     if (this.sideType =='server'){
+    //         appName = this.applicationName + "-svc";
+    //     }else if("web"==this.sideType){
+    //         appName = this.applicationName;
+    //     }else{
+    //         appName  ="/";
+    //     }
+
+    //     let pathName  = path.join(this.targetRoot(),appName);
+    //     checkPath(pathName);
+    //     return pathName;
+    // }
     templateView(pageName){
         let pathName  = path.join(this.templateRoot(),"/views/");
         //checkPath(pathName);
@@ -150,7 +158,7 @@ let TargetRoot = '../files/';
         return pathName;
     }
     targetMicroServicesCopyFiles(){
-        let pathName  = path.join(this.targetRoot(),"/");
+        let pathName  = path.join(this.targetRoot(),"../");
         checkPath(pathName);
         return pathName;
     }

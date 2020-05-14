@@ -1,5 +1,5 @@
 import { observable, action, computed,toJS,runInAction } from "mobx";
-import BaseModel from '../common/components/models/modelCommon.js';
+import BaseModel from './modelCommon.js';
 
 class BaseStore {
     @observable dataObject;

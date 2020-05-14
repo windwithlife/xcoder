@@ -46,6 +46,49 @@ function pullSource (){
     }
 
 }
+
+function push_prepare (path){
+    if (!which('git')) {
+        echo('Sorry, this script requires git');
+        return;
+    }
+    let gitResetCommand = 'git -C ' + path + ' reset --hard origin/master';
+   
+   // exec(gitResetCommand);
+
+    let result = exec(gitResetCommand);
+    if (result.code !== 0) {
+        echo('Error: Git pull failed');
+        console.log(result.stderr); 
+        return ;
+    }
+}
+
+function push_do (path){
+    if (!which('git')) {
+        echo('Sorry, this script requires git');
+        return false;
+    }
+    let gitAddCommand = 'git -C ' + path +' add .';
+    let gitCommitCommand = 'git -C ' + path + ' commit -m "auto-create-coder"' ;
+    let gitPushCommand = 'git -C ' + path +' push';
+    exec(gitAddCommand);
+
+    let result = exec(gitCommitCommand);
+    if (result.code !== 0) {
+        console.log(result.stderr); 
+        return false;
+    }
+
+    result = exec(gitPushCommand);
+    if (result.code !== 0) {
+        console.log(result.stderr); 
+        return false;
+    }
+   
+
+}
+
 function fetch_project_src(params) {
     pathConfig.init(params);
     let result = true;
@@ -87,5 +130,7 @@ function fetch_project_src(params) {
 module.exports = {
     fetchSourceFromGit: fetch_project_src,
     gitPull:pullSource,
-    gitClone:cloneSource
+    gitClone:cloneSource,
+    pushPrepare:push_prepare,
+    pushDo:push_do,
 }

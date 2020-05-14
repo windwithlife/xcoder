@@ -1,6 +1,6 @@
 
 var model = require('./modelBase');
-var config = require('../../../config');
+var config = require("../config/config");
 
 let apiserver = config['current'].SOA_GATE;
 let webServer = config['current'].WEB_GATE;

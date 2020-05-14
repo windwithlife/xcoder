@@ -6,31 +6,11 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
-var multer = require('multer');
+
+var fileupload = require('./utils/fileupload').fileupload;
 
 const rewrite = require('express-urlrewrite');
-
-//var gitTools = require('./ci/libs/git-tool');
-//var dockerTools = require('./ci/libs/docker-tool');
-//var shellTools = require('./ci/libs/shell-tool');
 var releaseServer = require('./ci/libs/release');
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/tmp/my-uploads')
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now()+ '-' + Math.round(Math.random() * 1E9);
-    let name = file.originalname.split('.')[0];
-    let extName = file.originalname.split('.')[1];
-    let filename = uniqueSuffix + "." + extName;
-    cb(null, filename)
-  }
-})
-
-var upload = multer({ storage: storage })
-
-
 
 app.prepare()
   .then(() => {
@@ -153,15 +133,36 @@ app.prepare()
     })
 
 
-    server.post('/profile', upload.single('avatar'), function (req, res, next) {
+    server.post('/profile', fileupload.single('avatar'), function (req, res, next) {
       // req.file is the `avatar` file
       // req.body will hold the text fields, if there were any
-      console.log('upload file.....[filename:' + JSON.stringify(req.file) + "]");
+      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
       res.json({
         code: true,
+        filename: req.file.filename,
+        path:req.file.path,
         msg: '上传成功'
       });
     });
+
+
+    server.get('/download', function (req, res) {
+      let filename = req.query.filename;
+      if (!filename){
+        filename =  req.body.files;
+      }
+      let fileFullName = "/tmp/my-uploads/" +filename;
+      res.download(fileFullName, err=>{
+        if(err){
+          res.send("failed to download");
+        }else{
+          //res.send("success to download");
+        }
+      })
+     
+      //res.send('Hello,world! simple version 0.2.3')
+    })
+
     server.get('/', function (req, res) {
       res.send('Hello,world! simple version 0.2.3')
     })

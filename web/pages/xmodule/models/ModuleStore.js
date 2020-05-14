@@ -1,5 +1,6 @@
 import { observable, action, computed,toJS,runInAction } from "mobx";
-import BaseStore from '../../stores/BaseStore.js'
+
+import BaseStore from '../../../store/BaseStore';
 
 let  ModuleItem = {
     id:1,

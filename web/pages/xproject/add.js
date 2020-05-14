@@ -2,10 +2,8 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Form, Card,Input,Button,Select} from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 const { TextArea } = Input;
-const FormItem = Form.Item;
-
 
 @inject('projectsStore') @inject('modulesStore')  @observer
 export default  class AddPage extends React.Component {

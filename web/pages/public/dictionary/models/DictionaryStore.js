@@ -1,6 +1,6 @@
 import { observable, action, computed,toJS,runInAction } from "mobx";
-import BaseStore from '../../../stores/BaseStore.js'
-import BaseModel from '../../../common/components/models/modelCommon.js';
+import BaseStore from '../../../../store/BaseStore';
+import BaseModel from '../../../../store/modelCommon.js';
 let  DataItem = {
     id:1,
     name:"projectName",
