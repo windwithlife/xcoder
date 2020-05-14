@@ -150,13 +150,14 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 }
 
 function compileAndBuild(params) {
-    let getPermissionCommand = "sudo groupadd docker && sudo gpasswd -a $USER docker && newgrp docker";
+    let workPath = pathConfig.dockerWorkPath();
+
+    let getPermissionCommand = "sudo chmod -R 777 " + workPath;
 
     exec(getPermissionCommand);
 
     let compileCommand = "";
-    let workPath = pathConfig.dockerWorkPath();
-
+    
     if (paramsHelper.isWeb()){
         compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
     }else{
