@@ -153,6 +153,7 @@ function compileAndBuild(params) {
     let workPath = pathConfig.dockerWorkPath();
 
     let getPermissionCommand = "sudo chmod -R 777 " + workPath;
+    console.log(getPermissionCommand);
 
     exec(getPermissionCommand);
 
