@@ -161,9 +161,9 @@ function compileAndBuild(params) {
     
     if (paramsHelper.isWeb()){
         //compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
-        compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim  npm install';
+        compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode  node:8.0.0  npm install';
         exec(compileCommand);
-        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim npm run build';
+        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode  node:8.0.0 npm run build';
         exec(compileCommand);
         return true;
     }else{
