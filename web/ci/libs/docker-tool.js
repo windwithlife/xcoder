@@ -214,7 +214,9 @@ function buildServiceDockerImage(params) {
         dockerfile = pathConfig.releaseTargetSrcPath() + "/Dockerfile" ;
     }
     let imageName = paramsHelper.imageName();
-    let workPath = pathConfig.dockerWorkPath();
+    //let workPath = pathConfig.dockerWorkPath();
+    let workPath = pathConfig.releaseTargetSrcPath();
+    
     let buildResult = buildDockerByMultifile(workPath, dockerfile, imageName);
     return buildResult;
 }
