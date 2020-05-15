@@ -161,20 +161,13 @@ function compileAndBuild(params) {
     
     if (paramsHelper.isWeb()){
         //compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
-        compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim  npm install';
-        exec(compileCommand);
-        console.log('compile command:' + compileCommand);
-        compileCommand= 'docker run -i --rm --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:8.10.0-slim npm run build';
-        //exec(compileCommand);
-        console.log('compile command:' + compileCommand);
-        return true;
+compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build';
+    
     }else{
         compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven:Z -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install -Dmaven.test.skip=true"';  
     }
    
     console.log('compile command:' + compileCommand);
-   
-    //exec(compileCommand);
     let result = exec(compileCommand);
     if (result.code !== 0) {
         console.log('failed to compile  compile command:[' + compileCommand +']');
