@@ -106,11 +106,14 @@ function pathIsReady(pathName) {
         return pathName;
     }
 
-   
+    markClone(){
+        let touchFile = path.join(this.projectRootPath(), "src/git/.haveClonedMarker");
+        touch(touchFile);
+    }
     haveClonedCode(){
         //let pathName  = this.releaseTargetSrcPath();
-        let pathName  = path.join(this.projectRootPath(), "src/");
-        return pathIsReady(pathName);
+        let touchFile = path.join(this.projectRootPath(), "src/git/.haveClonedMarker");
+        return pathIsReady(touchFile);
     }
 
     resetWorkPath(){
