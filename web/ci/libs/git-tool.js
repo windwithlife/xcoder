@@ -113,6 +113,7 @@ function fetch_project_src(params) {
         console.log(process.cwd());
         if (cloneSource(params.gitUrl)){
             console.log('successful to clone project:' + params.name);
+            pathConfig.markClone();
             //cd(envConfig.getServerRootPath());    
         }else{
             //cd(envConfig.getServerRootPath());
