@@ -1,19 +1,15 @@
 #FROM node:8.10.0-slim
-FROM 
+FROM node:8.10.0-slim
  
 MAINTAINER Joe
 
-RUN npm config set registry http://registry.npm.taobao.org
-#RUN rm -rf /runDIR/web/
+#RUN npm config set registry http://registry.npm.taobao.org
+
 RUN mkdir -p /runDIR/web
-
 COPY ./ /runDIR/web 
-#RUN cd /runDIR/web && npm install
-#RUN cd /runDIR/web && npm run build
-
 ENV HOST 0.0.0.0
 ENV PORT 8080
-#ENV NODE_ENV production
+ENV NODE_ENV production
 WORKDIR /runDIR/web
 EXPOSE 8080
 ENTRYPOINT ["npm","start"]
