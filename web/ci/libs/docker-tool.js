@@ -152,16 +152,16 @@ function createK8sProjectOwnOperationFiles(name,sourceRootPath,webDomainName){
 function compileAndBuild(params) {
     let workPath = pathConfig.dockerWorkPath();
 
-    let getPermissionCommand = "sudo chmod -R 777 " + workPath + " && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker";
-    console.log(getPermissionCommand);
+    //let getPermissionCommand = "sudo chmod -R 777 " + workPath + " && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker";
+    //console.log(getPermissionCommand);
 
-    exec(getPermissionCommand);
+    //exec(getPermissionCommand);
 
     let compileCommand = "";
     
     if (paramsHelper.isWeb()){
         //compileCommand= 'docker run -i --rm -u root --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode:Z -w /usr/src/mynode node:8.10.0-slim sh -c "npm install && npm run build"';
-compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build';
+compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v '+ workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
     
     }else{
         compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven:Z -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install -Dmaven.test.skip=true"';  

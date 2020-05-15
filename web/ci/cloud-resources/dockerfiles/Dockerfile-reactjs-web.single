@@ -1,5 +1,6 @@
 #FROM node:8.10.0-slim
-FROM node:latest 
+FROM 
+ 
 MAINTAINER Joe
 
 RUN npm config set registry http://registry.npm.taobao.org
