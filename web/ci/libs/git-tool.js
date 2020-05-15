@@ -14,7 +14,7 @@ paramsHelper = new ParamsHelper();
 
 
 function cloneSource(url){
-    let gitCloneCommand = 'git clone ' + url;
+    let gitCloneCommand = 'git clone ' + url + "./git";
 
 
     let result = exec(gitCloneCommand);
@@ -120,7 +120,7 @@ function fetch_project_src(params) {
             result =  false;
         }
     }
-    pathConfig.prepareSourceCode();
+    //pathConfig.prepareSourceCode();
     pathConfig.resetWorkPath();
 
     return result;

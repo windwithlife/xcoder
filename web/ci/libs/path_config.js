@@ -90,14 +90,18 @@ function pathIsReady(pathName) {
      
     }
     preparePullPath(){
-        let pathName  = path.join(this.projectSrcRootPath(), "projects/");
+        let pathName  = path.join(this.projectSrcRootPath(), "git/");
         cd(pathName);
         return pathName;
     }
 
-    releaseTargetSrcPath(){
+    releaseTargetSrcPath(relativePath){
+        let childPath = "./";
+        if (relativePath){
+            childPath = relativePath;
+        }
         let targetPath =  this.projectConfig.targetPath;
-        let pathName  = path.join(this.projectSrcRootPath(), "/projects/",targetPath);
+        let pathName  = path.join(this.projectSrcRootPath(), "/git/",targetPath,childPath);
         checkPath(pathName);
         return pathName;
     }
@@ -121,29 +125,32 @@ function pathIsReady(pathName) {
     }
     prepareSourceCode(){
         rm("-rf",this.dockerWorkPath());
-
-        let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
-        //cp("-R",serverPath,this.dockerWorkPath());
-        let cpCommand = 'cp -ar ' + serverPath + '/. ' +  this.dockerWorkPath();
-        let result = exec(cpCommand);
-        if (result.code !== 0) {
-            console.log('failed! command:' + cpCommand);
-            console.log(result.stderr); 
-        }else{
-            console.log('successful command:' + cpCommand);
-        }
-        cpCommand = 'cp -ar ' + this.releaseTargetSrcPath()+ "/."  + ' ' +  this.dockerWorkPath();
-        result = exec(cpCommand);
-        if (result.code !== 0) {
-            console.log('failed! command:' + cpCommand);
-            console.log(result.stderr); 
-        }else{
-            console.log('successful command:' + cpCommand);
-        }
-        //cp("-R",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
-        console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
-        console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
-        console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);   
+        // let cpCommand = "";
+        // if (this.sideType == 'server'){
+        //     let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
+        //     //cp("-R",serverPath,this.dockerWorkPath());
+        //     cpCommand = 'cp -ar ' + serverPath + '/. ' +  this.dockerWorkPath()+"/server";
+        //     let result = exec(cpCommand);
+        //     if (result.code !== 0) {
+        //         console.log('failed! command:' + cpCommand);
+        //         console.log(result.stderr); 
+        //     }else{
+        //         console.log('successful command:' + cpCommand);
+        //     }
+        // }
+      
+        // cpCommand = 'cp -ar ' + this.releaseTargetSrcPath()+ "/."  + ' ' +  this.dockerWorkPath();
+        // result = exec(cpCommand);
+        // if (result.code !== 0) {
+        //     console.log('failed! command:' + cpCommand);
+        //     console.log(result.stderr); 
+        // }else{
+        //     console.log('successful command:' + cpCommand);
+        // }
+        // //cp("-R",this.releaseTargetSrcPath()+ "/*",this.dockerWorkPath());
+        // console.log("****************xxxxxxxxxxxxx current path" + process.cwd());
+        // console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
+        // console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);   
 
     }
    
