@@ -42,7 +42,7 @@ class MyMobxApp extends App {
         //     layoutName = Component.getLayoutName();
         // }
         //console.log(layoutName + Component.name)
-        console.log(this.props.router.pathname);
+        //console.log(this.props.router.pathname);
         //console.log(this.props);
 
 

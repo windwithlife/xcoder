@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
@@ -43,13 +43,14 @@ export default class TableAdd extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="sideType" label="端点" >
-                    < XSelect category="sideType" />
-                    </Form.Item>
                     <Form.Item name="category" label="页面功能分类" >
                     <XSelect category="pageCategory">
                     </XSelect>
                     </Form.Item>
+                    <Form.Item name="sideType" label="端点" >
+                    < XSelect category="sideType" />
+                    </Form.Item>
+                    
                     < Form.Item name="language" label="编程语言选择：">
                         < XSelect category="language" />
                     </Form.Item>

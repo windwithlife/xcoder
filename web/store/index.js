@@ -1,6 +1,7 @@
 import { useStaticRendering } from 'mobx-react';
 
 import AuthStore from "./AuthStore";
+import MenuStore from "./MenuStore";
 import TableStore from '../pages/xtable/models/TablesStore.js';
 import ColumnStore from '../pages/xtable/models/ColumnStore.js';
 import ModuleStore from '../pages/xmodule/models/ModuleStore';
@@ -27,6 +28,7 @@ const isServer = typeof window === 'undefined'
 useStaticRendering(isServer)
 
 let stores = {
+    menusStore: new MenuStore(),
     tablesStore:new TableStore(),
     columnsStore: new ColumnStore(),
     modulesStore: new ModuleStore(),
