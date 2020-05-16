@@ -16,8 +16,6 @@ let composeMenuData= function(parentItem, list){
 export default class MenuStore extends BaseStore{
 
   @observable dataObject= {
-    headerMenus:headerMenu.childrenList,
-    sidebarMenus:sidebarMenu.childrenList,
     currentItem :{
       id:1,
       name:"oldName",
@@ -26,12 +24,22 @@ export default class MenuStore extends BaseStore{
       status:-1
   },
   list:[ 
-    {id:1,name: "菜单配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:2,name: "页面模板配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:3,name: "用户权限配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:4,name: "页面布局组管理",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"component"},
-    {id:5,name: "页面区域组件管理",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"component"},
-    {id:101,name: "组件仓库",url:"/public/menu/home",level:1,type:'header', parentId:0,channelName:"default"},
+   
+    {id:21,name: "持续集成管理",url:"/xrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+    {id:22,name: "发布历史",url:"/buildrecord/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+
+    {id:11,name: "项目管理",url:"/xproject/list",level:1,type:'sider', parentId:0,channelName:"project"},
+    {id:12,name: "应用管理",url:"/projectrelease/home",level:1,type:'sider', parentId:0,channelName:"project"},
+  
+
+   
+    {id:3,name: "分类配置",url:"/public/category/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:4,name: "字典维护",url:"/public/dictionary/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:5,name: "用户权限配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
+
+    {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},
+    {id:52,name: "页面区域组件管理",url:"/xwidget/home",level:1,type:'sider', parentId:0,channelName:"component"},
+    {id:101,name: "组件仓库",url:"/xwidget/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:102,name: "项目管理",url:"/xproject/list",level:1,type:'header', parentId:0,channelName:"default"},
     {id:103,name: "应用管理",url:"/projectrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:104,name: "持续集成",url:"/xrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
@@ -59,8 +67,34 @@ export default class MenuStore extends BaseStore{
 
   findHeadrMenuItems(channel){
     let channelName = "default";
-    if (!channel){channelName = channel;}
-    return this.findByChannel(channel,'header');
+    if (channel){channelName = channel;}
+    return this.findByChannel(channelName,'header');
+  }
+
+  getChannelByPath(path){
+    let channelName = "none";
+    let arrayPath = path.split('/');
+    console.log("path array is --------------:" + arrayPath);
+    let moduleName = arrayPath[1];
+    //console.log(moduleName);
+    if ((moduleName == "xproject")||(moduleName == "xtable")||(moduleName == "xmodule")||(moduleName=='projectrelease')){
+       channelName = "project";
+    }
+    if ((moduleName == "xrelease")||(moduleName == "buildrecord")||(moduleName == "release")){
+      channelName = "ci";
+   }
+    if ((moduleName == "dictionary")||(moduleName == "category")||(moduleName == "public")){
+      channelName = "config";
+    }
+    if ((moduleName == "pagetemplate")||(moduleName == "xwidget")){
+      channelName = "component";
+    }
+    console.log(channelName);
+    return channelName;
+  }
+  findSiderMenuItemsByPath(path){
+    let channel = this.getChannelByPath(path);
+    return this.findSiderMenuItems(channel);
   }
   findPagePathById(menuId){
     let menuObj = {};

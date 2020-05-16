@@ -1,16 +1,19 @@
 import React from 'react';
 //import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
+//import Table from 'antd/lib/table';
+//import Button from 'antd/lib/button';
+//import Popconfirm from 'antd/lib/popconfirm';
+
 import {
     Collapse,
     Modal,
     Form,
     Card,
     Select,
-    Input
+    Input,
+    Table,
+    Popconfirm,
+    Button,
 } from 'antd';
 const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
