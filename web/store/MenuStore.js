@@ -32,9 +32,9 @@ export default class MenuStore extends BaseStore{
     {id:12,name: "应用管理",url:"/application/home",level:1,type:'sider', parentId:0,channelName:"project"},
   
 
-   
-    {id:3,name: "分类配置",url:"/public/category/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:4,name: "字典维护",url:"/public/dictionary/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:2,name: "应用类型管理",url:"/public/applicationtype/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:3,name: "字典表分类配置",url:"/public/category/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:4,name: "字典表维护",url:"/public/dictionary/home",level:1,type:'sider', parentId:0,channelName:"config"},
     {id:5,name: "用户权限配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
 
     {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},

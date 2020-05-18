@@ -47,7 +47,7 @@ export default class MyLayout extends React.Component {
           return (
             <SubMenu key={menu.id} title={
               <span>
-                <AppstoreOutlined />
+                <MailOutlined />
                 <span>{menu.name}</span>
               </span>
             }>
@@ -120,6 +120,7 @@ export default class MyLayout extends React.Component {
                   defaultSelectedKeys={['1']}
                   defaultOpenKeys={['sub1']}
                   mode="inline"
+                  theme="light"
                 >
                   {/*调用上面的递归方法*/}
                   {this.buildSidebarMenu(sidebarMenus)}

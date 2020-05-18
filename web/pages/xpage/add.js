@@ -2,12 +2,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
 
-@inject('pagesStore') @inject('templatesStore') @inject('modulesStore')
+@inject('pagesStore') @inject('templatesStore') @inject('applicationsStore') @inject('widgetsStore') 
 @observer
 export default class TableAdd extends React.Component {
     formRef = React.createRef();
@@ -15,16 +15,16 @@ export default class TableAdd extends React.Component {
     constructor(props) {
         super(props);
         let that = this;
-        let moduleId = this.props.query.moduleId;
+        let applicationId = this.props.query.applicationId;
         this.state = {choosedTemplates:[]};
         this.moduleFitTemplates = [];
-        props.modulesStore.queryById(moduleId,function(module){
+        props.applicationsStore.queryById(applicationId,function(app){
             console.log(module);
             props.templatesStore.queryAll(function(values){
                 values.forEach(function(template){
                     console.log("template data");
                     console.log(template);
-                    if ((template.sideType == module.sideType) && (template.language==module.language)){
+                    if ((template.sideType == app.sideType) && (template.language==app.language)){
                         that.moduleFitTemplates.push(template);
                     }
                 });
@@ -36,10 +36,13 @@ export default class TableAdd extends React.Component {
     Store = () => {
         return this.props.pagesStore;
     }
+    componentDidMount() {
+        this.props.widgetsStore.queryAll();
+    }
     onFinish = values => {
         var that = this;
-        let moduleId = this.props.query.moduleId;
-        values.moduleId = moduleId;
+        let applicationId = this.props.query.applicationId;
+        values.applicationId = applicationId;
         console.log(values);
         this.Store().add(values, () => { console.log('finished add interface row'); router.back(); });
     }
@@ -84,9 +87,31 @@ export default class TableAdd extends React.Component {
                        
                     </XSelect>
                     </Form.Item>
-                    <Form.Item name="pageTemplate" label="选择喜欢的模板" >
+                    <Form.Item name="pageTemplate" label="选择喜欢的页面布局模板" >
                     <Select onChange={that.onChangeTemplate}>
                         {that.state.choosedTemplates.map(function (item, i) {
+                            return (<Select.Option value={i}>{item.name}</Select.Option>);
+                        })}
+                    </Select>
+                    </Form.Item>
+
+                    <Form.Item name="sectionA" label="选择片段组件 A片段" >
+                    <Select onChange={that.onChangeTemplate}>
+                        {that.props.widgetsStore.dataObject.list.map(function (item, i) {
+                            return (<Select.Option value={i}>{item.name}</Select.Option>);
+                        })}
+                    </Select>
+                    </Form.Item>
+                    <Form.Item name="sectionB" label="选择片段组件 B片段" >
+                    <Select onChange={that.onChangeTemplate}>
+                        {that.props.widgetsStore.dataObject.list.map(function (item, i) {
+                            return (<Select.Option value={i}>{item.name}</Select.Option>);
+                        })}
+                    </Select>
+                    </Form.Item>
+                    <Form.Item name="sectionC" label="选择片段组件 C片段" >
+                    <Select onChange={that.onChangeTemplate}>
+                        {that.props.widgetsStore.dataObject.list.map(function (item, i) {
                             return (<Select.Option value={i}>{item.name}</Select.Option>);
                         })}
                     </Select>

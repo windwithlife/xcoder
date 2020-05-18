@@ -6,6 +6,7 @@ import TableStore from '../pages/xtable/models/TablesStore.js';
 import ColumnStore from '../pages/xtable/models/ColumnStore.js';
 import ModuleStore from '../pages/xmodule/models/ModuleStore';
 import ProjectStore from '../pages/project/models/ProjectStore';
+import ApplicationTypeStore from '../pages/public/applicationtype/models/ApplicationTypeStore';
 import CategoryStore from '../pages/public/category/models/CategoryStore';
 import DictionaryStore from '../pages/public/dictionary/models/DictionaryStore';
 import InterfaceStore from '../pages/xinterface/models/InterfaceStore';
@@ -39,8 +40,9 @@ let stores = {
     pagesStore: new PageStore(),
     widgetsStore: new WidgetStore(),
     templatesStore: new TempalteStore(),
-    applicationsStore: new ReleaseStore(),
+    applicationsStore: new ApplicationStore(),
     applicationreleasesStore: new ReleaseStore(),
+    applicationTypesStore: new ApplicationTypeStore(),
     
 }   
 

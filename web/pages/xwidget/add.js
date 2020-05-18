@@ -7,7 +7,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 
-@inject('widgetsStore')
+@inject('widgetsStore') @inject('applicationTypesStore')
 @observer
 export default class TableAdd extends React.Component {
     formRef = React.createRef();
@@ -19,6 +19,10 @@ export default class TableAdd extends React.Component {
     }
     Store = () => {
         return this.props.widgetsStore;
+    }
+    componentDidMount() {
+        let id = this.props.query.id;
+        this.props.applicationTypesStore.queryAll();
     }
     onFinish = values => {
         var that = this;
@@ -39,13 +43,17 @@ export default class TableAdd extends React.Component {
                         },]}>
                         <Input />
                     </Form.Item>
-                   
+
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    {/* <Form.Item name="fieldMap" label="单元数据结构">
-                        <TextArea rows={5} />
-                    </Form.Item> */}
+                    <Form.Item name="applicationTypeId" label="应用类型" >
+                        <Select >
+                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
+                    </Form.Item>
                     <Form.Item name="defineText" label="组件定义">
                         <TextArea rows={5} />
                     </Form.Item>

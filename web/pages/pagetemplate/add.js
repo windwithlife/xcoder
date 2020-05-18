@@ -7,7 +7,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 
-@inject('templatesStore')
+@inject('templatesStore') @inject('applicationTypesStore')
 @observer
 export default class TableAdd extends React.Component {
     formRef = React.createRef();
@@ -19,6 +19,11 @@ export default class TableAdd extends React.Component {
     }
     Store = () => {
         return this.props.templatesStore;
+    }
+    componentDidMount() {
+
+        let id = this.props.query.id;
+        this.props.applicationTypesStore.queryAll();
     }
     onFinish = values => {
         var that = this;
@@ -33,6 +38,7 @@ export default class TableAdd extends React.Component {
         return (
             <Card>
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                    
                     <Form.Item name="name" label="名称(必须用英文）"
                         rules={[{
                             required: true,
@@ -47,16 +53,15 @@ export default class TableAdd extends React.Component {
                     <XSelect category="pageCategory">
                     </XSelect>
                     </Form.Item>
-                    <Form.Item name="sideType" label="端点" >
-                    < XSelect category="sideType" />
+                    <Form.Item name="applicationTypeId" label="应用类型" >
+                    <Select >       
+           {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+               return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+           })}
+         </Select>
                     </Form.Item>
                     
-                    < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language" />
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework" />
-                    </Form.Item>
+                 
                     < Form.Item name="tag" label="页面标签：">
                        <Input />
                     </Form.Item>

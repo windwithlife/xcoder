@@ -103,7 +103,7 @@ export default class EditPage extends React.Component {
     createApplicationByModule=()=>{
         let moduleId = this.props.query.id;
         let pId = this.StoreData().currentItem.projectId;
-        router.push({ pathname: "/projectrelease/add", query: { moduleId: moduleId ,projectId:pId}});
+        router.push({ pathname: "/application/add", query: { moduleId: moduleId ,projectId:pId}});
     }
 
     handleLineUpdate(type,index, record) {
