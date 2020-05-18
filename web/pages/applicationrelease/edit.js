@@ -21,7 +21,7 @@ import { inject, observer } from 'mobx-react';
 import XSelect from '../common/components/form/select';
 import EditTable from '../common/components/EditableTable';
 
-@inject('xreleasesStore')
+@inject('applicationreleasesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -31,10 +31,10 @@ export default class EditPage extends React.Component {
     }
 
     Store = () => {
-        return this.props.xreleasesStore;
+        return this.props.applicationreleasesStore;
     }
     StoreData = () => {
-        return this.props.xreleasesStore.dataObject;
+        return this.props.applicationreleasesStore.dataObject;
     }
     startHeader() {
         var that = this;

@@ -5,15 +5,15 @@ import MenuStore from "./MenuStore";
 import TableStore from '../pages/xtable/models/TablesStore.js';
 import ColumnStore from '../pages/xtable/models/ColumnStore.js';
 import ModuleStore from '../pages/xmodule/models/ModuleStore';
-import ProjectStore from '../pages/xproject/models/ProjectStore';
+import ProjectStore from '../pages/project/models/ProjectStore';
 import CategoryStore from '../pages/public/category/models/CategoryStore';
 import DictionaryStore from '../pages/public/dictionary/models/DictionaryStore';
 import InterfaceStore from '../pages/xinterface/models/InterfaceStore';
 import PageStore from '../pages/xpage/models/PageStore';
 import WidgetStore from '../pages/xwidget/models/WidgetStore';
 import TempalteStore from '../pages/pagetemplate/models/TemplateStore';
-import ReleaseStore from '../pages/projectrelease/models/ReleaseStore';
-import XReleaseStore from '../pages/xrelease/models/ReleaseStore';
+import ApplicationStore from '../pages/application/models/ApplicationStore';
+import ReleaseStore from '../pages/applicationrelease/models/ReleaseStore';
 //import TestStore from '../zxtable/models/TestStore.js'
 /*import AppStore from "./AppStore";
 
@@ -39,8 +39,8 @@ let stores = {
     pagesStore: new PageStore(),
     widgetsStore: new WidgetStore(),
     templatesStore: new TempalteStore(),
-    releasesStore: new ReleaseStore(),
-    xreleasesStore: new XReleaseStore(),
+    applicationsStore: new ReleaseStore(),
+    applicationreleasesStore: new ReleaseStore(),
     
 }   
 

@@ -34,25 +34,40 @@ public class Xwidget implements Serializable {
        
     //说明
     private String description;
-       
+
+    private String image;
 
     @Column(columnDefinition="text")
     private String defineText;
           
+    private Long applicationTypeId;
+    private int status;
 
-    private Long status;
-        
     public Xwidget() {
 	}
        
      //编号
      public Long getId(){
-         return this.id;
-     };
-     public void setId(Long id){
-         this.id = id;
-     }
-     
+        return this.id;
+    };
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public int getStatus(){
+        return this.status;
+    };
+    public void setStatus(int status){
+        this.status= status;
+    }
+
+    
+    public Long getApplicationTypeId(){
+        return this.applicationTypeId;
+    };
+    public void setApplicationTypeId(Long id){
+        this.applicationTypeId = id;
+    }
      //名称
      public String getName(){
          return this.name;
@@ -77,19 +92,6 @@ public class Xwidget implements Serializable {
          this.defineText = defineText;
      }
      
-
-
-    public Long getStatus(){
-         return this.status;
-    };
-    public void setStatus(Long status){
-         this.status = status;
-    }
-
-
-          
-
-
 
 	@Override
 	public String toString() {

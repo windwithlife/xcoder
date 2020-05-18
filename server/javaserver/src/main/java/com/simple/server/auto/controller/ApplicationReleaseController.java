@@ -1,10 +1,8 @@
 package com.simple.server.auto.controller;
 
-import com.simple.server.auto.entity.ProjectRelease;
-import com.simple.server.auto.entity.Xmodule;
-import com.simple.server.auto.entity.Xrelease;
+import com.simple.server.auto.entity.ApplicationRelease;
 
-import com.simple.server.auto.service.XreleaseService;
+import com.simple.server.auto.service.ApplicationReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,27 +11,27 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/xrelease")
-public class XreleaseController {
+@RequestMapping("/applicationrelease")
+public class ApplicationReleaseController {
 	@Autowired
-    XreleaseService service;
+	ApplicationReleaseService service;
 
 
 	@RequestMapping(value = "/queryAll", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Xrelease> findAll() {
+	public List<ApplicationRelease> findAll() {
 		return service.findAll();
 	}
 	@ResponseBody
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
-    public Xrelease findByKeyId(@PathVariable Long id) {
+    public ApplicationRelease findByKeyId(@PathVariable Long id) {
        	System.out.println("input param Id:" + id);
       return service.findById(id);
 
     }
     @ResponseBody
     @RequestMapping(value = "/queryByNameLike/", method = RequestMethod.GET)
-    public List<Xrelease> findByNameLike(@RequestParam("name") String name ) {
+    public List<ApplicationRelease> findByNameLike(@RequestParam("name") String name ) {
            	System.out.println("input param Name:" + name);
             return service.findByNameLike(name);
 
@@ -42,10 +40,10 @@ public class XreleaseController {
 
     @ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Xrelease save2(@RequestBody Xrelease item) {
+	public ApplicationRelease save2(@RequestBody ApplicationRelease item) {
 
 		System.out.println("input device params:" + item.toString());
-        Xrelease result = service.save(item);
+        ApplicationRelease result = service.save(item);
 		System.out.println("output device result data:" + result.toString());
 		return result;
 	}
@@ -54,10 +52,10 @@ public class XreleaseController {
 
  	@ResponseBody
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public Xrelease updateSave(@RequestBody Xrelease item, @PathVariable Long id) {
+    public ApplicationRelease updateSave(@RequestBody ApplicationRelease item, @PathVariable Long id) {
 
      	 System.out.println("input device params:" + item.toString());
-        Xrelease result = service.save(item);
+        ApplicationRelease result = service.save(item);
      	 System.out.println("output device result data:" + result.toString());
      	 return result;
     }

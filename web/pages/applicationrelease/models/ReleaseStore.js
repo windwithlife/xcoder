@@ -16,7 +16,7 @@ let Data = {
 }
 export default class ReleaseStore extends BaseStore {
     constructor() {
-        super('xrelease');
+        super('applicationrelease');
         this.dataObject = Data;
     }
 

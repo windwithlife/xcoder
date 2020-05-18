@@ -79,17 +79,17 @@ export default class ListPage extends React.Component {
     }
     handleLineUpdate(index, record) {
         let that = this;
-        router.push({ pathname: '/xproject/edit', query: { id: record.id } });
+        router.push({ pathname: '/project/edit', query: { id: record.id } });
 
     }
     handleLineDetail(record) {
         let that = this;
-        router.push({ pathname: '/xproject/detail', query: { id: record.id } });
+        router.push({ pathname: '/project/detail', query: { id: record.id } });
     }
 
     handleLineAdd() {
         let that = this;
-        router.push({ pathname: '/xproject/add', query: { ...that.props.query } });
+        router.push({ pathname: '/project/add', query: { ...that.props.query } });
     }
     handleLineDelete(index, record) {
         var that = this;

@@ -18,7 +18,7 @@ import EditTable from '../common/components/EditableTable';
 
 const rowSelection = {
 };
-@inject('modulesStore') @inject('projectsStore')  @inject('releasesStore')
+@inject('modulesStore') @inject('projectsStore')  @inject('applicationsStore')
 @observer
 export default class DetailPage extends React.Component {
     Store=()=>{
@@ -67,12 +67,12 @@ export default class DetailPage extends React.Component {
     }
     onGotoApplications=()=>{
         let pId = this.props.query.id;
-        router.push({pathname:'/projectrelease/home',query:{projectId:pId}});
+        router.push({pathname:'/application/home',query:{projectId:pId}});
     }
     
     onGotoReleases=()=>{
         let pId = this.props.query.id;
-        router.push({pathname:'/xrelease/home',query:{projectId:pId}});
+        router.push({pathname:'/applicationrelease/home',query:{projectId:pId}});
     }
   
    
@@ -80,7 +80,7 @@ export default class DetailPage extends React.Component {
         console.log(type + index);
         if('projectrelease'==type){
             console.log(type +record.id);
-            router.push({pathname:'/projectrelease/edit',query:{id:record.id}});
+            router.push({pathname:'/application/edit',query:{id:record.id}});
         
         }else if('xmodule'==type){
             router.push({pathname:'/xmodule/edit',query:{id:record.id}});
@@ -93,7 +93,7 @@ export default class DetailPage extends React.Component {
         if (type=='xmodule'){
             router.push({ pathname: '/xmodule/detail' ,query: {id: releaseId }});
         }else if(type=='projectrelease'){
-            router.push({ pathname: '/projectrelease/detail' ,query: {id: releaseId }});  
+            router.push({ pathname: '/application/detail' ,query: {id: releaseId }});  
         }
     }
     handleLineAdd(type) {
@@ -101,7 +101,7 @@ export default class DetailPage extends React.Component {
         if (type=='xmodule'){
             router.push({ pathname: '/xmodule/add' ,query: {projectId: projectId }});
         }else if(type=='projectrelease'){
-            router.push({ pathname: '/projectrelease/add' ,query: {projectId: projectId }});  
+            router.push({ pathname: '/application/add' ,query: {projectId: projectId }});  
         }
         
        
@@ -117,7 +117,7 @@ export default class DetailPage extends React.Component {
         if (type=='xmodule'){
             console.log(record.id);
             this.props.modulesStore.removeById(index,record.id);
-        }else if(type=='projectrelease'){
+        }else if(type=='application'){
             console.log(record.id);
             this.props.releasesStore.removeById(index,record.id);
         }
@@ -128,7 +128,7 @@ export default class DetailPage extends React.Component {
     render() {
         let that = this;
         let itemData = that.props.projectsStore.dataObject.currentItem;
-        let editUrl = "/xproject/edit?id=" + this.props.query.id;
+        let editUrl = "/project/edit?id=" + this.props.query.id;
         return (
             < div >
                
@@ -152,13 +152,7 @@ export default class DetailPage extends React.Component {
                     </Card>
                     </Card>
                 
-{/*                 
-                 <EditTable title="此项目中的所有可发布应用" columns={that.Header()} data={itemData.releases} 
-                onAdd={that.handleLineAdd.bind(that,'projectrelease')} 
-                onDelete={that.handleLineDelete.bind(that,'projectrelease')}
-                onUpdate={that.handleLineUpdate.bind(that,'projectrelease')}
-                onDetail={that.handleLineDetail.bind(that,'projectrelease')}
-                ></EditTable> */}
+
                 <EditTable title="此项目中的所有模块" columns={that.Header()} data={itemData.modules} 
                 onAdd={that.handleLineAdd.bind(that,'xmodule')} 
                 onDelete={that.handleLineDelete.bind(that,'xmodule')}

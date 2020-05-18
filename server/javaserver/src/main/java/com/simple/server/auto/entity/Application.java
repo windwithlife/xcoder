@@ -4,9 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+//import com.simple.core.base.user.entity.*;
+
 
 @Entity
-public class Xrelease implements Serializable {
+public class Application implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
@@ -21,21 +23,20 @@ public class Xrelease implements Serializable {
     private String description;
 
     private Long projectId;
-
+    private Long moduleId;
+    private String applicationName;
+    private String path;
     private String sideType;
     private String language;
     private String framework;
     private String platform;
 
-    private String path;
-    private String repository;
-    private String repositoryBranch;
-    private String targetPath;
-    private String releaseStatus;
-    private String releaseVersion;
-    private String applicationName;
+    @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
+    @JoinColumn(name="releaseId")
+    private List<Xpage> pages;
 
-    public Xrelease() {
+
+    public Application() {
     }
 
     //编号
@@ -46,52 +47,27 @@ public class Xrelease implements Serializable {
         this.id = id;
     }
 
+    public Long getModuleId(){
+        return this.moduleId;
+    };
+    public void setModuleId(Long id){
+        this.moduleId = id;
+    }
+
+    public List<Xpage> getPages(){
+        return this.pages;
+    };
+    public void setPages(List<Xpage> pages){
+        this.pages = pages;
+    }
+
     public String getPath(){
         return this.path;
     };
     public void setPath(String path){
         this.path = path;
     }
-    //代码仓库
-    public String getRepository(){
-        return this.repository;
-    };
-    public void setRepository(String repo){
-        this.repository= repo;
-    }
-
-    public String getTargetPath(){
-        return this.targetPath;
-    };
-    public void setTargetPath(String path){
-        this.targetPath = path;
-    }
-    //代码仓库
-    public String getRepositoryBranch(){
-        return this.repositoryBranch;
-    };
-    public void setRepositoryBranch(String branch){
-        this.repositoryBranch= branch;
-    }
-
-
-    //发布状态
-    public String getReleaseStatus(){
-        return this.releaseStatus;
-    };
-    public void setReleaseStatus(String status){
-        this.releaseStatus= status;
-    }
-
-    //发布状态
-    public String getReleaseVersion(){
-        return this.releaseVersion;
-    };
-    public void setReleaseVersion(String version){
-        this.releaseVersion= version;
-    }
-
-    //编程语言
+    //编号
     public String getLanguage(){
         return this.language;
     };

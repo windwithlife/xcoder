@@ -25,11 +25,11 @@ export default class MenuStore extends BaseStore{
   },
   list:[ 
    
-    {id:21,name: "持续集成管理",url:"/xrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+    {id:21,name: "持续集成管理",url:"/applicationrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
     {id:22,name: "发布历史",url:"/buildrecord/home",level:1,type:'sider', parentId:0,channelName:"ci"},
 
-    {id:11,name: "项目管理",url:"/xproject/list",level:1,type:'sider', parentId:0,channelName:"project"},
-    {id:12,name: "应用管理",url:"/projectrelease/home",level:1,type:'sider', parentId:0,channelName:"project"},
+    {id:11,name: "项目管理",url:"/project/list",level:1,type:'sider', parentId:0,channelName:"project"},
+    {id:12,name: "应用管理",url:"/application/home",level:1,type:'sider', parentId:0,channelName:"project"},
   
 
    
@@ -40,9 +40,9 @@ export default class MenuStore extends BaseStore{
     {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},
     {id:52,name: "页面区域组件管理",url:"/xwidget/home",level:1,type:'sider', parentId:0,channelName:"component"},
     {id:101,name: "组件仓库",url:"/xwidget/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:102,name: "项目管理",url:"/xproject/list",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:103,name: "应用管理",url:"/projectrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:104,name: "持续集成",url:"/xrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:102,name: "项目管理",url:"/project/list",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:103,name: "应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:104,name: "持续集成",url:"/applicationrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:105,name: "配置",url:"/public/personal/detail",level:1,type:'header', parentId:0,channelName:"default"},
 ],
   };
@@ -77,10 +77,10 @@ export default class MenuStore extends BaseStore{
     console.log("path array is --------------:" + arrayPath);
     let moduleName = arrayPath[1];
     //console.log(moduleName);
-    if ((moduleName == "xproject")||(moduleName == "xtable")||(moduleName == "xmodule")||(moduleName=='projectrelease')){
+    if ((moduleName == "project")||(moduleName == "xtable")||(moduleName == "xmodule")||(moduleName=='application')){
        channelName = "project";
     }
-    if ((moduleName == "xrelease")||(moduleName == "buildrecord")||(moduleName == "release")){
+    if ((moduleName == "applicationrelease")||(moduleName == "buildrecord")||(moduleName == "release")){
       channelName = "ci";
    }
     if ((moduleName == "dictionary")||(moduleName == "category")||(moduleName == "public")){
@@ -89,7 +89,7 @@ export default class MenuStore extends BaseStore{
     if ((moduleName == "pagetemplate")||(moduleName == "xwidget")){
       channelName = "component";
     }
-    console.log(channelName);
+    //console.log(channelName);
     return channelName;
   }
   findSiderMenuItemsByPath(path){

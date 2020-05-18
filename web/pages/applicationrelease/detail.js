@@ -22,7 +22,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('xreleasesStore')
+@inject('applicationreleasesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -34,10 +34,10 @@ export default class EditPage extends React.Component {
         this.projectName = "tempName";
     }
     Store = () => {
-        return this.props.xreleasesStore;
+        return this.props.applicationreleasesStore;
     }
     StoreData = () => {
-        return this.props.xreleasesStore.dataObject;
+        return this.props.applicationreleasesStore.dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();

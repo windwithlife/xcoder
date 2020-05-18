@@ -22,7 +22,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('releasesStore') 
+@inject('applicationsStore') 
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -34,10 +34,10 @@ export default class EditPage extends React.Component {
         this.projectName = "tempName";
     }
     Store = () => {
-        return this.props.releasesStore;
+        return this.props.applicationsStore;
     }
     StoreData=()=>{
-        return this.props.releasesStore.dataObject;
+        return this.props.applicationsStore.dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
@@ -99,17 +99,17 @@ export default class EditPage extends React.Component {
 
     handleLineUpdate(index, record) {
         
-        let path = '/projectrelease/edit';
+        let path = '/application/edit';
         router.push({ pathname: path, query: { id: record.id } });
 
     }
     handleLineDetail(record) {
-        let path = '/projectrelease/detail';
+        let path = '/application/detail';
         console.log(path);
         router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd() {
-        let path = '/projectrelease/add';
+        let path = '/application/add';
         console.log(path);
         router.push({ pathname: path });
     }

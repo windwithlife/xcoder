@@ -22,7 +22,7 @@ import XSelect from '../common/components/form/select';
 import EditTable from '../common/components/EditableTable';
 
 
-@inject('modulesStore') @inject('pagesStore') @inject('releasesStore')
+@inject('modulesStore') @inject('pagesStore') @inject('applicationsStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -32,7 +32,7 @@ export default class EditPage extends React.Component {
     }
 
     Store = () => {
-        return this.props.releasesStore;
+        return this.props.applicationsStore;
     }
     startHeader() {
         var that = this;
@@ -180,5 +180,5 @@ export default class EditPage extends React.Component {
 }
 
 EditPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
+    return { query: context.query};
 }

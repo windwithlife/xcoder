@@ -7,16 +7,16 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('xreleasesStore') @inject('releasesStore')
+@inject('applicationreleasesStore') @inject('releasesStore')
 @observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
 
     Store = () => {
-        return this.props.xreleasesStore;
+        return this.props.applicationreleasesStore;
     }
     StoreData = () => {
-        return this.props.xreleasesStore.dataObject;
+        return this.props.applicationreleasesStore.dataObject;
     }
     constructor(props) {
         super(props);

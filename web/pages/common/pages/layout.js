@@ -83,7 +83,7 @@ export default class MyLayout extends React.Component {
 
 
         <Layout>
-          {/* <style jsx>{`
+          <style jsx>{`
         #components-layout-demo-top-side-2 .logo {
           width: 120px;
           height: 31px;
@@ -92,7 +92,7 @@ export default class MyLayout extends React.Component {
           margin: 16px 28px 16px 0;
           float: left;
         }
-      `}</style> */}
+      `}</style>
 
           <Header className="header">
             <div className="logo" />
