@@ -22,7 +22,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('modulesStore') @inject('applicationsStore') @inject('pagesStore') @inject('projectsStore')
+@inject('modulesStore') @inject('applicationsStore') @inject('pagesStore') @inject('projectsStore')  @inject('applicationTypesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -67,6 +67,7 @@ export default class EditPage extends React.Component {
 
         this.Store().queryById(id, function (values) {
             console.log(values);
+            that.props.applicationTypesStore.queryById(values.applicationTypeId);
             that.props.projectsStore.queryById(values.projectId, function (value) {
                 that.projectName = value.name;
             });
@@ -82,6 +83,13 @@ export default class EditPage extends React.Component {
         let itemData = this.Store().dataObject.currentItem;
         itemData.projectName = this.projectName;
         itemData.module = this.props.modulesStore.dataObject.currentItem;
+        
+        let appType = this.props.applicationTypesStore.dataObject.currentItem;
+
+        itemData.sideType = appType.sideType;
+        itemData.language = appType.language;
+        itemData.framework = appType.framework;
+        itemData.path = appType.path;
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
@@ -136,6 +144,7 @@ export default class EditPage extends React.Component {
         let that = this;
         let editUrl = "/application/edit?id=" + this.props.query.id;
         let itemData = that.Store().dataObject.currentItem;
+        let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
         let isShowPage = itemData.sideType == 'server' ? false : true;
 
         console.log('render module edit page');
@@ -147,7 +156,7 @@ export default class EditPage extends React.Component {
                             {itemData.name}
                         </Form.Item>
                         < Form.Item name="applicationTypeId" label="应用类型：">
-                            {itemData.applicationTypeId}
+                            {appTypeName}
                         </Form.Item>
                         < Form.Item name="projectId" label="所属项目：">
                             {itemData.projectId}

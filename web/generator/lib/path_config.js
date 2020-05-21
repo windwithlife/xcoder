@@ -48,6 +48,7 @@ let TargetRoot = '../../projects/';
         this.projectConfig = projectConfig;
         this.applicationName = projectConfig.name;
         this.sideType = projectConfig.sideType;
+        
         console.log(this.projectConfig);
     }
    
@@ -70,7 +71,13 @@ let TargetRoot = '../../projects/';
     }
     getPrjectPath(){
         let projectConfig = this.projectConfig;
+        
         let projctPath  = '';
+
+        if(projectConfig.path){
+            return projectConfig.path;
+        }
+
         projctPath = projctPath + this.projectConfig.sideType;
         projctPath = projctPath + '-' + this.projectConfig.language;
 

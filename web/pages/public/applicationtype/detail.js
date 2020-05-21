@@ -125,7 +125,7 @@ export default class EditPage extends React.Component {
                         <Card type="inner">
                            
                             <Form.Item>
-                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">生产发布</Button>
+                                <Button type="primary" size="large">返回</Button>
                             </Form.Item>
                         </Card>
 
