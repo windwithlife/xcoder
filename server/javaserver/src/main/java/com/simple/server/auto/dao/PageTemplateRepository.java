@@ -10,8 +10,9 @@ public interface PageTemplateRepository extends JpaRepository<PageTemplate, Long
 
     public PageTemplate findOneByName(String name);
 
-    
+
        public List<PageTemplate> findByStatus(Long id);
+       public List<PageTemplate> findByApplicationTypeId(Long id);
 
                    
 }

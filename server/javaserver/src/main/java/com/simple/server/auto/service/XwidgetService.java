@@ -43,6 +43,9 @@ public class XwidgetService {
     public  List<Xwidget> findByStatus(Long id){
         return dao.findByStatus(id);
     }
+	public  List<Xwidget> findByApplicationTypeId(Long id){
+		return dao.findByApplicationTypeId(id);
+	}
 
                              
 }

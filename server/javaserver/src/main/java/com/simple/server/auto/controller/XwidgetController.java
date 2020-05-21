@@ -112,8 +112,15 @@ public class XwidgetController {
     }
 
 
-   
+    @ResponseBody
+    @RequestMapping(value = "/findByApplicationTypeId/{id}", method = RequestMethod.GET)
+    public List<Xwidget> findByApplicationType(@RequestParam("id") Long id) {
 
-    
+        return service.findByApplicationTypeId(id);
+
+    }
+
+
+
 
 }

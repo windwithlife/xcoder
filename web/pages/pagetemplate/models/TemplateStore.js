@@ -19,10 +19,10 @@ export default class TemplateStore extends BaseStore {
         this.dataObject = Data;
     }
     @action.bound
-    queryByModuleId(id){
+    queryByApplicationTypeId(id,callback){
         let that = this;
         console.log('moduleid is :' + id);
-        this.model.query("/queryByModuleId",{id:id},function (response) {
+        this.model.query("/findByApplicationTypeId/" + id,{id:id},function (response) {
             if (response && response.data) {
                 //console.log(JSON.stringify(response.data));
                 console.log(response.data);
@@ -30,6 +30,9 @@ export default class TemplateStore extends BaseStore {
                 //    item.key = item.id
                 //});
                 that.dataObject.list= response.data;
+                if (callback){
+                    callback(response.data);
+                }
             }
         });
 

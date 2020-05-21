@@ -63,7 +63,7 @@ public class Project implements Serializable {
 
     @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="projectId")
-    private List<ProjectRelease> releases;
+    private List<Application> releases;
 
 //    @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
 //    @JoinColumn(name="projectId")
@@ -84,10 +84,10 @@ public class Project implements Serializable {
         this.modules = modules;
     }
 
-    public List<ProjectRelease> getReleases(){
+    public List<Application> getReleases(){
         return this.releases;
     };
-    public void setReleases(List<ProjectRelease> releases){
+    public void setReleases(List<Application> releases){
         this.releases = releases;
     }
 

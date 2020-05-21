@@ -14,12 +14,14 @@ import {
 } from 'antd';
 const { TextArea } = Input;
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
+
+import XSelect from '../common/components/select';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 //import AddorEditPage from './AddColumnDialog';
+import Upload from '../common/components/FileUpload';
 
-@inject('templatesStore')
+@inject('templatesStore') @inject('applicationTypesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -36,16 +38,29 @@ export default class EditPage extends React.Component {
         var that = this;
         //let moduleId = this.props.query.moduleId;
         //values.module = moduleId;
+        console.log(values);
         this.Store().update(values, () => { console.log('finished add row'); router.back(); });
     }
     componentDidMount() {
-
+        let that = this;
         console.log('DidMount');
         let id = this.props.query.id;
-        this.Store().queryById(id);
+        this.props.applicationTypesStore.queryAll();
+        this.Store().queryById(id, function(values){
+            that.formRef.current.setFieldsValue(values);
+        });
     }
 
-
+    onUploadError=(info)=>{
+        console.log('error happened during upload file!' + info.file.name);
+    }
+    onUploadEnd=(info)=>{
+        console.log('error happened during upload file!' + JSON.stringify(info));
+        console.log(info.file.response.path);
+        let webImageFilePath = info.file.response.path;
+        this.formRef.current.setFieldsValue({image:webImageFilePath});
+        this.Store().dataObject.currentItem.image = webImageFilePath;
+    }
 
 
 
@@ -71,19 +86,22 @@ export default class EditPage extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="sideType" label="端点" >
-                        < XSelect category="sideType" />
+                    <Form.Item name="image" label="图片">
+                    <img src={itemData.image} width="100px" height="100px" />
+                    <Upload filename="imagefile" uploadAction='/imageupload' onEnd={this.onUploadEnd} onError={this.onUploadError} />
                     </Form.Item>
-                    <Form.Item name="category" label="页面功能分类" >
+                    <Form.Item name="category" label="页面所属类型" >
                         <XSelect category="pageCategory" />
 
                     </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language" />
+                    <Form.Item name="applicationTypeId" label="适用的应用类型" >
+                    <Select >       
+           {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+               return (<Select.Option key = {item.id} value={item.id}>{item.name}</Select.Option>);
+           })}
+         </Select>
                     </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework" />
-                    </Form.Item>
+                   
                     < Form.Item name="tag" label="页面标签：">
                         <Input />
                     </Form.Item>
@@ -101,6 +119,6 @@ export default class EditPage extends React.Component {
     }
 }
 
-ListPage.getInitialProps = async function (context) {
+EditPage.getInitialProps = async function (context) {
     return { query: context.query };
 }

@@ -24,12 +24,16 @@ public class Application implements Serializable {
 
     private Long projectId;
     private Long moduleId;
+    private Long applicationTypeId;
+
     private String applicationName;
     private String path;
-    private String sideType;
-    private String language;
-    private String framework;
-    private String platform;
+//    private String sideType;
+//    private String language;
+//    private String framework;
+//    private String platform;
+
+
 
     @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="releaseId")
@@ -45,6 +49,13 @@ public class Application implements Serializable {
     };
     public void setId(Long id){
         this.id = id;
+    }
+
+    public Long getApplicationTypeId(){
+        return this.applicationTypeId;
+    };
+    public void setApplicationTypeId(Long id){
+        this.applicationTypeId = id;
     }
 
     public Long getModuleId(){
@@ -67,34 +78,34 @@ public class Application implements Serializable {
     public void setPath(String path){
         this.path = path;
     }
-    //编号
-    public String getLanguage(){
-        return this.language;
-    };
-    public void setLanguage(String lan){
-        this.language = lan;
-    }
-
-    //编号
-    public String getSideType(){
-        return this.sideType;
-    };
-    public void setSideType(String side){
-        this.sideType = side;
-    }
-    //编号
-    public String getFramework(){
-        return this.framework;
-    };
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
-
-    //编号
-    public String getPlatform(){
-        return this.platform;
-    };
-    public void setPlatform(String platform){ this.platform = platform;}
+//    //编号
+//    public String getLanguage(){
+//        return this.language;
+//    };
+//    public void setLanguage(String lan){
+//        this.language = lan;
+//    }
+//
+//    //编号
+//    public String getSideType(){
+//        return this.sideType;
+//    };
+//    public void setSideType(String side){
+//        this.sideType = side;
+//    }
+//    //编号
+//    public String getFramework(){
+//        return this.framework;
+//    };
+//    public void setFramework(String framework){
+//        this.framework = framework;
+//    }
+//
+//    //编号
+//    public String getPlatform(){
+//        return this.platform;
+//    };
+//    public void setPlatform(String platform){ this.platform = platform;}
 
     public Long getProjectId(){
         return this.projectId;

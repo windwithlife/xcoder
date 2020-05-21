@@ -17,19 +17,16 @@ export default class TableAdd extends React.Component {
         let that = this;
         let applicationId = this.props.query.applicationId;
         this.state = {choosedTemplates:[]};
-        this.moduleFitTemplates = [];
+        //this.moduleFitTemplates = [];
         props.applicationsStore.queryById(applicationId,function(app){
             console.log(module);
-            props.templatesStore.queryAll(function(values){
-                values.forEach(function(template){
-                    console.log("template data");
-                    console.log(template);
-                    if ((template.sideType == app.sideType) && (template.language==app.language)){
-                        that.moduleFitTemplates.push(template);
-                    }
-                });
-                that.setState({choosedTemplates:that.moduleFitTemplates}); 
+            that.props.templatesStore.queryByApplicationTypeId(app.applicationTypeId,function(data){
+                //that.moduleFitTemplates = data;
+                that.setState({choosedTemplates:data}); 
+                console.log("template items for page template!")
+                console.log(data);
             });
+            that.props.widgetsStore.queryByApplicationTypeId(app.applicationTypeId);
         })
        
     }
@@ -52,7 +49,7 @@ export default class TableAdd extends React.Component {
         let category = value;
         console.log('category:' + value);
         let results =[];
-        this.moduleFitTemplates.forEach(function(template){
+        that.props.templatesStore.dataObject.list.forEach(function(template){
             if(template.category == value){
                 results.push(template);
             }
@@ -64,7 +61,7 @@ export default class TableAdd extends React.Component {
         let that = this;
         let index = value;
         console.log('index' + value);
-        let templateDefineText = this.props.templatesStore.dataObject.list[index].defineText;
+        let templateDefineText = that.state.choosedTemplates[index].defineText;
         console.log(templateDefineText);
         this.formRef.current.setFieldsValue({defineText:templateDefineText});
        
@@ -96,21 +93,21 @@ export default class TableAdd extends React.Component {
                     </Form.Item>
 
                     <Form.Item name="sectionA" label="选择片段组件 A片段" >
-                    <Select onChange={that.onChangeTemplate}>
+                    <Select >
                         {that.props.widgetsStore.dataObject.list.map(function (item, i) {
                             return (<Select.Option value={i}>{item.name}</Select.Option>);
                         })}
                     </Select>
                     </Form.Item>
                     <Form.Item name="sectionB" label="选择片段组件 B片段" >
-                    <Select onChange={that.onChangeTemplate}>
+                    <Select >
                         {that.props.widgetsStore.dataObject.list.map(function (item, i) {
                             return (<Select.Option value={i}>{item.name}</Select.Option>);
                         })}
                     </Select>
                     </Form.Item>
                     <Form.Item name="sectionC" label="选择片段组件 C片段" >
-                    <Select onChange={that.onChangeTemplate}>
+                    <Select >
                         {that.props.widgetsStore.dataObject.list.map(function (item, i) {
                             return (<Select.Option value={i}>{item.name}</Select.Option>);
                         })}

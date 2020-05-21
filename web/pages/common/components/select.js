@@ -50,7 +50,7 @@ export default class XList extends React.Component {
         
         if (!that.state.options){
             return(<Select ref ="selectEL" value={this.props.value} onChange={this.handleChange}>
-                        <Select.Option value={"-1"}>无</Select.Option>
+                        <Select.Option key = "keyxxx" value={"-1"}>无</Select.Option>
                    </Select >);
         }
         return (
@@ -58,7 +58,8 @@ export default class XList extends React.Component {
             <Select ref ="selectEL" value={this.props.value} onChange={this.handleChange}>
                 <Select.Option value={"-1"}>无</Select.Option>
                 {that.state.options.map(function (item, i) {
-                    return (<Select.Option value={item.value}>{item.name}</Select.Option>);
+                    item.key = item.id;
+                    return (<Select.Option key={item.key} value={item.value}>{item.name}</Select.Option>);
                 })}
             </Select >
         );

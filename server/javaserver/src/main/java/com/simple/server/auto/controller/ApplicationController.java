@@ -1,9 +1,9 @@
 package com.simple.server.auto.controller;
 
 import com.simple.server.auto.entity.Application;
-import com.simple.server.auto.entity.ProjectRelease;
+//import com.simple.server.auto.entity.ProjectRelease;
 import com.simple.server.auto.service.ApplicationService;
-import com.simple.server.auto.service.ProjectReleaseService;
+//import com.simple.server.auto.service.ProjectReleaseService;
 import com.simple.server.auto.service.XmoduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

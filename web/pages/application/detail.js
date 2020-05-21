@@ -42,25 +42,7 @@ export default class EditPage extends React.Component {
         let nextMode = !this.state.editMode;
         this.setState({ editMode: nextMode });
     }
-    tableHeader() {
-        var that = this;
-
-        var fieldColumns = [];
-
-        fieldColumns.push({
-            title: "表的名称",
-            dataIndex: 'name',
-            key: 'name'
-        });
-
-        fieldColumns.push({
-            title: "说明",
-            dataIndex: 'description',
-            key: 'description'
-        });
-
-        return fieldColumns;
-    }
+   
 
     buildPageColumns() {
         let fieldColumns = [];
@@ -109,7 +91,7 @@ export default class EditPage extends React.Component {
     }
     createDeployment=()=>{
         let applicationId = this.props.query.id;
-        router.push({ pathname:'/xrelease/add', query: {applicationId: applicationId} });
+        router.push({ pathname:'/applicationrelease/add', query: {applicationId: applicationId} });
     }
     downloadCode = () => {
         //console.log(type);
@@ -127,12 +109,9 @@ export default class EditPage extends React.Component {
         router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd(type) {
-        let releaseId = this.props.query.id;
-        console.log('begin route to ' + type);
-        if ('xmodule' == type) {
-            router.push({ pathname: '/projectrelease/add_module', query: { id: releaseId } });
-        } else if ('xpage' == type) {
-            router.push({ pathname: '/xpage/add', query: { id: releaseId } });
+        let applicationId = this.props.query.id;
+        if ('xpage' == type) {
+            router.push({ pathname: '/xpage/add', query: { applicationId: applicationId } });
         }
     }
 
@@ -155,7 +134,7 @@ export default class EditPage extends React.Component {
 
     render() {
         let that = this;
-        let editUrl = "/projectrelease/edit?id=" + this.props.query.id;
+        let editUrl = "/application/edit?id=" + this.props.query.id;
         let itemData = that.Store().dataObject.currentItem;
         let isShowPage = itemData.sideType == 'server' ? false : true;
 
@@ -167,18 +146,8 @@ export default class EditPage extends React.Component {
                         < Form.Item name="name" label="可发布项目名：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="sideType" label="项目端点类型：">
-                            {itemData.sideType}
-                        </Form.Item>
-
-                        < Form.Item name="language" label="编程语言：">
-                            {itemData.language}
-                        </Form.Item>
-                        < Form.Item name="framework" label="框架：">
-                            {itemData.framework}
-                        </Form.Item>
-                        < Form.Item name="platform" label="操作系统平台：">
-                            {itemData.platform}
+                        < Form.Item name="applicationTypeId" label="应用类型：">
+                            {itemData.applicationTypeId}
                         </Form.Item>
                         < Form.Item name="projectId" label="所属项目：">
                             {itemData.projectId}

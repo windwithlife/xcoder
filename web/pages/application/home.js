@@ -58,7 +58,7 @@ export default class EditPage extends React.Component {
 
         fieldColumns.push({
             title: "应用类型",
-            dataIndex: 'sideType',
+            dataIndex: 'applicationTypeId',
             key: 'sideType'
         });
         fieldColumns.push({

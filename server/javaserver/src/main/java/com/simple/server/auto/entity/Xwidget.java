@@ -61,7 +61,7 @@ public class Xwidget implements Serializable {
         this.status= status;
     }
 
-    
+
     public Long getApplicationTypeId(){
         return this.applicationTypeId;
     };
@@ -83,7 +83,15 @@ public class Xwidget implements Serializable {
      public void setDescription(String description){
          this.description = description;
      }
-     
+
+    //名称
+    public String getImage(){
+        return this.image;
+    };
+    public void setImage(String img){
+        this.image = img;
+    }
+
      //页面接口定义
      public String getDefineText(){
          return this.defineText;

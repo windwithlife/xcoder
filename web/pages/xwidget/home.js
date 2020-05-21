@@ -20,7 +20,7 @@ import { inject, observer } from 'mobx-react';
 
 const rowSelection = {
 };
-@inject('widgetsStore')
+@inject('widgetsStore') @inject('applicationTypesStore')
 @observer
 export default class DetailPage extends React.Component {
 
@@ -72,7 +72,7 @@ export default class DetailPage extends React.Component {
         router.push({ pathname: '/xwidget/detail', query: { id: record.id } });
     }
 
-    handleLineUpdate(record) {
+    handleLineUpdate(index,record) {
         router.push({ pathname: '/xwidget/edit', query: { id: record.id } });
     }
     handleLineAdd() {
@@ -103,6 +103,7 @@ export default class DetailPage extends React.Component {
                     onAdd={that.handleLineAdd.bind(that)}
                     onDelete={that.handleDelete.bind(that)}
                     onDetail={that.handleLineDetail.bind(that)}
+                    onUpdate={that.handleLineUpdate.bind(that)}
                 ></EditTable>
 
             </div>

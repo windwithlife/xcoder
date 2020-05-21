@@ -114,8 +114,14 @@ public class PageTemplateController {
     	return id;
     }
 
+           @ResponseBody
+        @RequestMapping(value = "/findByApplicationTypeId/{id}", method = RequestMethod.GET)
+        public List<PageTemplate> findByApplicationType(@RequestParam("id") Long id) {
 
-   
+            return service.findByApplicationTypeId(id);
+
+    }
+
 
     
 

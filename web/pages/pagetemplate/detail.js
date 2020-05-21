@@ -69,14 +69,11 @@ export default class DetailPage extends React.Component {
                     < Form.Item name="description" label="描述信息：">
                         {itemData.description}
                     </Form.Item>
-                    <Form.Item name="sideType" label="其适用的端" >
-                        {itemData.sideType}
+                    <Form.Item name="category" label="页面功能分类" >
+                    {itemData.category}
                     </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
-                        {itemData.language}
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        {itemData.framework}
+                    <Form.Item name="applicationTypeId" label="适用应用类型" >
+                        {itemData.applicationTypeId}
                     </Form.Item>
                     < Form.Item name="tag" label="页面标签：">
                         {itemData.tag}

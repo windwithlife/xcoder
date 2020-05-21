@@ -12,6 +12,7 @@ public interface XwidgetRepository extends JpaRepository<Xwidget, Long> {
 
     
        public List<Xwidget> findByStatus(Long id);
+    public List<Xwidget> findByApplicationTypeId(Long id);
 
                    
 }

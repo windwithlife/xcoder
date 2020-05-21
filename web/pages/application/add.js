@@ -7,7 +7,7 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('applicationsStore') @inject('modulesStore')
+@inject('applicationsStore') @inject('modulesStore')  @inject('applicationTypesStore')
 @observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
@@ -28,6 +28,8 @@ export default class AddPage extends React.Component {
         console.log('DidMount');
         let projectId = this.props.query.projectId;
         let moduleId = this.props.query.moduleId;
+
+        this.props.applicationTypesStore.queryAll();
         if (moduleId){
             this.hasModuleInfo = true;
             this.props.modulesStore.queryById(moduleId,function(values){
@@ -40,6 +42,7 @@ export default class AddPage extends React.Component {
         
     }
 
+  
     onFinish = values => {
         var that = this;
         let projectId = this.props.query.projectId;
@@ -82,10 +85,16 @@ export default class AddPage extends React.Component {
                             })}
                         </Select>
                     </Form.Item>
-                    < Form.Item name="sideType" label="项目类型：">
-                        < XSelect category="sideType" />
+                   
+                 
+                    <Form.Item name="applicationTypeId" label="应用类型" >
+                        <Select >
+                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
                     </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
+                    {/* < Form.Item name="language" label="编程语言选择：">
                         < XSelect category="language" />
                     </Form.Item>
                     < Form.Item name="framework" label="技术框架：">
@@ -93,7 +102,7 @@ export default class AddPage extends React.Component {
                     </Form.Item>
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
-                    </Form.Item>
+                    </Form.Item> */}
                     
                     <Form.Item name="path" label="服务，站点类应用访问PATH">
                         <Input />

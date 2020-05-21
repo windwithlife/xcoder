@@ -17,11 +17,11 @@ import { SettingOutlined } from '@ant-design/icons';
 
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-//import AddColumnPage from './AddColumnDialog';
 
-const rowSelection = {
-};
-@inject('widgetsStore') 
+
+
+
+@inject('widgetsStore') @inject('applicationTypesStore')
 @observer
 export default class DetailPage extends React.Component {
     
@@ -55,6 +55,7 @@ export default class DetailPage extends React.Component {
         this.Store().removeById(index, record.id);
     }
 
+   
    
     render() {
         let that = this;

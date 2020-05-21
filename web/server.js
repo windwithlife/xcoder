@@ -6,18 +6,20 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
-
+var config = require('./config/config');
 var fileupload = require('./utils/fileupload').fileupload;
 
 const rewrite = require('express-urlrewrite');
 var releaseServer = require('./ci/libs/release');
+var uploadRootPath = config['current'].UPLOAD_PATH;
+console.log("current upload root path"  + uploadRootPath);
 
 app.prepare()
   .then(() => {
     const server = express()
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
-
+    server.use('/images',express.static(uploadRootPath));
     // server.use(rewrite(/^\/coder\/?(.*)/, '/$1'));
     // server.get('/a', (req, res) => {
     //   return app.render(req, res, '/b', req.query)
@@ -140,12 +142,22 @@ app.prepare()
       res.json({
         code: true,
         filename: req.file.filename,
-        path:req.file.path,
+        path: "/images/" + req.file.filename,//req.file.path,
         msg: '上传成功'
       });
     });
 
-
+    server.post('/imageupload', fileupload.single('imagefile'), function (req, res, next) {
+      // req.file is the `avatar` file
+      // req.body will hold the text fields, if there were any
+      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
+      res.json({
+        code: true,
+        filename: req.file.filename,
+        path: "/images/" + req.file.filename,//req.file.path,
+        msg: '上传成功'
+      });
+    });
     server.get('/download', function (req, res) {
       let filename = req.query.filename;
       if (!filename){

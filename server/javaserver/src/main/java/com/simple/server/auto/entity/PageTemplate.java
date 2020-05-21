@@ -34,12 +34,12 @@ public class PageTemplate implements Serializable {
        
     //说明
     private String description;
-       
+    private String image;
 
     //private Long interfaces;
-    private String sideType;
-    private String language;
-    private String framework;
+//    private String sideType;
+//    private String language;
+//    private String framework;
     private String category;
     private String tag;
 
@@ -85,6 +85,13 @@ public class PageTemplate implements Serializable {
      }
 
     //名称
+    public String getImage(){
+        return this.image;
+    };
+    public void setImage(String img){
+        this.image = img;
+    }
+    //名称
     public String getCategory(){
         return this.category;
     };
@@ -99,22 +106,22 @@ public class PageTemplate implements Serializable {
      public void setDescription(String description){
          this.description = description;
      }
-
-    //语言
-    public String getLanguage(){
-        return this.language;
-    };
-    public void setLanguage(String language){
-        this.language = language;
-    }
-
-    //框架
-    public String getFramework(){
-        return this.framework;
-    };
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
+//
+//    //语言
+//    public String getLanguage(){
+//        return this.language;
+//    };
+//    public void setLanguage(String language){
+//        this.language = language;
+//    }
+//
+//    //框架
+//    public String getFramework(){
+//        return this.framework;
+//    };
+//    public void setFramework(String framework){
+//        this.framework = framework;
+//    }
 
     //标签
     public String getTag(){
@@ -123,14 +130,14 @@ public class PageTemplate implements Serializable {
     public void setTag(String tag){
         this.tag = tag;
     }
-
-    //使用端点
-    public String getSideType(){
-        return this.sideType;
-    };
-    public void setSideType(String sideType){
-        this.sideType = sideType;
-    }
+//
+//    //使用端点
+//    public String getSideType(){
+//        return this.sideType;
+//    };
+//    public void setSideType(String sideType){
+//        this.sideType = sideType;
+//    }
 
      //页面代码
      public String getDefineText(){

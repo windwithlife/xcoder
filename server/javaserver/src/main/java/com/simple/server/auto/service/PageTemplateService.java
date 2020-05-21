@@ -43,6 +43,6 @@ public class PageTemplateService {
     public  List<PageTemplate> findByStatus(Long id){
         return dao.findByStatus(id);
     }
-
+	public List<PageTemplate> findByApplicationTypeId(Long id){ return  dao.findByApplicationTypeId(id);};
                              
 }

@@ -18,7 +18,7 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-import NetworkHelper from '../common/components/models/network';
+//import NetworkHelper from '../common/components/models/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
@@ -87,17 +87,7 @@ export default class EditPage extends React.Component {
         });
     }
 
-    releaseTo = (envType) => {
-
-        let itemData = this.StoreData().currentItem;
-        itemData.projectName = this.projectName;
-        itemData.envType = envType;
-        let finalParams = {};
-        finalParams.type = 'release';
-        finalParams.defines = itemData;
-        NetworkHelper.webPost("releaseByParams/", finalParams);
-        console.log(finalParams);
-    }
+   
 
     render() {
         let that = this;
@@ -145,14 +135,7 @@ export default class EditPage extends React.Component {
                         < Form.Item name="releaseStatus" label="当前发布状态：">
                             {itemData.releaseStatus}
                         </Form.Item>
-                        <Card type="inner">
-                            <Form.Item>
-                                <Button type="primary" onClick={that.releaseTo.bind(that, "UAT")} size="large">UAT发布</Button>
-                            </Form.Item>
-                            <Form.Item>
-                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">生产发布</Button>
-                            </Form.Item>
-                        </Card>
+                       
 
                     </Form>
 

@@ -74,15 +74,21 @@ export default class DetailPage extends React.Component {
 
         console.log('DidMount');
         let id = this.props.query.id;
-        this.Store().queryAll();
+        this.Store().queryAll(function(items){
+            items.forEach(function(item){
+                item.key=item.id;
+            })
+        });
     }
 
 
     handleLineDetail(record) {
-        router.push({ pathname: '/pagetemplate/detail', query: { id: record.id } });
+       
+        router.push({ pathname: '/pagetemplate/detail', query: {id: record.id }});
     }
 
-    handleLineUpdate(record) {
+    handleLineUpdate(index,record) {
+        console.log(record);
         router.push({ pathname: '/pagetemplate/edit', query: { id: record.id } });
     }
     handleLineAdd() {
@@ -113,6 +119,8 @@ export default class DetailPage extends React.Component {
                     onAdd={that.handleLineAdd.bind(that)}
                     onDelete={that.handleDelete.bind(that)}
                     onDetail={that.handleLineDetail.bind(that)}
+
+                    onUpdate={that.handleLineUpdate}
                 ></EditTable>
 
             </div>
