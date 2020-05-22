@@ -19,7 +19,7 @@ public class ApplicationType implements Serializable {
     private String name;
     //说明
     private String description;
-    private String path;
+    private String nickname;
     private String sideType;
     private String language;
     private String framework;
@@ -45,11 +45,11 @@ public class ApplicationType implements Serializable {
     }
 
 
-    public String getPath(){
-        return this.path;
+    public String getNickname(){
+        return this.nickname;
     };
-    public void setPath(String path){
-        this.path = path;
+    public void setNickname(String name){
+        this.nickname = name;
     }
     //编号
     public String getLanguage(){

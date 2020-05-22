@@ -89,11 +89,11 @@ function generateFramework(){
 }
 
 
-function initPathEnv(proConfig){
+function initPathEnv(appConfig){
    
-    pathConfig.initWithRootPath("/pages/",proConfig);
-    paramsHelper.initParamsFromProject(proConfig);
-    projectConfig = proConfig;
+    pathConfig.initWithRootPath("/pages/",appConfig);
+    paramsHelper.initParamsFromProject(appConfig);
+    //appConfig = appConfig;
     console.log("workRootPath:" + pathConfig.rootPath()+'templateroot' + pathConfig.templateRoot()+ "Code-targetServerPath:" + pathConfig.targetRoot());   
 }
 

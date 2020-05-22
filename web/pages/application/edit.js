@@ -150,6 +150,9 @@ export default class EditPage extends React.Component {
                             })}
                         </Select>
                     </Form.Item>
+                    <Form.Item name="codePath" label="应用代码位置">
+                        <Input />
+                    </Form.Item>
                             <Form.Item name="path" label="服务，站点类应用访问PATH">
                                 <Input />
                             </Form.Item>

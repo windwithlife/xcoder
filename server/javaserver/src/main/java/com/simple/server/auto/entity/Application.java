@@ -28,6 +28,7 @@ public class Application implements Serializable {
 
     private String applicationName;
     private String path;
+    private String codePath;
 //    private String sideType;
 //    private String language;
 //    private String framework;
@@ -78,6 +79,14 @@ public class Application implements Serializable {
     public void setPath(String path){
         this.path = path;
     }
+
+    public String getCodePath(){
+        return this.codePath;
+    };
+    public void setCodePath(String path){
+        this.codePath = path;
+    }
+
 //    //编号
 //    public String getLanguage(){
 //        return this.language;

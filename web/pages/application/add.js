@@ -103,7 +103,9 @@ export default class AddPage extends React.Component {
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
                     </Form.Item> */}
-                    
+                     <Form.Item name="codePath" label="应用代码位置">
+                        <Input />
+                    </Form.Item>
                     <Form.Item name="path" label="服务，站点类应用访问PATH">
                         <Input />
                     </Form.Item>

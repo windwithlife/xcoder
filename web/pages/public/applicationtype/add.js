@@ -64,7 +64,7 @@ export default class AddPage extends React.Component {
                         < XSelect category="os" />
                     </Form.Item>
                   
-                    <Form.Item name="path" label="识别PATH(用于识别应用)">
+                    <Form.Item name="nickname" label="别名(用于识别应用类型，英文输入)">
                         <Input />
                     </Form.Item>
                     

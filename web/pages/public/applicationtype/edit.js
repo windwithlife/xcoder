@@ -146,7 +146,7 @@ export default class EditPage extends React.Component {
                         < Form.Item name="platform" label="目标操作系统">
                             < XSelect category="os" />
                         </Form.Item>
-                        <Form.Item name="path" label="发布应用PATH">
+                        <Form.Item name="nickname" label="别名(用于识别应用类型，英文输入)">
                             <Input />
                         </Form.Item>
                         <Form.Item name="description" label="描述">

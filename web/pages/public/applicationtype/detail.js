@@ -115,8 +115,8 @@ export default class EditPage extends React.Component {
                         < Form.Item name="platform" label="操作系统平台：">
                             {itemData.platform}
                         </Form.Item>
-                        < Form.Item name="path" label="相对的PATH：">
-                            {itemData.path}
+                        < Form.Item name="nickname" label="别名(用于识别应用类型，英文输入)">
+                            {itemData.nickname}
                         </Form.Item>
                       
                         < Form.Item name="description" label="描述信息：">

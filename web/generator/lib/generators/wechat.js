@@ -91,7 +91,7 @@ function generateFramework(){
 
 function initPathEnv(proConfig){
    
-    pathConfig.initWithRootPath("/pages/",proConfig);
+    pathConfig.initWithRootPath("/page/",proConfig);
     paramsHelper.initParamsFromProject(proConfig);
     projectConfig = proConfig;
     console.log("workRootPath:" + pathConfig.rootPath()+'templateroot' + pathConfig.templateRoot()+ "Code-targetServerPath:" + pathConfig.targetRoot());   

@@ -2,11 +2,11 @@ var path = require('path');
 var fs = require('fs');
 var codeTools = require('./code_tools');
 var ModuleDefine = require('./module_define');
-var ProjectConfig = require('./project_config');
+var ApplicationConfig = require('./application_confignfig');
 var Archiver = require('./archiver');
 var archiver = new Archiver();
 var moduleDefines = new ModuleDefine();
-var projectConfig = new ProjectConfig();
+var appConfig = new ApplicationConfig();
 var git_helper = require('../../ci/libs/git-tool');
 
 var generatorList = [];
@@ -79,32 +79,11 @@ function initProject(isFromFiles, releaseData) {
     }else{
         //moduleDefines.loadDefinesFromParams(setting.projectSetting, setting.modules);
         moduleDefines.loadDefinesFromParams(releaseData);
-        projectConfig.initFromSettingParams(releaseData);
+        appConfig.initFromSettingParams(releaseData);
     }
     console.log("finished init project ! new project!");
 }
-function getSelectorName(targetConfig){
-    let generatorSelector = targetConfig.sideType + '-' + targetConfig.language;
-    
-    if (!targetConfig.sideType){
-        targetConfig.sideType = 'web';
-    }
-    if ((!targetConfig.framework)|| (targetConfig.framework=='-1')){
-        generatorSelector = generatorSelector + '-' + 'none';
-    }else{
-        generatorSelector = generatorSelector + '-' + targetConfig.framework;
-    }
-    if ((!targetConfig.platform)||(targetConfig.platform=='-1')){
-        generatorSelector = generatorSelector + '-' + 'all';
-       
-    }else{
-        generatorSelector = generatorSelector + '-' +  targetConfig.platform;
-    }
-   
-    //generatorSelector = targetConfig.sideType + '-' + targetConfig.language + '-' + targetConfig.framework + targetConfig.platform;
-    console.log(generatorSelector);
-    return generatorSelector;
-}
+
 function generateCode(release) {
     console.log('begin to create code!');
     //let targetOptions = release;
@@ -112,21 +91,21 @@ function generateCode(release) {
     
     initGenerators();
     
-    var generator = findGeneratorByName(getSelectorName(release));
+    var generator = findGeneratorByName(appConfig.getAppNickname());
     //console.log(generator);
     if (!generator) {
-        console.log("Generator named:[" + release.language + "] not found!");
+        console.log("Generator named:[" + appConfig.getAppNickname() + "] not found!");
         return;
     }
 
     let gitWorkPath = path.join(process.cwd(), "../../projects/");
 
     git_helper.pushPrepare(gitWorkPath);
-    generator.initEnv(release);
+    generator.initEnv(appConfig);
 
 
     //if ((targetOptions.hasFramework) && (targetOptions.hasFramework == true)){   
-    generator.generateFramework(release);
+    generator.generateFramework(appConfig);
     //}
 
     // if ((targetOptions.hasCommon) && (targetOptions.hasCommon == true)){   

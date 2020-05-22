@@ -42,14 +42,11 @@ let TargetRoot = '../../projects/';
     switchModulePackage(moduleName){
         this.basePackage= "com.simple.server.auto." + moduleName;
     }
-    initWithRootPath(srcRoot,projectConfig){
+    initWithRootPath(srcRoot,appConfig){
         this.srcRoot = srcRoot;
         this.currentRootPath = process.cwd();
-        this.projectConfig = projectConfig;
-        this.applicationName = projectConfig.name;
-        this.sideType = projectConfig.sideType;
-        
-        console.log(this.projectConfig);
+        this.appConfig = appConfig;
+        console.log(this.appConfig);
     }
    
     javaPackageToPath(packageName){
@@ -69,53 +66,27 @@ let TargetRoot = '../../projects/';
         }
         return "/";
     }
-    getPrjectPath(){
-        let projectConfig = this.projectConfig;
-        
-        let projctPath  = '';
-
-        if(projectConfig.path){
-            return projectConfig.path;
-        }
-
-        projctPath = projctPath + this.projectConfig.sideType;
-        projctPath = projctPath + '-' + this.projectConfig.language;
-
-        if ((!this.projectConfig.framework)||(this.projectConfig.framework=='-1')){
-             projctPath = projctPath + '-' + 'none';
-        }else{
-            projctPath = projctPath +'-' + this.projectConfig.framework;
-        }
-        if ((!this.projectConfig.platform)||(this.projectConfig.platform == '-1')){
-            projctPath = projctPath +  '-all';
-        }else{
-            projctPath = projctPath + '-' +  this.projectConfig.platform;
-        }
-       
-        //generatorSelector = targetConfig.sideType + '-' + targetConfig.language + '-' + targetConfig.framework + targetConfig.platform;
-        //console.log('Project Path is :' + projctPath);
-        return projctPath;
-    }
+   
     rootPath(){
         return this.currentRootPath;
     }
     templateRoot(){
-        return path.join(this.currentRootPath, TemplateRoot,this.getPrjectPath());
+        return path.join(this.currentRootPath, TemplateRoot,this.appConfig.getAppNickName());
     }
     targetRoot(){
-        //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
+        //let pathName  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectId,this.appConfig.sideType);
         let finalPath = "/";
         if(this.sideType == 'server'){
-            finalPath = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType, this.applicationName + "-svc");
+            finalPath = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectName,this.appConfig.sideType, this.appConfig.getCodePath() + "-svc");
         }else{
-            finalPath  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectName,this.projectConfig.sideType,this.applicationName);
+            finalPath  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectName,this.appConfig.sideType,this.appConfig.getCodePath());
         }
         
         checkPath(finalPath);
         return finalPath;
     }
     // targetApplicationRoot(){
-    //     //let pathName  = path.join(this.currentRootPath,TargetRoot,this.projectConfig.projectId,this.projectConfig.sideType);
+    //     //let pathName  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectId,this.appConfig.sideType);
     //     let appName  =this.applicationName;
     //     if (this.sideType =='server'){
     //         appName = this.applicationName + "-svc";

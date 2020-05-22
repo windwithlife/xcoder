@@ -89,7 +89,7 @@ export default class EditPage extends React.Component {
         itemData.sideType = appType.sideType;
         itemData.language = appType.language;
         itemData.framework = appType.framework;
-        itemData.path = appType.path;
+        itemData.typeNickname = appType.nickname;
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
@@ -161,7 +161,10 @@ export default class EditPage extends React.Component {
                         < Form.Item name="projectId" label="所属项目：">
                             {itemData.projectId}
                         </Form.Item>
-                        <Form.Item name="path" label="服务，站点类应用访问PATH">
+                        <Form.Item name="codePath" label="应用代码位置">
+                        {itemData.codePath}
+                    </Form.Item>
+                        <Form.Item name="path" label="服务，站点应用访问PATH(可根据引用模块名称）">
                             {itemData.path}
                         </Form.Item>
                         < Form.Item name="moduleName" label="关联模块名">
