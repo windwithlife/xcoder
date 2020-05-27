@@ -3,6 +3,7 @@
     "page/component/index",
     "page/component/category/category",
     "page/component/cart/cart",
+    "page/live/liveroom/add",
     "page/component/user/user",
     "page/component/address/address",
     "page/component/orders/orders",
@@ -12,7 +13,7 @@
   ],
   "window": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "零食商贩",
+    "navigationBarTitleText": "会议平台",
     "navigationBarBackgroundColor": "#AB956D",
     "backgroundColor": "#eeeeee",
     "enablePullDownRefresh": true
@@ -33,13 +34,13 @@
         "pagePath": "page/component/category/category",
         "iconPath": "image/22.png",
         "selectedIconPath": "image/21.png",
-        "text": "分类"
+        "text": "会议直播"
       },
       {
-        "pagePath": "page/component/cart/cart",
+        "pagePath": "page/live/liveroom/add",
         "iconPath": "image/32.png",
         "selectedIconPath": "image/31.png",
-        "text": "购物车"
+        "text": "资讯"
       },
       {
         "pagePath": "page/component/user/user",

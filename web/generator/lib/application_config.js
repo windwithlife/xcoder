@@ -20,7 +20,7 @@ class ProjectConfig {
         this.platform = setting.platform;
         this.projectId = setting.projectId;
         this.projectName = setting.projectName;
-        this.nickname = settting.nickname;
+        this.nickname = setting.typeNickname;
         this.codePath = setting.codePath;
         this.path     = setting.path;
         this.name = setting.name;
@@ -30,7 +30,7 @@ class ProjectConfig {
         return this.codePath;
     }
     
-    getAppNickName() {
+    getAppNickname() {
 
         if (this.nickname) { return this.nickname; }
         let appNickname = this.sideType + '-' + this.language;

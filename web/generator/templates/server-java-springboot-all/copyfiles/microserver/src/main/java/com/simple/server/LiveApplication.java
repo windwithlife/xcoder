@@ -1,4 +1,4 @@
-package xyz.staffjoy.account;
+package com.simple.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages="com.simple")
 @EnableJpaRepositories("com.simple")
 @EntityScan("com.simple.*")
-@EnableFeignClients(basePackages = {"xyz.staffjoy.mail", "xyz.staffjoy.bot", "xyz.staffjoy.account"})
+@EnableFeignClients(basePackages = {"com.simple.mail", "com.simple.account"})
 public class LiveApplication {
 
     public static void main(String[] args) {

@@ -6,14 +6,14 @@
     <modelVersion>4.0.0</modelVersion>
  
     <parent>
-        <groupId>xyz.staffjoy</groupId>
-        <artifactId>staffjoy-parent</artifactId>
+        <groupId>com.simple</groupId>
+        <artifactId>simple-parent</artifactId>
         <version>1.0</version>
     </parent>
  
-    <artifactId>live-svc</artifactId>
+    <artifactId>configure-svc</artifactId>
     <version>1.0.0</version>
-    <name>Simple-Live-Svc</name>
+    <name>configure-svc</name>
  
     <dependencies>
         <dependency>
@@ -40,25 +40,21 @@
         </dependency>
 
         <dependency>
-            <groupId>xyz.staffjoy</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>common-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>xyz.staffjoy</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>account-api</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>xyz.staffjoy</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>mail-api</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>xyz.staffjoy</groupId>
-            <artifactId>bot-api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>

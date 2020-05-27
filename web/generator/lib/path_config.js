@@ -71,7 +71,7 @@ let TargetRoot = '../../projects/';
         return this.currentRootPath;
     }
     templateRoot(){
-        return path.join(this.currentRootPath, TemplateRoot,this.appConfig.getAppNickName());
+        return path.join(this.currentRootPath, TemplateRoot,this.appConfig.getAppNickname());
     }
     targetRoot(){
         //let pathName  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectId,this.appConfig.sideType);
@@ -102,6 +102,12 @@ let TargetRoot = '../../projects/';
     // }
     templateView(pageName){
         let pathName  = path.join(this.templateRoot(),"/views/");
+        //checkPath(pathName);
+        return pathName;
+    }
+
+    templateConfig(pageName){
+        let pathName  = path.join(this.templateRoot(),"/configs/");
         //checkPath(pathName);
         return pathName;
     }
@@ -156,7 +162,7 @@ let TargetRoot = '../../projects/';
         if (childName){
             childPath = childName;
         }
-        let pathName  = path.join(this.targetSrcRoot(),moduleName,'/',childPath);
+        let pathName  = path.join(this.targetSrcRoot(),moduleName,'/',childPath + "/");
         checkPath(pathName);
         return pathName;
     }
@@ -165,7 +171,7 @@ let TargetRoot = '../../projects/';
         if (childName){
             childPath = childName;
         }
-        let pathName  = path.join(this.targetSrcRoot(),moduleName,'/models/',childPath);
+        let pathName  = path.join(this.targetSrcRoot(),moduleName,childPath,'/models/');
         checkPath(pathName);
         return pathName;
     }
@@ -180,6 +186,22 @@ let TargetRoot = '../../projects/';
         //console.log(pathName);
         checkPath(pathName);
         return pathName;
+    }
+    copyPath(source, dest){
+
+        let cpCommand = 'cp -R ' + source + "/."  + ' ' +  dest ;
+        let result = exec(cpCommand);
+        if (result.code !== 0) {
+            console.log('failed! command:' + cpCommand);
+            console.log(result.stderr); 
+            return false;
+        }else{
+            console.log('successful command:' + cpCommand);
+            return true;
+        }
+    }
+    copyFrameworkFiles(){
+        this.copyPath(this.templateCopyFiles(),this.targetCopyFiles());
     }
 }
 

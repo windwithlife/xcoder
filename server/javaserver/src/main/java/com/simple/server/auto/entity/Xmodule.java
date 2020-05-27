@@ -38,10 +38,6 @@ public class Xmodule implements Serializable {
 
     private Long projectId;
 
-    private String sideType;
-    private String language;
-    private String framework;
-    private String platform;
 
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="moduleId")
@@ -50,9 +46,6 @@ public class Xmodule implements Serializable {
     @JoinColumn(name="moduleId")
     private List<Xinterface> interfaces;
 
-    @OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-    @JoinColumn(name="moduleId")
-    private List<Xpage> pages;
 
     public Xmodule() {
 	}
@@ -80,41 +73,7 @@ public class Xmodule implements Serializable {
         this.interfaces = interfaces;
     }
 
-    public List<Xpage> getPages(){
-        return this.pages;
-    };
-    public void setPages(List<Xpage> pages){
-        this.pages = pages;
-    }
 
-    //编号
-    public String getLanguage(){
-        return this.language;
-    };
-    public void setLanguage(String lan){
-        this.language = lan;
-    }
-
-    //编号
-    public String getSideType(){
-        return this.sideType;
-    };
-    public void setSideType(String side){
-        this.sideType = side;
-    }
-    //编号
-    public String getFramework(){
-        return this.framework;
-    };
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
-
-    //编号
-    public String getPlatform(){
-        return this.platform;
-    };
-    public void setPlatform(String platform){ this.platform = platform;}
 
     public Long getProjectId(){
         return this.projectId;

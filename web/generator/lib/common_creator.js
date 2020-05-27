@@ -2,7 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var codeTools = require('./code_tools');
 var ModuleDefine = require('./module_define');
-var ApplicationConfig = require('./application_confignfig');
+var ApplicationConfig = require('./application_config');
 var Archiver = require('./archiver');
 var archiver = new Archiver();
 var moduleDefines = new ModuleDefine();
@@ -132,7 +132,7 @@ function generateCode(release) {
     //     generator.generateContractByName(contractName, moduleDefines.getServiceContractDefineByName(contractName),platformName);
     // });
     
-    git_helper.pushDo(gitWorkPath);
+    //git_helper.pushDo(gitWorkPath);
 
     console.log("generated code by define file in modules directory\n");
 

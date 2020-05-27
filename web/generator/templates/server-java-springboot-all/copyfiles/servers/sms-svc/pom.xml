@@ -6,13 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
  
     <parent>
-        <groupId>xyz.staffjoy</groupId>
-        <artifactId>staffjoy-parent</artifactId>
+        <groupId>com.simple</groupId>
+        <artifactId>simple-parent</artifactId>
         <version>1.0</version>
     </parent>
  
     <artifactId>sms-svc</artifactId>
-    <name>Staffjoy-SMS-Svc</name>
+    <name>SMS-Svc</name>
     <version>1.0.0</version>
     <description>SMS project for Staffjoy microservices demo</description>
  
@@ -30,11 +30,11 @@
             <version>1.1.0</version>
         </dependency>
         <dependency>
-            <groupId>xyz.staffjoy</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>common-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>xyz.staffjoy</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>sms-api</artifactId>
             <version>1.0.0</version>
         </dependency>

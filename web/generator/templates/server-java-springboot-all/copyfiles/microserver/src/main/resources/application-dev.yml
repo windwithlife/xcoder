@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://test.koudaibook.com:30006/mydb?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: 123456
+    password: Password!&
  #   driverClassName: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
@@ -13,14 +13,19 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 server:
-  port: 8888
+  port: 8887
+
+
 staffjoy:
   account-service-endpoint: http://localhost:8081
   email-service-endpoint: http://localhost:8088
   company-service-endpoint: http://localhost:8082
   bot-service-endpoint: http://localhost:8087
+  common:
+    sentry-dsn: https://80bbf4ae778b525f9fe72e2813cd5246@sentry.io/1271087
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+

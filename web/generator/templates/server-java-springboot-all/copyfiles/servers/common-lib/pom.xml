@@ -6,13 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
  
     <parent>
-        <groupId>xyz.staffjoy</groupId>
-        <artifactId>staffjoy-parent</artifactId>
+        <groupId>com.simple</groupId>
+        <artifactId>simple-parent</artifactId>
         <version>1.0</version>
     </parent>
  
     <artifactId>common-lib</artifactId>
-    <name>Staffjoy-Common-Library</name>
+    <name>Simple-Common-Library</name>
     <version>1.0.1</version>
 
     <dependencies>

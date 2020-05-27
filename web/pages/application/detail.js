@@ -145,6 +145,7 @@ export default class EditPage extends React.Component {
         let editUrl = "/application/edit?id=" + this.props.query.id;
         let itemData = that.Store().dataObject.currentItem;
         let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
+        let moduleName = this.props.modulesStore.dataObject.currentItem.name;
         let isShowPage = itemData.sideType == 'server' ? false : true;
 
         console.log('render module edit page');
@@ -152,26 +153,26 @@ export default class EditPage extends React.Component {
             < div >
                 <Card size="small" title="基本信息" style={{ width: 500 }}  >
                     <Form ref={this.formRef}>
-                        < Form.Item name="name" label="可发布项目名：">
+                        < Form.Item  label="可发布项目名：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="applicationTypeId" label="应用类型：">
+                        < Form.Item  label="应用类型：">
                             {appTypeName}
                         </Form.Item>
-                        < Form.Item name="projectId" label="所属项目：">
+                        < Form.Item  label="所属项目：">
                             {itemData.projectId}
                         </Form.Item>
-                        <Form.Item name="codePath" label="应用代码位置">
+                        <Form.Item  label="应用代码位置">
                         {itemData.codePath}
                     </Form.Item>
-                        <Form.Item name="path" label="服务，站点应用访问PATH(可根据引用模块名称）">
+                        <Form.Item  label="服务，站点应用访问PATH(可根据引用模块名称）">
                             {itemData.path}
                         </Form.Item>
-                        < Form.Item name="moduleName" label="关联模块名">
-                            {itemData.moduleName}
+                        < Form.Item  label="关联模块名">
+                            {moduleName}
                         </Form.Item>
 
-                        < Form.Item name="description" label="描述信息：">
+                        < Form.Item  label="描述信息：">
                             {itemData.description}
                         </Form.Item>
                         <Card type="inner">

@@ -5,8 +5,8 @@ var codeTools = require('../code_tools');
 var xtools = require('../xtools');
 var PathConfig = require('../path_config');
 var ParamsHelper = require('../params_helper');
-var Archiver = require('../archiver');
-var archiver = new Archiver();
+//var Archiver = require('../archiver');
+//var archiver = new Archiver();
 pathConfig = new PathConfig();
 paramsHelper = new ParamsHelper();
 
@@ -15,23 +15,43 @@ function createStore(moduleName,defineData){
     let targetFileName = codeTools.firstUpper(defineData.name) + "Store.js";
 
     templateFilename = pathConfig.templateModel() + templateFilename ;
-    targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+    if (defineData.domainType=='module'){
+        targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+    }else{
+        targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+    }
+    //targetFileName   = pathConfig.targetModel(moduleName,defineData.name)+ targetFileName;
     var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
     codeTools.generateCode(templateFilename,params,targetFileName);
 
 };
 
 
-function createBaseStore(moduleName,defineData){
-    let templateFilename =   "/model.js";
-    let targetFileName = codeTools.firstUpper(defineData.name) + "Store.js";
+function createConfig(moduleName,defineData){
+    return;
+    let templateFilename =   "/app.json";
+    let targetFileName = "/app.json";
 
-    templateFilename = pathConfig.templateModel() + templateFilename ;
-    targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+    templateFilename = pathConfig.templateConfig() + templateFilename ;
+    targetFileName   = pathConfig.targetRoot(moduleName)+ targetFileName;
+    //targetFileName   = pathConfig.targetModel(moduleName,defineData.name)+ targetFileName;
     var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
     codeTools.generateCode(templateFilename,params,targetFileName);
 
 };
+
+
+
+// function createBaseStore(moduleName,defineData){
+//     let templateFilename =   "/model.js";
+//     let targetFileName = codeTools.firstUpper(defineData.name) + "Store.js";
+
+//     templateFilename = pathConfig.templateModel() + templateFilename ;
+//     targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
+//     var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
+//     codeTools.generateCode(templateFilename,params,targetFileName);
+
+// };
 
 function generatePage(moduleName,defineData){
     let targetFileName = pathConfig.targetView(moduleName) + codeTools.firstUpper(defineData.name) + ".js";
@@ -41,57 +61,74 @@ function generatePage(moduleName,defineData){
 
 };
 function createView(moduleName,tableDefine,viewName){
-    let templateFilename =  viewName + ".js";
-    let targetFileName = tableDefine.name + "_"+viewName + ".js";
+    let templateFilename =  viewName + ".wxml";
+    let targetFileName = viewName + ".wxml";
+    let tableName = tableDefine.name;
 
     templateFilename = pathConfig.templateView() + templateFilename ;
-    targetFileName   = pathConfig.targetView(moduleName)+ targetFileName;
+    targetFileName   = pathConfig.targetView(moduleName,tableName)+ targetFileName;
     var params = paramsHelper.buildParamsForViewPage(moduleName,tableDefine);
     codeTools.generateCode(templateFilename,params,targetFileName);
+
+    templateFilename = viewName + ".wxss";
+    targetFileName = viewName + ".wxss";
+    templateFilename = pathConfig.templateView() + templateFilename ;
+    targetFileName   = pathConfig.targetView(moduleName,tableName)+ targetFileName;
+    codeTools.generateCode(templateFilename,params,targetFileName);
+
+    templateFilename = viewName + ".json";
+    targetFileName = viewName + ".json";
+    templateFilename = pathConfig.templateView() + templateFilename ;
+    targetFileName   = pathConfig.targetView(moduleName,tableName)+ targetFileName;
+    codeTools.generateCode(templateFilename,params,targetFileName);
+
+    templateFilename = viewName + ".js";
+    targetFileName = viewName + ".js";
+    templateFilename = pathConfig.templateView() + templateFilename ;
+    targetFileName   = pathConfig.targetView(moduleName,tableName)+ targetFileName;
+    codeTools.generateCode(templateFilename,params,targetFileName);
+
 };
 
 
 
 
 function generateStoreByInterfaces(moduleName,defines){
-    //createModel(moduleName,tableDefine);
     createStore(moduleName,defines);
 }
 
 function generateModuleByName(moduleDefine){
     
     console.log('module defines:' + JSON.stringify(moduleDefine));
+     createConfig(moduleDefine.name, moduleDefine);
     //createView(moduleDefine.name,moduleDefine,'module_home');
      moduleDefine.tables.forEach(function(table){
-         createView(moduleDefine.name,table,'home');
+         //createView(moduleDefine.name,table,'home');
          createView(moduleDefine.name,table,'detail');
          createView(moduleDefine.name,table,'add');
          createView(moduleDefine.name,table,'edit');
          //createBaseStore(moduleDefine.name,table);
      });
-    moduleDefine.storeDomains.forEach(function(domainItem){
-        generateStoreByInterfaces(moduleDefine.name,domainItem);
-    });
+     moduleDefine.storeDomains.forEach(function(domainItem){
+         generateStoreByInterfaces(moduleDefine.name,domainItem);
+     });
 
     moduleDefine.pages.forEach(function(pageItem){
         generatePage(moduleDefine.name,pageItem);
     });
-    
-    let zipFile = "application_" + pathConfig.getPrjectPath() + "_" + moduleDefine.name + ".zip";
-    //archiver.compress(pathConfig.targetRoot()+"/",zipFile);
-    
 }
 
 
 function generateFramework(){
    
-    xtools.copyDirEx(pathConfig.templateCopyFiles(),pathConfig.targetCopyFiles());
+    //xtools.copyDirEx(pathConfig.templateCopyFiles(),pathConfig.targetCopyFiles());
+    pathConfig.copyFrameworkFiles();
 }
 
 
 function initPathEnv(proConfig){
    
-    pathConfig.initWithRootPath("/page/",proConfig);
+    pathConfig.initWithRootPath("/page",proConfig);
     paramsHelper.initParamsFromProject(proConfig);
     projectConfig = proConfig;
     console.log("workRootPath:" + pathConfig.rootPath()+'templateroot' + pathConfig.templateRoot()+ "Code-targetServerPath:" + pathConfig.targetRoot());   
