@@ -1,70 +1,98 @@
 import { observable, action } from "mobx";
 import BaseStore from "./BaseStore";
 
+let composeMenuData= function(parentItem, list){
+  list.forEach(function(menuItem){
+    if (parentItem.id == menuItem.parentId){
+       if(!parentItem.childrenList){parentItem.childrenList=[];}
+       parentItem.childrenList.push(menuItem);
+       composeMenuData(menuItem,list);
+    }
+  });
 
-let headerMenu =
-{
-  id:1,
-  name:"headerMenu",
-  url:"/home",
-  level:0,
-  childrenList: [
-    {id:1,name: "直播管理",url:"/public/config",level:1},
-    {id:2,name: "用户管理",url:"/public/config",level:1},
-    {id:3,name: "配置",url:"/public/config",level:1},
-  ]
-}
+};
 
 
-let sidebarMenu =
-{
-  id:2,
-  url:"/home",
-  level:0,
-  name:"headerMenu",
-  childrenList: [
-    {id:11,name: "直播间",url:"/public/config",level:1,childrenList:[
-      {id:112,name: "直播列表",url:"/public/config",level:2},
-      {id:113,name: "直播对话",url:"/public/config",level:2},
-    ]},
-    {id:12,name: "通用维护",url:"/public/config",level:1,childrenList:[
-      {id:121,name: "类型维护",url:"/public/config",level:2},
-      {id:122,name: "审核",url:"/public/config",level:2},
-    ]},
-   
-  ]
-}
-
-class MenuStore extends BaseStore{
+export default class MenuStore extends BaseStore{
 
   @observable dataObject= {
-    headerMenus:headerMenu.childrenList,
-    sidebarMenus:sidebarMenu.childrenList,
+    currentItem :{
+      id:1,
+      name:"oldName",
+      description:"oldDescription",
+      defineText:'',
+      status:-1
+  },
+  channels:{
+    "live":"live",
+    "config":"config",
+    'user' :'user',
+    'info' :'info',
+  },
+  list:[ 
+   
+    {id:21,name: "资讯管理",url:"/info/home",level:1,type:'sider', parentId:0,channelName:"info"},
+   
+    {id:11,name: "直播间",url:"/live/liveroom_home",level:1,type:'sider', parentId:0,channelName:"live"},
+    {id:12,name: "直播资讯",url:"/live/home",level:1,type:'sider', parentId:0,channelName:"live"},
+  
+
+    {id:5,name: "配置",url:"/public/config/home",level:1,type:'sider', parentId:0,channelName:"config"},
+
+    {id:51,name: "个人基本信息",url:"/user/home",level:1,type:'sider', parentId:0,channelName:"user"},
+    {id:52,name: "密码与权限",url:"/account/home",level:1,type:'sider', parentId:0,channelName:"user"},
+
+   
+    {id:103,name: "资讯管理",url:"/live/info_home",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:104,name: "直播管理",url:"/live/liveroom_home",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:105,name: "配置",url:"/public/personal/detail",level:1,type:'header', parentId:0,channelName:"default"},
+],
   };
 
   constructor() {
     super('common/menu');
   }
- 
-  findPathById(menuId){
-     let allMenus = this.dataObject.headerMenus.concat(this.dataObject.sidebarMenus);
-     let menuObj ={};
-     allMenus.forEach(function(menuItem){
-        if (menuItem.id == menuId){
-          menuObj = menuItem;
+  findByChannel(channelName,type){
+    let results = [];
+      this.dataObject.list.forEach(function(menuItem){
+        if ((channelName == menuItem.channelName)&&(type == menuItem.type)){
+           results.push(menuItem);
         }
-        if (menuItem.childrenList){
-          menuItem.childrenList.forEach(function(menuItemData){
-            if(menuItemData.id == menuId){
-              menuObj = menuItemData;
-            }
-          });
-        }
-     });
-
-     return menuObj;
+      });
+      let rootMenu =  {id:0,name: "菜单配置",url:"/public/menu/home",level:1,type:'side', parentId:-1,channelName:"root", childrenList:[]};
+      composeMenuData(rootMenu, results);
+      return rootMenu;
   }
-  
+  findSiderMenuItems(channel){
+    return this.findByChannel(channel,'sider');
+  }
+
+  findHeadrMenuItems(channel){
+    let channelName = "default";
+    if (channel){channelName = channel;}
+    return this.findByChannel(channelName,'header');
+  }
+
+  getChannelByPath(path){
+    let channelName = "none";
+    let arrayPath = path.split('/');
+    console.log("path array is --------------:" + arrayPath);
+    let moduleName = arrayPath[1];
+    channelName = this.dataObject.channels[moduleName];
+    return channelName;
+  }
+  findSiderMenuItemsByPath(path){
+    let channel = this.getChannelByPath(path);
+    return this.findSiderMenuItems(channel);
+  }
+  findPagePathById(menuId){
+    let menuObj = {};
+    this.dataObject.list.forEach(function(menuItem){
+       if (menuId == menuItem.id){
+         menuObj = menuItem;
+       }
+    });
+    return menuObj;
+  }
 }
 
-export default MenuStore;

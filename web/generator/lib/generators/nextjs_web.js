@@ -19,18 +19,19 @@ function createStore(moduleName,defineData){
     var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
     codeTools.generateCode(templateFilename,params,targetFileName);
 
+    
+
 };
 
 
-function createBaseStore(moduleName,defineData){
-    let templateFilename =   "/model.js";
-    let targetFileName = codeTools.firstUpper(defineData.name) + "Store.js";
+function createIndexStore(moduleName,defineData){
+    let templateFilename =   "/index.js";
+    let targetFileName = "/models/index.js";
 
     templateFilename = pathConfig.templateModel() + templateFilename ;
-    targetFileName   = pathConfig.targetModel(moduleName)+ targetFileName;
-    var params = paramsHelper.buildParamsByDomain(moduleName,defineData);
+    targetFileName   = pathConfig.targetRoot()+ targetFileName;
+    var params = paramsHelper.buildParamsByServiceInterfaces(moduleName,defineData);
     codeTools.generateCode(templateFilename,params,targetFileName);
-
 };
 
 function generatePage(moduleName,defineData){
@@ -73,11 +74,13 @@ function generateModuleByName(moduleDefine){
         generateStoreByInterfaces(moduleDefine.name,domainItem);
     });
 
+    createIndexStore(moduleDefine.name, moduleDefine);
+    
     moduleDefine.pages.forEach(function(pageItem){
         generatePage(moduleDefine.name,pageItem);
     });
     
-    let zipFile = "application_" + pathConfig.getPrjectPath() + "_" + moduleDefine.name + ".zip";
+    //let zipFile = "application_" + pathConfig.getPrjectPath() + "_" + moduleDefine.name + ".zip";
     //archiver.compress(pathConfig.targetRoot()+"/",zipFile);
     
 }
@@ -85,7 +88,8 @@ function generateModuleByName(moduleDefine){
 
 function generateFramework(){
    
-    xtools.copyDirEx(pathConfig.templateCopyFiles(),pathConfig.targetCopyFiles());
+    //xtools.copyDirEx(pathConfig.templateCopyFiles(),pathConfig.targetCopyFiles());
+    pathConfig.copyFrameworkFiles();
 }
 
 

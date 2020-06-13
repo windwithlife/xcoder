@@ -63,22 +63,26 @@ export default class DetailPage extends React.Component {
 
             <Card size="small" title="基本信息" style={{ width: 500 }}  >
                 <Form  >
-                    < Form.Item name="name" label="名称：">
+                    < Form.Item  label="名称：">
                         {itemData.name}
                     </Form.Item>
-                    < Form.Item name="description" label="描述信息：">
+                    < Form.Item label="描述信息：">
                         {itemData.description}
                     </Form.Item>
-                    <Form.Item name="category" label="页面功能分类" >
+                    < Form.Item label="描述信息：">
+                    <img src={itemData.image} width="100px" height="100px" />
+                    </Form.Item>
+                   
+                    <Form.Item  label="页面功能分类" >
                     {itemData.category}
                     </Form.Item>
-                    <Form.Item name="applicationTypeId" label="适用应用类型" >
+                    <Form.Item  label="适用应用类型" >
                         {itemData.applicationTypeId}
                     </Form.Item>
-                    < Form.Item name="tag" label="页面标签：">
+                    < Form.Item  label="页面标签：">
                         {itemData.tag}
                     </Form.Item>
-                    < Form.Item name="defineText" label='页面定义'>
+                    < Form.Item  label='页面定义'>
                         {itemData.defineText}
                     </Form.Item>
 

@@ -70,7 +70,15 @@ export default class EditPage extends React.Component {
                         < Form.Item name="<%=field.name%>" label="<%=field.description%>">
                         <XSelect category="<%=field.choosedCategory%>" />
                         </Form.Item>
-   <%}else{%>
+    <%}else if(field.fieldType=='text'){%>
+                         < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                         <TextArea rows={5} />
+                         </Form.Item>
+    <%}else if(field.fieldType=='image'){%>
+                            < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                            <Upload filename="imagefile" uploadAction='/imageupload' onEnd={this.onUploadEnd.bind(that,"<%=field.name%>")} onError={this.onUploadError} />
+                            </Form.Item>
+   <%}else if(field.name!=='id'){%>
                           < Form.Item name="<%=field.name%>" label="<%=field.description%>">
                            <Input />
                           </Form.Item>

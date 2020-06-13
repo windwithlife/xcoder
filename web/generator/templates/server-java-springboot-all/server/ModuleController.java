@@ -19,7 +19,7 @@ import <%=data.packageName%>.dto.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/<%=data.nameClassName%>")
+@RequestMapping("/<%=data.moduleName%>")
 public class <%=data.nameClassName%>ModuleController {
 	
 	// @Autowired

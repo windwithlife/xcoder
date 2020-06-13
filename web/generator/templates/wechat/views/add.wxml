@@ -1,9 +1,16 @@
 <view class="main">
     <view class="form-box">
         <form bindsubmit="formSubmit">
-            <input value="{{address.name}}" name="name" placeholder="姓名"/>
-            <input type="number" name="phone" value="{{address.phone}}" placeholder="电话号码"/>
-            <input name="detail" value="{{address.detail}}" placeholder="详细地址"/>
+<%data.fields.forEach(function(field){%>
+   <%if(field.needChoosed){%>
+            <input value="" name="<%=field.name%>" placeholder="<%=field.description%>"/>
+    <%}else if(field.fieldType=='text'){%>
+            <input value="" name="<%=field.name%>" placeholder="<%=field.description%>"/>         
+    <%}else if(field.fieldType=='image'){%>
+            <input value="" name="<%=field.name%>" placeholder="<%=field.description%>"/>           
+   <%}else if(field.name!=='id'){%>
+            <input value="" name="<%=field.name%>" placeholder="<%=field.description%>"/>
+<%}});%>
             <button form-type="submit">保存</button>
         </form>
     </view>

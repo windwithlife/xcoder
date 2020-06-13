@@ -1,9 +1,9 @@
 // page/component/new-pages/user/address/address.js
-var model = require('../models/LiveroomStore');
+var model = require('../models/<%=data.nameClassName%>Store');
 
 Page({
   data:{
-    address:{
+    dataItem:{
       name:'',
       phone:'',
       detail:''
@@ -16,21 +16,15 @@ Page({
       key: 'address',
       success: function(res){
         self.setData({
-          address : res.data
+          dataItem : res.data
         })
       }
     })
   },
   formSubmit(e){
     const value = e.detail.value;
-    if (value.name && value.phone && value.detail){
-      // wx.setStorage({
-      //   key: 'address',
-      //   data: value,
-      //   success(){
-      //     wx.navigateBack();
-      //   }
-      // })
+    if (value.name){
+     
       model.add(value,function(data){
         console.log(data);
       })

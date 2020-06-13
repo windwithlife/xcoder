@@ -1,17 +1,19 @@
 import React from 'react';
 //import model from './models/model.js';
-import '../../../assets/styles.less';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
+//import Table from 'antd/lib/table';
+//import Button from 'antd/lib/button';
+//import Popconfirm from 'antd/lib/popconfirm';
+
 import {
     Collapse,
     Modal,
     Form,
     Card,
     Select,
-    Input
+    Input,
+    Table,
+    Popconfirm,
+    Button,
 } from 'antd';
 const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
@@ -94,17 +96,14 @@ export default class EditableTable extends React.Component {
         let keywork = this.state.searchText
 
     }
-    filterData(input){
-        input.forEach(function(itemData){
-            itemData.key=itemData.id;
-        });
-        return input;
-    }
     render() {
         let that = this;
         let headerTitle = this.props.title;
-        let list = this.props.data?this.props.data:[];
-        list = this.filterData(list);
+        let list = this.props.data;
+        if(!list){list=[];}
+        list.forEach(function(item){
+            item.key=item.id;
+        });
         return (
                 <Collapse  accordion>
                     <Panel header={headerTitle} key="4" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>

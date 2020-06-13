@@ -76,7 +76,7 @@ let TargetRoot = '../../projects/';
     targetRoot(){
         //let pathName  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectId,this.appConfig.sideType);
         let finalPath = "/";
-        if(this.sideType == 'server'){
+        if(this.appConfig.sideType == 'server'){
             finalPath = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectName,this.appConfig.sideType, this.appConfig.getCodePath() + "-svc");
         }else{
             finalPath  = path.join(this.currentRootPath,TargetRoot,this.appConfig.projectName,this.appConfig.sideType,this.appConfig.getCodePath());

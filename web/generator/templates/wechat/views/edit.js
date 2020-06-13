@@ -1,11 +1,12 @@
 // page/component/new-pages/user/address/address.js
-var model = require('../models/LiveroomStore');
+var model = require('../models/<%=data.nameClassName%>Store');
 Page({
   data:{
-    address:{
-      name:'',
-      phone:'',
-      detail:''
+    dataItem:{
+    <%data.fields.forEach(function(field){%>
+      <%=field.name%> :'',
+     <%})%>
+     
     }
   },
   onLoad(){
@@ -13,6 +14,7 @@ Page({
     var id = options.id;
     model.queryById(id, function(data){
       console.log(data);
+      self.setData({dataItem : data});
     });
     // wx.getStorage({
     //   key: 'address',

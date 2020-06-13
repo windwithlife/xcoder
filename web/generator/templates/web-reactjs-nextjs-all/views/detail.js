@@ -70,7 +70,7 @@ export default class DetailPage extends React.Component {
         if (!id){return;}
         this.Store().queryById(id, function (values) {
             console.log(values);
-            that.formRef.current.setFieldsValue(values);
+            //that.formRef.current.setFieldsValue(values);
         });
     }
 

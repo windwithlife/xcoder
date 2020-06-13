@@ -104,7 +104,7 @@ class ModuleDefines {
                     if (col.map == 3) { col.mapType = "ManyToMany"; }
                     if (col.map == 0) { col.mapType = "OneToOne"; }
                     col.referModuleClassName = referModuleClass;
-                    table.refers.push({ name: col.referModule,nameClassName:referModuleClass, className: referModuleClass, mapType: mapType });
+                    table.refers.push({ name: col.referModule,nameClassName:referModuleClass, className: referModuleClass, mapType: col.mapType });
                 }
             });
 
@@ -141,23 +141,23 @@ class ModuleDefines {
             //识别DTOs
             let requestDtoName = table.name + "Request";
             let requestDtoClass = codeTools.firstUpper(requestDtoName);
-            let requestDto = { name: requestDtoName,nameClassName:requestDtoClass, className: requestDtoClass, defines: requestDtoDefines };
+            let requestDto = { name: requestDtoName,nameClassName:requestDtoClass, className: requestDtoClass,type:'request',defines: requestDtoDefines };
             module.dtos.push(requestDto);
             let responseDtoName = table.name + "Response";
             let responseDtoClass = codeTools.firstUpper(responseDtoName);
-            let responseDto = { name: responseDtoName,nameClassName:responseDtoClass, className: responseDtoClass, defines: responseDtoDefines };
+            let responseDto = { name: responseDtoName,nameClassName:responseDtoClass, className: responseDtoClass, type:'response',defines: responseDtoDefines };
             module.dtos.push(responseDto);
             let responseListDtoName = table.name + "sResponse";
             let responseListDtoClass = codeTools.firstUpper(responseListDtoName);
             let fieldDefines = [];
             fieldDefines.push({ name: "itemsCount", className: "ItemsCount", type: "int"})
             fieldDefines.push({ name: 'items', className: "Items", type: "List<"+ responseDtoClass +">" })
-            let responseListDto = { name: responseListDtoName,nameClassName: responseListDtoClass,className: responseListDtoClass, defines: fieldDefines};
+            let responseListDto = { name: responseListDtoName,nameClassName: responseListDtoClass,className: responseListDtoClass, type:'response',defines: fieldDefines};
             module.dtos.push(responseListDto);
            
             
             let domainClassName = codeTools.firstUpper(table.name);
-            let domainItem = { name: table.name, domainType: 'table', className: domainClassName, domainId: table.id, tableFields: table.columns, refers: table.refers };
+            let domainItem = { name: table.name, domainType: 'table', nameClassName: domainClassName, domainId: table.id, tableFields: table.columns, refers: table.refers };
             
 
             //创建缺省的接口,用于生成微服务的内部调用client.

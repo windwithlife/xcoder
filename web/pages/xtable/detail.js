@@ -1,9 +1,4 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
 import {
     Collapse,
     Modal,
@@ -11,13 +6,15 @@ import {
     Input,
     Card,
     Select,
+    Table,
+    Button,
+    Popconfirm
 } from 'antd';
 const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
 
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-//import AddColumnPage from './AddColumnDialog';
 
 const rowSelection = {
 };
@@ -72,8 +69,6 @@ export default class ListPage extends React.Component {
             dataIndex: 'description',
             key: 'description'
         });
-
-
 
         this.columns = [...fieldColumns, {
             title: 'Action',
@@ -132,15 +127,7 @@ export default class ListPage extends React.Component {
         this.props.columnsStore.removeById(index,record.id);
     }
 
-    handleSearchChange(e) {
-        this.setState({ searchText: e.target.value, name: e.target.value });
-    }
-    handleSearch(e) {
-        e.preventDefault();
-        let keywork = this.state.searchText
-        this.props.tablesStore.fetchByNameLike(param.keyword);
-
-    }
+    
     render() {
         let that = this;
         let tableId = this.props.query.tableId;

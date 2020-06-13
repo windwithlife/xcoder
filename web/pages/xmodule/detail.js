@@ -101,6 +101,7 @@ export default class EditPage extends React.Component {
     }
 
     createApplicationByModule=()=>{
+        console.log('create application');
         let moduleId = this.props.query.id;
         let pId = this.StoreData().currentItem.projectId;
         router.push({ pathname: "/application/add", query: { moduleId: moduleId ,projectId:pId}});
@@ -167,13 +168,13 @@ export default class EditPage extends React.Component {
             < div >
                 <Card size="small" title="模块基本信息" style={{ width: 500 }} extra={<a href={editUrl}>编辑项目基本信息</a>} >
                     <Form ref={this.formRef}>
-                        < Form.Item name="name" label="模块名：">
+                        < Form.Item  label="模块名：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="description" label="描述信息：">
+                        < Form.Item  label="描述信息：">
                             {itemData.description}
                         </Form.Item>
-                        < Form.Item name="projectId" label="所属项目：">
+                        < Form.Item label="所属项目：">
                             {itemData.projectId}
                         </Form.Item>
 

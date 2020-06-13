@@ -4,6 +4,7 @@ import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
 import XSelect from '../common/components/select';
 const { TextArea } = Input;
+import Upload from '../common/components/FileUpload';
 
 @inject('<%=data.tableName%>Store')
 @observer
@@ -26,6 +27,15 @@ export default class AddPage extends React.Component {
         this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
 
+    onUploadError=(info)=>{
+        console.log('error happened during upload file!' + info.file.name);
+    }
+    onUploadEnd=(fieldName, info)=>{
+        console.log('error happened during upload file!' + JSON.stringify(info));
+        console.log(info.file.response.path);
+        let webImageFilePath = info.file.response.path;
+        this.formRef.current.setFieldsValue({fieldName:webImageFilePath});
+    }
     render() {
         var that = this;
 
@@ -37,6 +47,14 @@ export default class AddPage extends React.Component {
                         < Form.Item name="<%=field.name%>" label="<%=field.description%>">
                         <XSelect category="<%=field.choosedCategory%>" />
                         </Form.Item>
+    <%}else if(field.fieldType=='text'){%>
+                         < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                         <TextArea rows={5} />
+                         </Form.Item>
+    <%}else if(field.fieldType=='image'){%>
+                            < Form.Item name="<%=field.name%>" label="<%=field.description%>">
+                            <Upload filename="imagefile" uploadAction='/imageupload' onEnd={this.onUploadEnd.bind(that,"<%=field.name%>")} onError={this.onUploadError} />
+                            </Form.Item>
    <%}else if(field.name!=='id'){%>
                           < Form.Item name="<%=field.name%>" label="<%=field.description%>">
                            <Input />

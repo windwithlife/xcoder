@@ -23,6 +23,22 @@ export default class MenuStore extends BaseStore{
       defineText:'',
       status:-1
   },
+  channels:{
+    "live":"live",
+    "project":"project",
+    "application":"project",
+    "xtable":"project",
+    "xmodule":"project",
+    "applicationrelease":'ci',
+    "buildrecord":'ci',
+    "pagetemplate":'component',
+    "xwidget":'component',
+    "config":"config",
+    "public":"config",
+    "dictionary":"config",
+    'user' :'user',
+    'info' :'info',
+  },
   list:[ 
    
     {id:21,name: "持续集成管理",url:"/applicationrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
@@ -77,18 +93,7 @@ export default class MenuStore extends BaseStore{
     console.log("path array is --------------:" + arrayPath);
     let moduleName = arrayPath[1];
     //console.log(moduleName);
-    if ((moduleName == "project")||(moduleName == "xtable")||(moduleName == "xmodule")||(moduleName=='application')){
-       channelName = "project";
-    }
-    if ((moduleName == "applicationrelease")||(moduleName == "buildrecord")||(moduleName == "release")){
-      channelName = "ci";
-   }
-    if ((moduleName == "dictionary")||(moduleName == "category")||(moduleName == "public")){
-      channelName = "config";
-    }
-    if ((moduleName == "pagetemplate")||(moduleName == "xwidget")){
-      channelName = "component";
-    }
+    channelName = this.dataObject.channels[moduleName];
     //console.log(channelName);
     return channelName;
   }

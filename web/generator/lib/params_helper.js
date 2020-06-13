@@ -61,7 +61,7 @@ var codeTools = require('./code_tools');
             }
             // Field Type
             //let fieldType = col.fieldType;
-            let fieldColumnType = col.fieldType;
+            col.fieldColumnType = col.fieldType;
             //if (col.fieldType == 'int'){col.fieldColumnType = 'Long'};
             if (col.fieldType == 'Text'){col.fieldColumnType = 'String'};
         });
@@ -90,7 +90,8 @@ var codeTools = require('./code_tools');
             //let fieldType = col.fieldType;
             col.fieldTypeClassName = col.fieldColumnType = col.fieldType;
             //if (col.fieldType == 'int'){col.fieldTypeClassName = 'Long'};
-            if (col.fieldType == 'Text'){col.fieldTypeClassName = 'String'};
+            if (col.fieldType == 'Text'){col.fieldTypeClassName = 'String';col.fieldColumnType ='String'};
+            if (col.fieldType == 'image'){col.fieldTypeClassName = 'String';col.fieldColumnType='String'};
         });
         return params;
 
@@ -133,6 +134,7 @@ var codeTools = require('./code_tools');
         params.clientPath = "/v1/" + defineData.name;
         params.clientServiceEndPoint = "/" + defineData.endPoint;
         params.interfaces = defineData.clientInterfaces;
+        params.domains= defineData.storeDomains;
         params.interfaces.forEach(function(interfaceObj){
             let owner = interfaceObj.owner;
             if(interfaceObj.requestMethod == 'get'){
@@ -158,6 +160,7 @@ var codeTools = require('./code_tools');
         let params = this.buildGenericParams(moduleName,defineData.name);
         params.define = defineData;
         params.fields = defineData.defines;
+        params.type = defineData.type;
 
         params.fields.forEach(function(col){
            
@@ -165,6 +168,7 @@ var codeTools = require('./code_tools');
             //if (col.type == 'int'){col.fieldTypeClassName = 'Long'};
             if (col.type == 'Text'){col.fieldTypeClassName = 'String'};
             col.nameClassName = codeTools.firstUpper(col.name);
+            if (col.fieldType == 'image'){col.fieldTypeClassName = 'String';col.fieldColumnType='String'};
         });
         return params;
 

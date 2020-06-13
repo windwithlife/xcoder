@@ -33,9 +33,6 @@ export default class EditPage extends React.Component {
     }
     constructor() {
         super();
-        //var that = this;
-        //this.startHeader();
-
     }
     tableHeader() {
         var that = this;
@@ -92,7 +89,7 @@ export default class EditPage extends React.Component {
         var that = this;
         let projectId = this.props.query.projectId;
         values.project = projectId;
-        this.props.modulesStore.add(values, () => { console.log('finished add row'); router.back(); });
+        this.props.modulesStore.update(values, () => { console.log('finished add row'); router.back(); });
     }
     handleLineUpdate(type,index, record) {
         let that = this;

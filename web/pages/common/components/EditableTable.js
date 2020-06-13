@@ -100,6 +100,10 @@ export default class EditableTable extends React.Component {
         let that = this;
         let headerTitle = this.props.title;
         let list = this.props.data;
+        if(!list){list=[];}
+        list.forEach(function(item){
+            item.key=item.id;
+        });
         return (
                 <Collapse  accordion>
                     <Panel header={headerTitle} key="4" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>

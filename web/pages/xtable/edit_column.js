@@ -14,7 +14,7 @@ import {
 } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
-import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 //const { Panel } = Collapse;
 //import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
@@ -70,6 +70,14 @@ export default class EditPage extends React.Component {
 
             <Card size="small" title="表列定义" style={{ width: 500 }}  >
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                <Form.Item
+                            name="id"
+                            noStyle='true'
+                        ></Form.Item>
+                         <Form.Item
+                            name="tableId"
+                            noStyle='true'
+                        ></Form.Item>
                     <Form.Item
                         name="name"
                         label="名称"
