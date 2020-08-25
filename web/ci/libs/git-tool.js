@@ -91,6 +91,7 @@ function push_do (path){
 
 function fetch_project_src(params) {
     pathConfig.init(params);
+    paramsHelper.init(params);
     let result = true;
     if (!which('git')) {
         echo('Sorry, this script requires git');
