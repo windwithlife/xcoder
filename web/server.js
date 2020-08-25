@@ -108,6 +108,10 @@ app.prepare()
         console.log(req.body.repository);
 
       }
+      if(request.repository){
+        params.gitUrl = repository;
+      }
+      console.log("Current repo url:" + params.gitUrl);
 
       params.name = request.name;
       params.applicationName = request.applicationName;
