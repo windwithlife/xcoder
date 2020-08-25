@@ -91,9 +91,12 @@ export default class EditPage extends React.Component {
 
     render() {
         let that = this;
-
+        let isCommonLib = "NO";
         let itemData = that.Store().dataObject.currentItem;
-       
+        if (itemData.isLib >0){
+            isCommonLib = "YES";
+        }
+        
         console.log('render at xrelease detail page');
         return (
             < div >
@@ -114,6 +117,9 @@ export default class EditPage extends React.Component {
                         </Form.Item>
                         < Form.Item name="platform" label="操作系统平台：">
                             {itemData.platform}
+                        </Form.Item>
+                        < Form.Item name="isLib" label="是否为公共库：">
+                            {isCommonLib}
                         </Form.Item>
                         < Form.Item name="nickname" label="别名(用于识别应用类型，英文输入)">
                             {itemData.nickname}

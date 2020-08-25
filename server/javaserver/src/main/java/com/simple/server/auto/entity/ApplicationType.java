@@ -24,6 +24,7 @@ public class ApplicationType implements Serializable {
     private String language;
     private String framework;
     private String platform;
+    private int    isLib;
 
 
     public ApplicationType() {
@@ -35,6 +36,13 @@ public class ApplicationType implements Serializable {
     };
     public void setId(Long id){
         this.id = id;
+    }
+
+    public int getIsLib(){
+        return this.isLib;
+    };
+    public void setIsLib(int isLib){
+        this.isLib = isLib;
     }
     //名称
     public String getName(){

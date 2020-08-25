@@ -173,7 +173,7 @@ compileCommand= 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.
          //   console.log(result.stderr); 
         //    return false;
         //}
-        compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install -Dmaven.test.skip=true"';  
+        compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath +  ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install package -Dmaven.test.skip=true"';  
    
     }
    
@@ -273,6 +273,9 @@ function release2K8sCloud(params) {
     paramsHelper.init(params);
    
     if(!compileAndBuild(params)){
+        return;
+    }
+    if(params.isLib) {
         return;
     }
 

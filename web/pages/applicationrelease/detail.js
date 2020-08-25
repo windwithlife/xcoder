@@ -96,6 +96,7 @@ export default class EditPage extends React.Component {
         itemData.sideType = appType.sideType;
         itemData.language = appType.language;
         itemData.framework = appType.framework;
+        itemData.isLib = appType.isLib;
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
