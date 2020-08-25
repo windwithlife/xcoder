@@ -114,6 +114,7 @@ app.prepare()
       console.log("Current repo url:" + params.gitUrl);
 
       params.name = request.name;
+      params.isLib = request.isLib;
       params.applicationName = request.applicationName;
       params.path = request.path;
       params.version = request.releaseVersion ? request.releaseVersion : "1.0.8";

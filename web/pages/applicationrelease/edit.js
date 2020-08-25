@@ -18,7 +18,7 @@ const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-import XSelect from '../common/components/form/select';
+//import XSelect from '../common/components/form/select';
 import EditTable from '../common/components/EditableTable';
 
 @inject('applicationreleasesStore') @inject('applicationTypesStore')
