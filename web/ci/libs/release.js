@@ -5,8 +5,7 @@ var shellTools = require('./shell-tool');
 var envConfig = require('./env-config');
 var PathConfig = require('./path_config');
 var ParamsHelper = require('./params_helper');
-//pathConfig = new PathConfig();
-//paramsHelper = new ParamsHelper();
+
 
 
 function autoRelease(params) {

@@ -7,7 +7,7 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('applicationreleasesStore') @inject('releasesStore')
+@inject('applicationreleasesStore')  @inject('applicationTypesStore')
 @observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
@@ -28,11 +28,12 @@ export default class AddPage extends React.Component {
         let appId = this.props.query.applicationId;
         console.log('appid' + appId);
         if (appId){
-            this.props.releasesStore.queryById(appId, function(values){
+            this.props.applicationreleasesStore.queryById(appId, function(values){
                 console.log(values);
                 that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
         }
+        this.props.applicationTypesStore.queryAll();
        
     }
     onFinish = values => {
@@ -58,18 +59,14 @@ export default class AddPage extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    < Form.Item name="sideType" label="项目类型：">
-                        < XSelect category="sideType" />
+                    <Form.Item name="applicationTypeId" label="应用类型" >
+                        <Select >
+                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
                     </Form.Item>
-                    < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language" />
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework" />
-                    </Form.Item>
-                    < Form.Item name="platform" label="目标操作系统">
-                        < XSelect category="os" />
-                    </Form.Item>
+                    
                     <Form.Item name="applicationName" label="发布应用名称">
                         <Input />
                     </Form.Item>

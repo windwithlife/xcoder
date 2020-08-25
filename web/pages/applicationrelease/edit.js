@@ -21,7 +21,7 @@ import { inject, observer } from 'mobx-react';
 import XSelect from '../common/components/form/select';
 import EditTable from '../common/components/EditableTable';
 
-@inject('applicationreleasesStore')
+@inject('applicationreleasesStore') @inject('applicationTypesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -61,7 +61,7 @@ export default class EditPage extends React.Component {
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-
+        this.props.applicationTypesStore.queryAll();
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.formRef.current.setFieldsValue(values);
@@ -134,20 +134,15 @@ export default class EditPage extends React.Component {
                             },]}>
                             <Input />
                         </Form.Item>
+                        <Form.Item name="applicationTypeId" label="应用类型" >
+                            <Select >
+                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                            </Select>
+                        </Form.Item>
 
-
-                        < Form.Item name="sideType" label="项目类型:">
-                            < XSelect category="sideType" />
-                        </Form.Item>
-                        < Form.Item name="language" label="编程语言选择：">
-                            < XSelect category="language" />
-                        </Form.Item>
-                        < Form.Item name="framework" label="技术框架：">
-                            < XSelect category="framework" />
-                        </Form.Item>
-                        < Form.Item name="platform" label="目标操作系统">
-                            < XSelect category="os" />
-                        </Form.Item>
+                       
                         <Form.Item name="path" label="发布应用PATH">
                             <Input />
                         </Form.Item>

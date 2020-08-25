@@ -22,7 +22,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('applicationreleasesStore')
+@inject('applicationreleasesStore') @inject('applicationTypesStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -81,6 +81,7 @@ export default class EditPage extends React.Component {
 
         this.Store().queryById(id, function (values) {
             console.log(values);
+            that.props.applicationTypesStore.queryById(values.applicationTypeId);
             if (!values.releaseStatus) {
                 values.releaseStatus = "DEV";
             }
@@ -88,26 +89,30 @@ export default class EditPage extends React.Component {
     }
 
     releaseTo = (envType) => {
-
+        let appType =   this.props.applicationTypesStore.dataObject.currentItem
         let itemData = this.StoreData().currentItem;
         itemData.projectName = this.projectName;
         itemData.envType = envType;
+        itemData.sideType = appType.sideType;
+        itemData.language = appType.language;
+        itemData.framework = appType.framework;
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
-        NetworkHelper.switchService("http://www.koudaibook.com:8080");
+        NetworkHelper.switchService("http://localhost:8080");
         NetworkHelper.webPost("releaseByParams/", finalParams);
         console.log(finalParams);
     }
 
     render() {
         let that = this;
-
+        let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
         let itemData = that.Store().dataObject.currentItem;
         if (!itemData.releaseStatus) {
             itemData.releaseStatus = "DEV";
         }
         console.log('render at xrelease detail page');
+
         return (
             < div >
                 <Card size="small" title="基本信息" style={{ width: 800 }}  >
@@ -115,18 +120,8 @@ export default class EditPage extends React.Component {
                         < Form.Item name="name" label="可发布名：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="sideType" label="项目端点类型：">
-                            {itemData.sideType}
-                        </Form.Item>
-
-                        < Form.Item name="language" label="编程语言：">
-                            {itemData.language}
-                        </Form.Item>
-                        < Form.Item name="framework" label="框架：">
-                            {itemData.framework}
-                        </Form.Item>
-                        < Form.Item name="platform" label="操作系统平台：">
-                            {itemData.platform}
+                        < Form.Item  label="应用类型：">
+                            {appTypeName}
                         </Form.Item>
                         < Form.Item name="path" label="服务类应用PATH：">
                             {itemData.path}

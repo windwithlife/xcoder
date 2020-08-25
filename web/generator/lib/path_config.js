@@ -187,6 +187,16 @@ let TargetRoot = '../../projects/';
         checkPath(pathName);
         return pathName;
     }
+
+    markCopy(){
+        let touchFile = path.join(this.projectRootPath(), "/.haveCopyiedMarker");
+        touch(touchFile);
+    }
+    haveCopiedCode(){
+        //let pathName  = this.releaseTargetSrcPath();
+        let touchFile = path.join(this.projectRootPath(), "/.haveCopyiedMarker");
+        return pathIsReady(touchFile);
+    }
     copyPath(source, dest){
 
         let cpCommand = 'cp -R ' + source + "/."  + ' ' +  dest ;

@@ -27,6 +27,8 @@ public class ApplicationRelease implements Serializable {
     private String framework;
     private String platform;
 
+    private Long applicationTypeId;
+
     private String path;
     private String repository;
     private String repositoryBranch;
@@ -91,6 +93,12 @@ public class ApplicationRelease implements Serializable {
         this.releaseVersion= version;
     }
 
+    public Long getApplicationTypeId(){
+        return this.applicationTypeId;
+    };
+    public void setApplicationTypeId(Long id){
+        this.applicationTypeId = id;
+    }
     //编程语言
     public String getLanguage(){
         return this.language;

@@ -96,6 +96,7 @@ class ParamsHelper {
             label: this.setting.version,
             version: this.setting.version,
             gateway: this.gateway,
+            path: this.path,
 
         }
         params.deploymentName = this.applicationName + "-deployment";
@@ -134,7 +135,7 @@ class ParamsHelper {
         return name;
     }
     templatefile() {
-        return this.language + "-" + this.sideType + ".yaml";
+        return this.sideType + ".yaml";
     }
     deploymentfile() {
         return this.language + "-" + this.sideType + "-" + this.applicationName + "-" + this.version + ".yaml";

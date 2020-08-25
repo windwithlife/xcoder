@@ -1,0 +1,82 @@
+
+apiVersion:  apps/v1
+kind: Deployment
+metadata:
+  name: <%=data.deploymentName%>
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: <%=data.applicationName%>
+  template:
+    metadata:
+      labels:
+        app: <%=data.applicationName%>
+    spec:
+      containers:
+      - name: <%=data.applicationName%> 
+        image: <%=data.imageName%>
+        ports:
+        - containerPort: 80
+        envFrom:
+            - configMapRef:
+                name: common-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <%=data.serviceName%>
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: <%=data.applicationName%>
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: service-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 443
+      name: https-service
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+    hosts:
+    - "*.koudaibook.com"
+  - port:
+      number: 80
+      name: http-service
+      protocol: HTTP
+    hosts:
+    - "*.koudaibook.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  hosts:
+  - "*.koudaibook.com"
+  gateways:
+  - service-gateway
+  http: <%data.routes.forEach(function(route){%>
+  - match:
+    - uri:
+        exact: <%=route.path%>
+    route:
+    - destination:
+        host: <%=route.serviceName%>
+        port:
+          number: 80<%});%>
+
