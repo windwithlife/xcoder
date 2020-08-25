@@ -109,7 +109,7 @@ app.prepare()
 
       }
       if(request.repository){
-        params.gitUrl = repository;
+        params.gitUrl = request.repository;
       }
       console.log("Current repo url:" + params.gitUrl);
 
