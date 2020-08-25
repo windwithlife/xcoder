@@ -14,7 +14,7 @@ paramsHelper = new ParamsHelper();
 
 
 function cloneSource(url){
-    let gitCloneCommand = 'git clone ' + url + "  ./git/"+params.name;
+    let gitCloneCommand = 'git clone ' + url + "  ./git/"+paramsHelper.name;
 
 
     let result = exec(gitCloneCommand);
