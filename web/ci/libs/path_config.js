@@ -100,19 +100,20 @@ function pathIsReady(pathName) {
         if (relativePath){
             childPath = relativePath;
         }
+        let appName = this.projectConfig.name;
         let targetPath =  this.projectConfig.targetPath;
-        let pathName  = path.join(this.projectSrcRootPath(), "/git/",targetPath,childPath);
+        let pathName  = path.join(this.projectSrcRootPath(), "/git/",appName,targetPath,childPath);
         checkPath(pathName);
         return pathName;
     }
 
     markClone(){
-        let touchFile = path.join(this.projectRootPath(), "src/git/.haveClonedMarker"+this.projectConfig.name);
+        let touchFile = path.join(this.projectRootPath(), "src/git/" + this.projectConfig.name,".haveClonedMarker");
         touch(touchFile);
     }
     haveClonedCode(){
         //let pathName  = this.releaseTargetSrcPath();
-        let touchFile = path.join(this.projectRootPath(), "src/git/.haveClonedMarker"+this.projectConfig.name);
+        let touchFile = path.join(this.projectRootPath(), "src/git/" + this.projectConfig.name,".haveClonedMarker");
         return pathIsReady(touchFile);
     }
 
