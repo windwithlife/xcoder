@@ -90,7 +90,7 @@ function pathIsReady(pathName) {
      
     }
     preparePullPath(){
-        let pathName  = path.join(this.projectSrcRootPath(), "git/");
+        let pathName  = path.join(this.projectSrcRootPath(), "git/"+ this.projectConfig.name);
         cd(pathName);
         return pathName;
     }
