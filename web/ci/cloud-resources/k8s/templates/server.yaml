@@ -80,7 +80,7 @@ spec:
   http: <%data.routes.forEach(function(route){%>
   - match:
     - uri:
-        exact: <%=route.path%>
+        prefix: <%=route.path%>
     route:
     - destination:
         host: <%=route.serviceName%>
