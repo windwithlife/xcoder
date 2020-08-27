@@ -74,7 +74,7 @@ metadata:
   name: v-service
 spec:
   hosts:
-  - "*.koudaibook.com"
+  - "gateway.koudaibook.com"
   gateways:
   - service-gateway
   http: <%data.routes.forEach(function(route){%>

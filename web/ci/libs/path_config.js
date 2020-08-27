@@ -26,6 +26,7 @@ function pathIsReady(pathName) {
         this.dockerfilesRoot = './ci/cloud-resources/dockerfiles/';
         this.templateRoot = './ci/cloud-resources/k8s/templates/';
         this.currentRootPath = process.cwd();
+        this.applicationName = "applicationName";
         console.log('current sourcecode root path:' + this.currentRootPath);
     }
     switchSourceRootPath(srcRoot){
@@ -35,6 +36,7 @@ function pathIsReady(pathName) {
         //this.srcRoot = srcRoot;
         //this.currentRootPath = process.cwd();
         this.projectConfig = projectConfig;
+        this.applicationName = projectConfig.applicationName;
         console.log(this.projectConfig);
     }
     rootPath(){
@@ -45,7 +47,7 @@ function pathIsReady(pathName) {
     }
    
     projectRootPath(){
-        let pathName  = path.join(this.rootPath(), this.projectConfig.applicationName);
+        let pathName  = path.join(this.rootPath(), this.applicationName);
         checkPath(pathName);
         return pathName;
     }
@@ -56,7 +58,7 @@ function pathIsReady(pathName) {
         return pathName;
     }
     projectSrcRootPath(){
-        let pathName  = path.join(this.projectRootPath(), "src/");
+        let pathName  = path.join(this.projectRootPath(), "sourcecode/");
         checkPath(pathName);
         return pathName;
     }
@@ -90,7 +92,7 @@ function pathIsReady(pathName) {
      
     }
     preparePullPath(){
-        let pathName  = path.join(this.projectSrcRootPath(), "git/"+ this.projectConfig.name);
+        let pathName  = path.join(this.projectSrcRootPath(), "./");
         cd(pathName);
         return pathName;
     }
@@ -100,20 +102,19 @@ function pathIsReady(pathName) {
         if (relativePath){
             childPath = relativePath;
         }
-        let appName = this.projectConfig.name;
         let targetPath =  this.projectConfig.targetPath;
-        let pathName  = path.join(this.projectSrcRootPath(), "/git/",appName,targetPath,childPath);
+        let pathName  = path.join(this.projectSrcRootPath(), targetPath,childPath);
         checkPath(pathName);
         return pathName;
     }
 
     markClone(){
-        let touchFile = path.join(this.projectRootPath(), "src/git/" + this.projectConfig.name,".haveClonedMarker");
+        let touchFile = path.join(this.projectSrcRootPath(),this.applicationName+".haveClonedMarker");
         touch(touchFile);
     }
     haveClonedCode(){
         //let pathName  = this.releaseTargetSrcPath();
-        let touchFile = path.join(this.projectRootPath(), "src/git/" + this.projectConfig.name,".haveClonedMarker");
+        let touchFile = path.join(this.projectSrcRootPath(),this.applicationName+".haveClonedMarker");
         return pathIsReady(touchFile);
     }
 
@@ -122,13 +123,13 @@ function pathIsReady(pathName) {
         console.log("reset to web root " + process.cwd());
     }
 
-    dockerWorkPath(){
-        let dockerWorkPath = path.join(this.projectSrcRootPath(),"/dockerwork/");
-        checkPath(dockerWorkPath);
-        return dockerWorkPath;
-    }
-    prepareSourceCode(){
-        rm("-rf",this.dockerWorkPath());
+    // dockerWorkPath(){
+    //     let dockerWorkPath = path.join(this.projectSrcRootPath(),"/dockerwork/");
+    //     checkPath(dockerWorkPath);
+    //     return dockerWorkPath;
+    // }
+    // prepareSourceCode(){
+    //     rm("-rf",this.dockerWorkPath());
         // let cpCommand = "";
         // if (this.sideType == 'server'){
         //     let serverPath = path.join(this.releaseTargetSrcPath(),"../../server");
@@ -156,7 +157,7 @@ function pathIsReady(pathName) {
         // console.log("****************xxxxxxxxxxxxx targetsrc path" + this.releaseTargetSrcPath());
         // console.log("****************xxxxxxxxxxxxx serverPath" + serverPath);   
 
-    }
+    // }
    
 }
 
