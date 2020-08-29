@@ -24,7 +24,7 @@ function autoRelease(params) {
     }
 
     if (paramsHelper.isLib()){
-        builderTools.compileAndBuild(paramsHelper,pathConfig);
+        builderTools.build(paramsHelper,pathConfig);
     }
 
     /*
@@ -38,7 +38,7 @@ function autoRelease(params) {
     }
     */
     if (paramsHelper.isServer()){
-        builderTools.compileAndBuild(paramsHelper,pathConfig);
+        builderTools.build(paramsHelper,pathConfig);
         console.log('begin to buildDockerImage!....');
         let result = dockerTools.release2K8sCloud(params);
     }
