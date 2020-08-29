@@ -39,6 +39,8 @@ class ParamsHelper {
         this.setting = setting;
         this.isUseOwnDeploymentFile = setting.isUseOwnDeploymentFile;
         this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
+        //check path
+        if(this.path.substring(0,1) != '/'){this.path = "/" + this.path;}
     }
 
     addRouteRecord(host,path, serviceName) {
@@ -67,7 +69,7 @@ class ParamsHelper {
         return data;
     }
     buildGenericParams() {
-
+        if(this.path.substring(0,1) != '/'){this.path = "/" + this.path;}
         let params = {
             projectId: this.projectId,
             projectName: this.projectName,
