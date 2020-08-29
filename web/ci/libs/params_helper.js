@@ -41,24 +41,6 @@ class ParamsHelper {
         this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
     }
 
-    // addServiceRouteRecord(endpint, path, serviceName) {
-    //     let data = db.read().get('routetable').find({path:path,host:this.gateway}).value();
-    //     if (data){
-    //         db.read().get('routetable').remove({path:path,host:this.gateway}).write();
-    //     }
-    //     db.get('routetable')
-    //         .push({ host: this.gateway, path: path, serviceName: serviceName })
-    //         .write()
-    // }
-    // addWebRouteRecord(endpint,path, serviceName) {
-    //     let data = db.read().get('routetable').find({path:path,host:this.website}).value();
-    //     if (data){
-    //         db.read().get('routetable').remove({path:path,host:this.website}).write();
-    //     }
-    //     db.get('routetable')
-    //         .push({ host: this.website, path: path, serviceName: serviceName })
-    //         .write()
-    // }
     addRouteRecord(host,path, serviceName) {
         let data = db.read().get('routetable').find({path:path,host:host}).value();
         if (data){
@@ -156,14 +138,42 @@ class ParamsHelper {
             return false;
         }
     }
-    isWeb() {
-        if ((this.sideType) && ('web' == this.sideType)) {
+    isLib() {
+        if ((this.isLib) && (this.isLib == 1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    isScript() {
+        if ((this.isLib) && (this.isLib == 2)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    isServer() {
+        if (('web' == this.sideType)||('server' == this.sideType)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    isJava() {
+        if ((this.language) && ('java' == this.language)) {
             return true;
         } else {
             return false;
         }
     }
 
+    isNodeJS() {
+        if ((this.language) && ('nodejs' == this.language)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 

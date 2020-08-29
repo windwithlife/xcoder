@@ -3,9 +3,9 @@
  */
 
 require('shelljs/global');
-var fs = require('fs')
-var path= require('path')
-var envConfig = require('./env-config');
+//var fs = require('fs')
+//var path= require('path')
+//var envConfig = require('./env-config');
 var PathConfig = require('./path_config');
 var ParamsHelper = require('./params_helper');
 pathConfig = new PathConfig();

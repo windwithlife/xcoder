@@ -47,23 +47,27 @@ function installNPMPackages (){
 
 }
 function execScript(script){
+    console.log("going to execute script:[" + script + "].......");   
     let result = exec(script);
     if (result.code !=0){
-        //console.log(result.stderr);   
+        console.log(result.stderr);   
         return false;
     }else{
-        //console.log(result.stdout);
         return true;
     }
 }
-function cdDirectory(dir){
-    cd(dir)
+function execReleaseScript(paramHelper, pathConfig){
+    let script = pathConfig.scriptFile();
+    let result = execScript(script);
+    return result;
 }
+
+
 
 module.exports = {
     restartNPM: restartNPM,
     restartServer:restartServer,
     installPackages: installNPMPackages,
-    execScript:execScript,
-    "cd":cdDirectory
+    execReleaseScript:execReleaseScript,
+   
 }

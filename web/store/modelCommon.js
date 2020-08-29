@@ -5,7 +5,7 @@ var config = require('../config/config');
 //var serverPath = 'http://127.0.0.1:8080/';
 //var envCurrent = process.env.NODE_ENV;
 var serverPath = config['current'].SOA_GATE;
-console.log(" current env:========" + serverPath);
+console.log(" current SOA Gateway:========" + serverPath);
 
 function firstUpperCase(str) {
     //return str.toLowerCase().replace(/^\S/g,function(s){return s.toUpperCase();});
