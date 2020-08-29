@@ -111,12 +111,12 @@ function pathIsReady(pathName) {
         return pathName;
     }
     markClone(){
-        let touchFile = path.join(this.projectSrcRootPath(),".haveClonedMarker"+ this.applicationName);
+        let touchFile = path.join(this.projectSrcRootPath(),".haveClonedMarker-"+ this.applicationName);
         touch(touchFile);
     }
     haveClonedCode(){
         //let pathName  = this.releaseTargetSrcPath();
-        let touchFile = path.join(this.projectSrcRootPath(),".haveClonedMarker"+ this.applicationName);
+        let touchFile = path.join(this.projectSrcRootPath(),".haveClonedMarker-"+ this.applicationName);
         return pathIsReady(touchFile);
     }
 
