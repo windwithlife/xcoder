@@ -54,13 +54,13 @@ spec:
       serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
       privateKey: /etc/istio/ingressgateway-certs/tls.key
     hosts:
-    - "*.koudaibook.com"
+    - "*"
   - port:
       number: 80
       name: http-service
       protocol: HTTP
     hosts:
-    - "*.koudaibook.com"
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -68,7 +68,7 @@ metadata:
   name: web-service
 spec:
   hosts:
-  - "www.koudaibook.com"
+  - "<%=data.webDomain%>"
   gateways:
   - service-gateway
   http: <%data.routes.forEach(function(route){%>

@@ -80,6 +80,7 @@ class ParamsHelper {
             label: this.setting.version,
             version: this.setting.version,
             gateway: this.gateway,
+            webDomain: this.website,
             path: this.path,
 
         }
