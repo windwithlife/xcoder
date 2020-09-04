@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #curl -L https://istio.io/downloadIstio | sh -
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.6.7
-cd istio-1.6.7/bin
-echo export export PATH=$PATH:$HOME/install/istio-1.6.7/bin >> ~/.bash_profile
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.6.8 TARGET_ARCH=x86_64 sh -
+
+echo export PATH=$PATH:$PWD/istio-1.6.8/bin >> ~/.bash_profile
 source ~/.bash_profile
 istioctl install --set profile=demo --set values.gateways.istio-ingressgateway.type=ClusterIP
 #istioctl manifest apply --set profile=demo --set values.gateways.istio-ingressgateway.type=ClusterIP
@@ -11,6 +11,13 @@ istioctl install --set profile=demo --set values.gateways.istio-ingressgateway.t
 kubectl label namespace default istio-injection=enabled
 
 #istioctl manifest generate --set profile=demo | kubectl delete -f -
+
+#在网关前面加入 Envoy代理，提供网关开发扩展，支持公网80，443等端口开放
+kubectl create configmap front-envoy -n istio-system --from-file=front-envoy.yaml=../k8s/istio-ingressgateway-proxy.yaml
+
+kubectl label nodes node1 edgenode=true
+
+kubectl apply -f ../envoy.yaml
 
 
 
