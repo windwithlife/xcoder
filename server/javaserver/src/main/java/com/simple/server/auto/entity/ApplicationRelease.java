@@ -22,10 +22,10 @@ public class ApplicationRelease implements Serializable {
 
     private Long projectId;
 
-    private String sideType;
-    private String language;
-    private String framework;
-    private String platform;
+//    private String sideType;
+//    private String language;
+//    private String framework;
+//    private String platform;
 
     private Long applicationTypeId;
 
@@ -36,6 +36,7 @@ public class ApplicationRelease implements Serializable {
     private String releaseStatus;
     private String releaseVersion;
     private String applicationName;
+    private String domainName;
 
     public ApplicationRelease() {
     }
@@ -99,34 +100,34 @@ public class ApplicationRelease implements Serializable {
     public void setApplicationTypeId(Long id){
         this.applicationTypeId = id;
     }
-    //编程语言
-    public String getLanguage(){
-        return this.language;
-    };
-    public void setLanguage(String lan){
-        this.language = lan;
-    }
-
-    //编号
-    public String getSideType(){
-        return this.sideType;
-    };
-    public void setSideType(String side){
-        this.sideType = side;
-    }
-    //编号
-    public String getFramework(){
-        return this.framework;
-    };
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
-
-    //编号
-    public String getPlatform(){
-        return this.platform;
-    };
-    public void setPlatform(String platform){ this.platform = platform;}
+//    //编程语言
+//    public String getLanguage(){
+//        return this.language;
+//    };
+//    public void setLanguage(String lan){
+//        this.language = lan;
+//    }
+//
+//    //编号
+//    public String getSideType(){
+//        return this.sideType;
+//    };
+//    public void setSideType(String side){
+//        this.sideType = side;
+//    }
+//    //编号
+//    public String getFramework(){
+//        return this.framework;
+//    };
+//    public void setFramework(String framework){
+//        this.framework = framework;
+//    }
+//
+//    //编号
+//    public String getPlatform(){
+//        return this.platform;
+//    };
+//    public void setPlatform(String platform){ this.platform = platform;}
 
     public Long getProjectId(){
         return this.projectId;
@@ -140,6 +141,14 @@ public class ApplicationRelease implements Serializable {
     };
     public void setName(String name){
         this.name = name;
+    }
+
+    //域名称
+    public String getDomainName(){
+        return this.domainName;
+    };
+    public void setDomainName(String name){
+        this.domainName = name;
     }
 
     //名称

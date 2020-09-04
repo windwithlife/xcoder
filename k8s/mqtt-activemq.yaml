@@ -1,0 +1,68 @@
+#部署
+---
+apiVersion: apps/v1
+kind: Deployment                            #对应的类型(可以有Pod、Server、Deployment)
+metadata:                                   #原数据类型
+  name: activemq-test                    #名称（自定义）
+  namespace: default                        #空间名称    
+  labels:
+    name: activemq-test 
+spec:                                       #细则
+  replicas: 1                               #镜像副本数量（可以有多少个pod） 
+  selector: 
+    matchLabels:
+      app: activemq-test
+  template:  
+    metadata:
+      labels:
+        app: activemq-test               #模版
+    spec:                                   #模版细则
+      containers:                           #容器列表        
+        - name: activemq-test            #镜像名称
+          image: webcenter/activemq:latest  #所需镜像(这里可以使用我们上面自己构建的镜像activemq-test:v1)
+          ports:                            #端口列表
+            - containerPort: 8161           #activemq 网页管理端端口  http访问          
+            - containerPort: 61616          #tcp用于客户端连接时使用的端口
+          #restart: always                   #容器重启方式
+          volumeMounts:                     #挂载数据卷（数据文件和日志文件）
+            - mountPath: /data/activemq     #容器内路径
+              name: data                    # 要与 volume 中 name 匹配
+            - mountPath: /var/log/activemq  #容器内路径
+              name: log                     # 要与 volume 中 name 匹配
+      volumes:
+        - name: data
+          hostPath:
+            path: /data/activemq     # 使用 pod 所在节点的路径
+        - name: log
+          hostPath:
+            path: /var/log/activemq     # 使用 pod 所在节点的路径
+ 
+#服务
+---
+apiVersion: v1  #版本
+kind: Service    #服务
+metadata:
+  name: activemq-test-server                    #名称（自定义）
+  #namespace: default                        #名称空间
+  labels:
+    name: activemq-test 
+spec:
+  #nodeName: master.oopxiajun.com #192.168.134.139
+  ports:        #服务需要公布的端口
+    - name: admin
+      port: 8161        #服务对外的可以访问的端口
+      targetPort: 8161  #容器暴露端口     
+      protocol: TCP     #HTTP访问 
+      nodePort: 8161    #节点端口
+    - name: tcp
+      port: 61616        #服务对外的可以访问的端口
+      targetPort: 61616  #容器端口   
+      protocol: TCP      #TCP访问   
+      nodePort: 61616    #节点端口
+  selector:
+    #name: activemq-test   
+    #run: activemq-test         
+    app: activemq-test #这里选择器一定要选择容器的标签，之前写name:activemq-test和run: activemq-test 都是错的。
+  #externalTrafficPolicy: Cluster
+  type: NodePort        #通信方式采用节点端口类型
+    

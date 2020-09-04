@@ -118,18 +118,22 @@ export default class EditPage extends React.Component {
             < div >
                 <Card size="small" title="基本信息" style={{ width: 800 }}  >
                     <Form ref={this.formRef}>
-                        < Form.Item name="name" label="可发布名：">
+                        < Form.Item name="name" label="发布单名称：">
                             {itemData.name}
-                        </Form.Item>
-                        < Form.Item  label="应用类型：">
-                            {appTypeName}
-                        </Form.Item>
-                        < Form.Item name="path" label="服务类应用PATH：">
-                            {itemData.path}
                         </Form.Item>
                         < Form.Item name="applicationName" label="应用名称：">
                             {itemData.applicationName}
                         </Form.Item>
+                        < Form.Item  label="应用类型：">
+                            {appTypeName}
+                        </Form.Item>
+                        < Form.Item name="path" label="发布目标网关或网站域名：">
+                            {itemData.domainName}
+                        </Form.Item>
+                        < Form.Item name="path" label="服务应用PATH：">
+                            {itemData.path}
+                        </Form.Item>
+                       
                         <Form.Item name="repository" label="代码仓库地址">
                         {itemData.repository}
                         </Form.Item>

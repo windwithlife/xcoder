@@ -142,8 +142,10 @@ export default class EditPage extends React.Component {
                             </Select>
                         </Form.Item>
 
-                       
-                        <Form.Item name="path" label="发布应用PATH">
+                        <Form.Item name="domainName" label="发布目标网关或站点域名">
+                           <Input />
+                        </Form.Item>
+                        <Form.Item name="path" label="发布应用到目标PATH">
                             <Input />
                         </Form.Item>
                         <Form.Item name="applicationName" label="发布应用名称">

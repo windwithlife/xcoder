@@ -126,6 +126,7 @@ app.prepare()
       params.platform = request.platform;
       params.serviceName = request.name;
       params.webDomainName = request.webDN;
+      params.domainName = request.domainName;
       params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
       params.label = params.version;
 
@@ -211,3 +212,6 @@ app.prepare()
       console.log(`> Ready on http://localhost:${port}`)
     })
   })
+
+
+  console.log("starting to register mysefl");

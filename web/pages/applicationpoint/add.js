@@ -7,16 +7,16 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('applicationreleasesStore')  @inject('applicationTypesStore')
+@inject('applicationPointStore')  @inject('applicationTypesStore')
 @observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
 
     Store = () => {
-        return this.props.applicationreleasesStore;
+        return this.props.applicationPointStore;
     }
     StoreData = () => {
-        return this.props.applicationreleasesStore.dataObject;
+        return this.props.applicationPointStore.dataObject;
     }
     constructor(props) {
         super(props);
@@ -28,7 +28,7 @@ export default class AddPage extends React.Component {
         let appId = this.props.query.applicationId;
         console.log('appid' + appId);
         if (appId){
-            this.props.applicationreleasesStore.queryById(appId, function(values){
+            this.props.applicationPointStore.queryById(appId, function(values){
                 console.log(values);
                 that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
@@ -59,33 +59,10 @@ export default class AddPage extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="applicationTypeId" label="应用类型" >
-                        <Select >
-                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
-                            })}
-                        </Select>
-                    </Form.Item>
-                    
-                    <Form.Item name="applicationName" label="发布应用名称">
+                    <Form.Item name="serverAddress" label="服务侦听地址与端口">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="domainName" label="发布目标网关或站点域名">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="path" label="发布应用PATH">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="repository" label="代码仓库地址">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="repositoryBranch" label="代码分支">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="targetPath" label="待发布代码路径">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="releaseVersion" label="发布版本">
+                    <Form.Item name="idString" label="应用端点识别字符串">
                         <Input />
                     </Form.Item>
 

@@ -39,6 +39,11 @@ class ParamsHelper {
         this.setting = setting;
         this.isUseOwnDeploymentFile = setting.isUseOwnDeploymentFile;
         this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
+        if (setting.domainName){
+            this.gateway = setting.domainName;
+            this.website = setting.domainName;
+        }
+        
         //check path
         if(this.path.substring(0,1) != '/'){this.path = "/" + this.path;}
     }
