@@ -7,7 +7,7 @@
  
     <parent>
         <groupId>com.simple</groupId>
-        <artifactId>simple-pom</artifactId>
+        <artifactId>simple-parent</artifactId>
         <version>1.0</version>
     </parent>
  
