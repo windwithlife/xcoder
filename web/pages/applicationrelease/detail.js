@@ -22,7 +22,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('applicationreleasesStore') @inject('applicationTypesStore')
+@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -82,6 +82,7 @@ export default class EditPage extends React.Component {
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.props.applicationTypesStore.queryById(values.applicationTypeId);
+            that.props.applicationPointStore.queryById(values.applicationPointId);
             if (!values.releaseStatus) {
                 values.releaseStatus = "DEV";
             }
@@ -108,6 +109,7 @@ export default class EditPage extends React.Component {
     render() {
         let that = this;
         let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
+        let appPointName = this.props.applicationPointStore.dataObject.currentItem.name;
         let itemData = that.Store().dataObject.currentItem;
         if (!itemData.releaseStatus) {
             itemData.releaseStatus = "DEV";
@@ -126,6 +128,9 @@ export default class EditPage extends React.Component {
                         </Form.Item>
                         < Form.Item  label="应用类型：">
                             {appTypeName}
+                        </Form.Item>
+                        < Form.Item  label="应用端点：">
+                            {appPointName}
                         </Form.Item>
                         < Form.Item name="path" label="发布目标网关或网站域名：">
                             {itemData.domainName}

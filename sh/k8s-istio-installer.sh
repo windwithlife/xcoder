@@ -17,7 +17,7 @@ kubectl label namespace default istio-injection=enabled
 
 kubectl label nodes node1 edgenode=true
 
-kubectl apply -f ../envoy.yaml
+kubectl apply -f ../k8s/envoy.yaml -n istio-system
 
 
 

@@ -34,10 +34,10 @@ export default class EditPage extends React.Component {
         this.projectName = "tempName";
     }
     Store = () => {
-        return this.props.applicationreleasesStore;
+        return this.props.applicationPointStore;
     }
     StoreData=()=>{
-        return this.props.applicationreleasesStore.dataObject;
+        return this.props.applicationPointStore.dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
@@ -101,7 +101,7 @@ export default class EditPage extends React.Component {
 
     render() {
         let that = this;
-        let editUrl = "/projectrelease/edit?id=" + this.props.query.id;
+        //let editUrl = "/projectrelease/edit?id=" + this.props.query.id;
         let items = that.StoreData().list;
         //let isShowPage = itemData.sideType == 'server' ? false : true;
 

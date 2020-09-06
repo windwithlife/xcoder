@@ -21,7 +21,7 @@ import { inject, observer } from 'mobx-react';
 //import XSelect from '../common/components/form/select';
 import EditTable from '../common/components/EditableTable';
 
-@inject('applicationreleasesStore') @inject('applicationTypesStore')
+@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();
@@ -62,6 +62,7 @@ export default class EditPage extends React.Component {
         let that = this;
         let id = this.props.query.id;
         this.props.applicationTypesStore.queryAll();
+        this.props.applicationPointStore.queryAll();
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.formRef.current.setFieldsValue(values);
@@ -141,7 +142,13 @@ export default class EditPage extends React.Component {
                             })}
                             </Select>
                         </Form.Item>
-
+                        <Form.Item name="applicationPointId" label="发布端点选择" >
+                        <Select >
+                            {that.props.applicationPointStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
+                    </Form.Item>
                         <Form.Item name="domainName" label="发布目标网关或站点域名">
                            <Input />
                         </Form.Item>

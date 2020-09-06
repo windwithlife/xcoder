@@ -7,7 +7,7 @@ const { TextArea } = Input;
 //const FormItem = Form.Item;
 
 
-@inject('applicationreleasesStore')  @inject('applicationTypesStore')
+@inject('applicationreleasesStore')  @inject('applicationTypesStore')  @inject('applicationPointStore') 
 @observer
 export default class AddPage extends React.Component {
     formRef = React.createRef();
@@ -34,6 +34,7 @@ export default class AddPage extends React.Component {
             });
         }
         this.props.applicationTypesStore.queryAll();
+        this.props.applicationPointStore.queryAll();
        
     }
     onFinish = values => {
@@ -62,6 +63,13 @@ export default class AddPage extends React.Component {
                     <Form.Item name="applicationTypeId" label="应用类型" >
                         <Select >
                             {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="applicationPointId" label="发布端点选择" >
+                        <Select >
+                            {that.props.applicationPointStore.dataObject.list.map(function (item, i) {
                                 return (<Select.Option value={item.id}>{item.name}</Select.Option>);
                             })}
                         </Select>
