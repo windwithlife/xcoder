@@ -91,6 +91,8 @@ export default class EditPage extends React.Component {
 
     releaseTo = (envType) => {
         let appType =   this.props.applicationTypesStore.dataObject.currentItem
+        let appPoint =   this.props.applicationPointStore.dataObject.currentItem
+        let appPointAddress = "http://" + appPoint.serverAddress;
         let itemData = this.StoreData().currentItem;
         itemData.projectName = this.projectName;
         itemData.envType = envType;
@@ -101,7 +103,8 @@ export default class EditPage extends React.Component {
         let finalParams = {};
         finalParams.type = 'release';
         finalParams.defines = itemData;
-        NetworkHelper.switchService("http://www.koudaibook.com:8080");
+        //NetworkHelper.switchService("http://www.koudaibook.com:8080");
+        NetworkHelper.switchService(appPointAddress);
         NetworkHelper.webPost("releaseByParams/", finalParams);
         console.log(finalParams);
     }
