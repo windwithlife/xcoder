@@ -3,7 +3,7 @@ FROM node:latest
  
 MAINTAINER Joe
 
-#RUN npm config set registry http://registry.npm.taobao.org
+RUN npm config set registry http://registry.npm.taobao.org
 
 RUN mkdir -p /runDIR/web
 COPY ./ /runDIR/web 
