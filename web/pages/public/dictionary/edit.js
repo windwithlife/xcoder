@@ -3,7 +3,7 @@
 import { Form, Input, Button, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { Router } from 'next/router';
-import XSelect from '../../common/components/form/select';
+import XSelect from '../../common/components/select';
 
 const { Option } = Select;
 const layout = {

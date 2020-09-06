@@ -4,7 +4,7 @@ import Table from 'antd/lib/table';
 import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
 import Popconfirm from 'antd/lib/popconfirm';
-import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 
 import {
     Modal,
