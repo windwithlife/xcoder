@@ -15,7 +15,7 @@ let  DataItem = {
 export default class CategoryStore extends BaseStore {
    
     constructor() {
-        super('category');
+        super('/xcoder/category');
         this.dataObject = Data;
     }
 

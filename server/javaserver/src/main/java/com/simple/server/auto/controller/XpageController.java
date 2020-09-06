@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/xpage")
+@RequestMapping("/xcoder/xpage")
 public class XpageController {
 	@Autowired
 	XpageService service;

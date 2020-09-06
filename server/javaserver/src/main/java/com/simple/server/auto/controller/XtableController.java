@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/xtable")
+@RequestMapping("/xcoder/xtable")
 public class XtableController {
 	@Autowired
 	XtableService service;

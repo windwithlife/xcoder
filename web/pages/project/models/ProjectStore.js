@@ -17,7 +17,7 @@ let Data = {
 export default class ProjectStore extends BaseStore {
     //@observable dataObject = Data;
     constructor() {
-        super('project');
+        super('/xcoder/project');
         this.dataObject = Data;
     }
 

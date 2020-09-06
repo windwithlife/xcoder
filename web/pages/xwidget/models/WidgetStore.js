@@ -15,7 +15,7 @@ let Data = {
 export default class WidgetStore extends BaseStore {
    
     constructor() {
-        super('xwidget');
+        super('/xcoder/xwidget');
         this.dataObject = Data;
     }
     @action.bound

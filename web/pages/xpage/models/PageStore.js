@@ -18,7 +18,7 @@ let TableData = {
 class PageStore extends BaseStore {
    
     constructor() {
-        super('xpage');
+        super('/xcoder/xpage');
         this.dataObject = TableData;
     }
     @action.bound

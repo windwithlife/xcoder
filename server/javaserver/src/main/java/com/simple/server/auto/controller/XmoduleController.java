@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/xmodule")
+@RequestMapping("/xcoder/xmodule")
 public class XmoduleController {
 	@Autowired
 	XmoduleService service;

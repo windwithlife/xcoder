@@ -15,7 +15,7 @@ let TableData = {
 class TableStore extends BaseStore {
    
     constructor() {
-        super('xtable');
+        super('/xcoder/xtable');
         this.dataObject = TableData;
     }
     @action.bound

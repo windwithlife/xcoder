@@ -16,7 +16,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/pagetemplate")
+@RequestMapping("/xcoder/pagetemplate")
 public class PageTemplateController {
 	@Autowired
     PageTemplateService service;

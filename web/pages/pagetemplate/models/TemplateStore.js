@@ -15,7 +15,7 @@ let Data = {
 export default class TemplateStore extends BaseStore {
    
     constructor() {
-        super('pagetemplate');
+        super('/xcoder/pagetemplate');
         this.dataObject = Data;
     }
     @action.bound

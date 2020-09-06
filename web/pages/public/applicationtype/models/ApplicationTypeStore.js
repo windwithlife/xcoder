@@ -15,7 +15,7 @@ let  DataItem = {
 export default class ApplicationTypeStore extends BaseStore {
    
     constructor() {
-        super('applicationtype');
+        super('/xcoder/applicationtype');
         this.dataObject = Data;
     }
 

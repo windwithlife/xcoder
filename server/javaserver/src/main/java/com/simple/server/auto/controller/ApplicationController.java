@@ -18,7 +18,7 @@ import java.util.List;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/application")
+@RequestMapping("/xcoder/application")
 public class ApplicationController {
 	@Autowired
     ApplicationService service;

@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/xcoder/category")
 public class CategoryController {
 	@Autowired
 	CategoryService service;

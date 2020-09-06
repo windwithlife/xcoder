@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/project")
+@RequestMapping("/xcoder/project")
 public class ProjectController {
 	@Autowired
 	ProjectService service;

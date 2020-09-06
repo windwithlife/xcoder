@@ -16,7 +16,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/xwidget")
+@RequestMapping("/xcoder/xwidget")
 public class XwidgetController {
 	@Autowired
     XwidgetService service;

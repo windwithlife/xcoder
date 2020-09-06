@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/applicationrelease")
+@RequestMapping("/xcoder/applicationrelease")
 public class ApplicationReleaseController {
 	@Autowired
 	ApplicationReleaseService service;

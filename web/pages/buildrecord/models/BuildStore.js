@@ -16,7 +16,7 @@ let Data = {
 }
 export default class ReleaseStore extends BaseStore {
     constructor() {
-        super('buildrecord');
+        super('/xcoder/buildrecord');
         this.dataObject = Data;
     }
 

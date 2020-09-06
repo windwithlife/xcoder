@@ -22,7 +22,7 @@ import com.simple.server.auto.dao.*;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/dictionary")
+@RequestMapping("/xcoder/dictionary")
 public class DictionaryController {
 	@Autowired
 	DictionaryService service;

@@ -15,7 +15,7 @@ let Data = {
 export default class DictionaryStore extends BaseStore {
    
     constructor() {
-        super('dictionary');
+        super('/xcoder/dictionary');
         this.dataObject = Data;
     } 
     

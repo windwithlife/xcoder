@@ -18,7 +18,7 @@ let Data = {
 }
 export default class ModuleStore extends BaseStore {
     constructor() {
-        super('xmodule');
+        super('/xcoder/xmodule');
         this.dataObject = Data;
     }
 

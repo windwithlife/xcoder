@@ -17,7 +17,7 @@ list: []};
 class ColumnStore extends BaseStore {
    
     constructor() {
-        super('xtablecolumn');
+        super('/xcoder/xtablecolumn');
         
         this.dataObject = ColumnData;
         

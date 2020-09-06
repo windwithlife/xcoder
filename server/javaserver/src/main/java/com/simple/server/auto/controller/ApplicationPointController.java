@@ -10,16 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//import org.springframework.web.servlet.ModelAndView;
-//import com.simple.core.base.user.entity.*;
-//import com.simple.core.base.user.service.*;
 
-
-//import io.swagger.annotations.ApiImplicitParam;
-//import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/applicationpoint")
+@RequestMapping("/xcoder/applicationpoint")
 public class ApplicationPointController {
 	@Autowired
 	ApplicationPointService service;

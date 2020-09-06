@@ -19,7 +19,7 @@ import java.util.List;
 //import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/applicationtype")
+@RequestMapping("/xcoder/applicationtype")
 public class ApplicationTypeController {
 	@Autowired
 	ApplicationTypeService service;
