@@ -57,9 +57,10 @@ export default class MenuStore extends BaseStore{
 
     {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},
     {id:52,name: "页面区域组件管理",url:"/xwidget/home",level:1,type:'sider', parentId:0,channelName:"component"},
-    {id:101,name: "组件仓库",url:"/xwidget/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:102,name: "项目管理",url:"/project/list",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:103,name: "应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
+
+    // {id:101,name: "组件仓库",url:"/xwidget/home",level:1,type:'header', parentId:0,channelName:"default"},
+    // {id:102,name: "项目管理",url:"/project/list",level:1,type:'header', parentId:0,channelName:"default"},
+    // {id:103,name: "应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:104,name: "持续集成",url:"/applicationrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:105,name: "配置",url:"/public/personal/detail",level:1,type:'header', parentId:0,channelName:"default"},
 ],
