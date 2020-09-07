@@ -37,8 +37,8 @@ class ParamsHelper {
         this.version = setting.version;
         this.label = setting.version;
         this.setting = setting;
-        this.useOwnDeploymentFile = setting.useOwnDeploymentFile;
-        this.useOwnDockerFile = setting.useOwnDockerFile;
+        this.takeOwnDeploymentFile = setting.useOwnDeploymentFile;
+        this.takeOwnDockerFile = setting.useOwnDockerFile;
         if (setting.domainName){
             this.gateway = setting.domainName;
             this.website = setting.domainName;
@@ -137,7 +137,7 @@ class ParamsHelper {
     }
 
     useOwnDepolymentFile() {
-        if ((this.useOwnDeploymentFile) && (this.useOwnDeploymentFile > 0)) {
+        if ((this.takeOwnDeploymentFile) && (this.takeOwnDeploymentFile > 0)) {
             return true;
         } else {
             return false;
@@ -145,7 +145,7 @@ class ParamsHelper {
 
     }
     useOwnDockerFile() {
-        if ((this.useOwnDockerFile) && (this.useOwnDockerFile > 0)) {
+        if ((this.takeOwnDockerFile) && (this.takeOwnDockerFile > 0)) {
             return true;
         } else {
             return false;
