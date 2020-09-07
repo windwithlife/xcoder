@@ -18,7 +18,7 @@ const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-//import XSelect from '../common/components/form/select';
+import XSelect from '../common/components/select';
 import EditTable from '../common/components/EditableTable';
 
 @inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')
@@ -169,6 +169,9 @@ export default class EditPage extends React.Component {
                         </Form.Item>
                         <Form.Item name="releaseVersion" label="发布版本">
                             <Input />
+                        </Form.Item>
+                        < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
+                            < XSelect  category="yesno" />
                         </Form.Item>
                         <Form.Item name="description" label="描述">
                             <Input />

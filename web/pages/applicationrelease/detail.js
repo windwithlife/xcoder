@@ -154,8 +154,8 @@ export default class EditPage extends React.Component {
                         <Form.Item name="releaseVersion" label="待发布版本">
                         {itemData.releaseVersion}
                         </Form.Item>
-                        < Form.Item name="releaseStatus" label="当前发布状态：">
-                            {itemData.releaseStatus}
+                        < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
+                            {itemData.useOwnDeploymentFile}
                         </Form.Item>
                         < Form.Item name="description" label="描述信息：">
                             {itemData.description}

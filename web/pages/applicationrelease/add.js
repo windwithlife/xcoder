@@ -96,6 +96,10 @@ export default class AddPage extends React.Component {
                     <Form.Item name="releaseVersion" label="发布版本">
                         <Input />
                     </Form.Item>
+                    
+                    < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
+                    < XSelect  category="yesno" />
+                    </Form.Item>
 
                     <Card type="inner">
                         <Form.Item>

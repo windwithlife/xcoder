@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: xci-web-set
+  name: xcoder-endpoint
 spec:
   template:
     metadata: 
-      name: xci-web
+      name: xcoder-endpoint
       namespace: default
       labels:
-        k8sApp: xci-web 
+        k8sApp: xcoder-endpoint 
     spec: 
       #hostNetwork: true
       containers: 
@@ -38,39 +38,20 @@ spec:
             path: /usr/bin/kubectl 
       - name: kubectl-conf 
         hostPath: 
-            path: /etc/kubernetes/admin.conf
+            path: /root/.kube/config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: xci-web-svc
+  name: xcoder-endpoint-svc
   namespace: default
   labels:
-    k8sApp: xci-web-svc
+    k8sApp: xcoder-endpoint-svc
 spec:
   selector:
-    k8sApp: xci-web
+    k8sApp: xcoder-endpoint
   ports:
-    - port: 3333
-      targetPort: 3333
+    - port: 80
+      targetPort: 8080
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: xci-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  tls:
-  - hosts:
-    - release.zhangyongqiao.com
-    secretName: ingress-nginx/default-certs
-  rules:
-  - host: release.zhangyongqiao.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: xci-web-svc
-          servicePort: 3333
 

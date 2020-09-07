@@ -35,6 +35,7 @@ public class ApplicationRelease implements Serializable {
     private String repositoryBranch;
     private String targetPath;
     private String releaseStatus;
+    private int    useOwnDeploymentFile;
     private String releaseVersion;
     private String applicationName;
     private String domainName;
@@ -49,6 +50,13 @@ public class ApplicationRelease implements Serializable {
     };
     public void setId(Long id){
         this.id = id;
+    }
+
+    public int getUseOwnDeploymentFile(){
+        return this.useOwnDeploymentFile;
+    };
+    public void setUseOwnDeploymentFile(int isUse){
+        this.useOwnDeploymentFile = isUse;
     }
 
     public String getPath(){

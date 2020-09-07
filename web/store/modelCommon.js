@@ -91,7 +91,7 @@ ModelClass.queryReferListByName = function (refer, cb) {
     model.get(serverPath + "/" + refer + "/queryAll", {}, cb);
 };
 ModelClass.queryDictionaryByCategory = function (params, cb) {
-    model.get(serverPath + "/dictionary/queryByCategoryName/", params, cb);
+    model.get(serverPath + "/xcoder/dictionary/queryByCategoryName/", params, cb);
 };
 ModelClass.queryReferListBy = function (refer,moduleName,params, cb) {
     model.get(serverPath + "/" + refer + "/queryBy" + firstUpperCase(moduleName), params, cb);

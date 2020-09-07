@@ -37,8 +37,8 @@ class ParamsHelper {
         this.version = setting.version;
         this.label = setting.version;
         this.setting = setting;
-        this.isUseOwnDeploymentFile = setting.isUseOwnDeploymentFile;
-        this.isUseOwnDockerFile = setting.isUseOwnDockerFile;
+        this.useOwnDeploymentFile = setting.useOwnDeploymentFile;
+        this.useOwnDockerFile = setting.useOwnDockerFile;
         if (setting.domainName){
             this.gateway = setting.domainName;
             this.website = setting.domainName;
@@ -125,14 +125,19 @@ class ParamsHelper {
         return name;
     }
     templatefile() {
-        return this.sideType + ".yaml";
+        if ('cinode' == this.sideType){
+            return 'xcoder-web.yaml';
+        }else{
+            return this.sideType + ".yaml";
+        }
+        
     }
     deploymentfile() {
         return this.language + "-" + this.sideType + "-" + this.applicationName + "-" + this.version + ".yaml";
     }
 
     useOwnDepolymentFile() {
-        if ((this.isUseOwnDeploymentFile) && (true == this.isUseOwnDeploymentFile)) {
+        if ((this.useOwnDeploymentFile) && (this.useOwnDeploymentFile > 0)) {
             return true;
         } else {
             return false;
@@ -140,7 +145,7 @@ class ParamsHelper {
 
     }
     useOwnDockerFile() {
-        if ((this.isUseOwnDockerFile) && (true == this.isUseOwnDockerFile)) {
+        if ((this.useOwnDockerFile) && (this.useOwnDockerFile > 0)) {
             return true;
         } else {
             return false;
