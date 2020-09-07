@@ -166,7 +166,7 @@ class ParamsHelper {
         }
     }
     isServer() {
-        if (('web' == this.sideType)||('server' == this.sideType)) {
+        if (('web' == this.sideType)||('server' == this.sideType)||('cinode' == this.sideType)) {
             return true;
         } else {
             return false;
