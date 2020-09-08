@@ -20,6 +20,7 @@ class ParamsHelper {
         this.framework = 'nextjs';
         this.gateway = 'gateway.koudaibook.com';
         this.website = 'www.koudaibook.com';
+        this.hostName = this.gateway;
 
         console.log('init project config')
 
@@ -41,7 +42,7 @@ class ParamsHelper {
         this.takeOwnDockerFile = setting.useOwnDockerFile;
         if (setting.domainName){
             this.gateway = setting.domainName;
-            this.website = setting.domainName;
+            this.website = setting.domainName; 
         }
         
         //check path
@@ -62,6 +63,7 @@ class ParamsHelper {
         if(this.sideType=='web'){
             host=this.website;
         }
+        this.hostName = host;
         this.addRouteRecord(host,this.path,this.serviceName());
     }
     getRoutes() {
@@ -91,7 +93,8 @@ class ParamsHelper {
         }
         params.deploymentName = this.applicationName + "-deployment";
         params.applicationName = this.applicationName + "-app";
-        params.gatewayConfigName = this.applicationName + "-" +this.sideType + "-vservice";
+        //params.gatewayConfigName = this.applicationName + "-" +this.sideType + "-vservice";
+        params.gatewayConfigName = this.hostName + "-vservice";
         params.imageName = this.imageName();
         params.serviceName = this.serviceName();
         params.ingressName = this.applicationName + "-ingress";
