@@ -11,6 +11,7 @@ import {
     Input,
     Card,
     Select,
+    
 } from 'antd';
 const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
@@ -109,6 +110,12 @@ export default class EditPage extends React.Component {
         console.log(finalParams);
     }
 
+    changeEditMode = (event) => {
+        event.stopPropagation();
+        //console.log('click on edit model');
+        //let nextMode = !this.state.editMode;
+        //this.setState({ editMode: nextMode });
+    }
     render() {
         let that = this;
         let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
@@ -161,23 +168,26 @@ export default class EditPage extends React.Component {
                             {itemData.description}
                         </Form.Item>
                         <Card type="inner">
-                            <Form.Item>
+                           
                                 <Button type="primary" onClick={that.releaseTo.bind(that, "UAT")} size="large">UAT发布</Button>
-                            </Form.Item>
-                            <Form.Item>
-                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">生产发布</Button>
-                            </Form.Item>
+                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">PROD发布</Button>
+                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">PROD回退</Button>
+                         
                         </Card>
 
                     </Form>
 
                 </Card>
-                {/* <EditTable title="发布历史记录：" columns={that.tableHeader()} data={items}
-                    onAdd={that.handleLineAdd.bind(that)}
-                    onDelete={that.handleLineDelete.bind(that)}
-                    onUpdate={that.handleLineUpdate.bind(that)}
-                    onDetail={that.handleLineDetail.bind(that)}
-                ></EditTable> */}
+                <Collapse  accordion  defaultActiveKey={['1']}>
+                <Panel header="发布记录1" key="1" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>
+                <div>试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志</div>
+                </Panel>
+                <Panel header="发布记录2" key="2" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>} >
+                <div>试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志</div>
+                </Panel>
+
+                </Collapse>
+               
 
             </div>
         );
