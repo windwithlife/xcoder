@@ -90,7 +90,7 @@ function pathIsReady(pathName) {
         if (!pathIsReady(mPath)){return  configFiles;}
         var files = fs.readdirSync(mPath);
         files.forEach(function (file) {
-            var configFile = mPath + file;
+            var configFile = path.join(mPath,file);
             var stats = fs.statSync(configFile);
             if (!stats.isDirectory()) {
                 configFiles.push(configFile);
