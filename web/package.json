@@ -6,7 +6,7 @@
     "devx": "node server.js",
     "build": "next build",
     "start": "export NODE_ENV=production&&node server.js",
-    "startx": "export NODE_ENV=production&&pm2 server.js --name release.server"
+    "startx": "export NODE_ENV=production&&pm2 start server.js --name release.server"
   },
   "dependencies": {
     "@zeit/next-less": "^1.0.1",
