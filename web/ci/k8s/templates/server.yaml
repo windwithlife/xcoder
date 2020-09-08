@@ -85,7 +85,7 @@ spec:
     - destination:
         host: <%=route.serviceName%>
         port:
-          number: 80<%});%>
+          number: 80
     corsPolicy:
       allowOrigin:
       - *
@@ -98,5 +98,5 @@ spec:
       exposeHeaders:
       - X-Expose-Header
       maxAge: 24h
-      allowCredentials: false
+      allowCredentials: false<%});%>
 
