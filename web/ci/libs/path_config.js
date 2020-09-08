@@ -35,6 +35,7 @@ function pathIsReady(pathName) {
     init(projectConfig){
         this.projectConfig = projectConfig;
         this.applicationName = projectConfig.applicationName;
+        this.releaseType = projectConfig.releaseType;
         console.log(this.projectConfig);
     }
     rootPath(){
@@ -82,7 +83,22 @@ function pathIsReady(pathName) {
         //checkPath(pathName);
         return deploymentfile;
     }
-   
+    
+    loadConfigFiles() {
+        var configFiles = [];
+        var mPath = configFilesRootPath();
+        if (!pathIsReady(mPath)){return  configFiles;}
+        var files = fs.readdirSync(mPath);
+        files.forEach(function (file) {
+            var configFile = mPath + file;
+            var stats = fs.statSync(configFile);
+            if (!stats.isDirectory()) {
+                configFiles.push(configFile);
+            }
+        });
+        console.log(configFiles);
+        return configFiles;
+    }
     prepareClonePath(){
         let pathName  = path.join(this.projectSrcRootPath());
         cd(pathName);
@@ -108,6 +124,14 @@ function pathIsReady(pathName) {
 
     scriptFile(){
         let pathName  = path.join(this.releaseTargetSrcPath(),"startup.sh");
+        return pathName;
+    }
+    configFilesRootPath(){
+        let releaseEnvirnoment = "";
+        if (this.releaseType){
+            releaseEnvirnoment = this.releaseType;
+        }
+        let pathName  = path.join(this.releaseTargetSrcPath(),"config",releaseEnvirnoment);
         return pathName;
     }
     markClone(){

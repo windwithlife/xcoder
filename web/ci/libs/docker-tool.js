@@ -64,6 +64,21 @@ function modifyOwnDeploymentFile(){
 
 }
 
+function deployConfigFiles(){
+    let configFiles = pathConfig.loadConfigFiles();
+    configFiles.forEach(function(configFile){
+        let runDeployCommand = 'kubectl create -f  ' + configFile;
+        console.log("Exec Command String:" + runDeployCommand);
+        let result = exec(runDeployCommand);
+        if(result.code !== 0){   
+            console.log('failed to apply configMap to k8s! configMap file Name:' + configFile);
+            console.log('root cause:' + result.stderr);
+        }else{
+            console.log('sucessfule to apply configMap to k8s cloud platform!')
+            
+        }
+    });
+}
 
 /**
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
@@ -102,7 +117,7 @@ function release2K8sCloud(params) {
     }else{
          createK8sDeploymentFiles();
     }
-    
+    deployConfigFiles();
     deploy2Cloud();
 }
 
