@@ -32,7 +32,7 @@ class ParamsHelper {
         this.language = setting.language;
         this.framework = setting.framework;
         this.platform = setting.platform;
-        this.isLib    = setting.isLib;
+        this.isCommonLib    = setting.isLib;
         this.name = setting.name;
         this.path = setting.path;
         this.applicationName = setting.applicationName;
@@ -90,7 +90,7 @@ class ParamsHelper {
             gateway: this.gateway,
             webDomain: this.website,
             path: this.path,
-            isLib: this.isLib,
+            isCommonLib: this.isCommonLib,
 
         }
         params.deploymentName = this.applicationName + "-deployment";
@@ -158,7 +158,7 @@ class ParamsHelper {
         }
     }
     isLib() {
-        if ((this.isLib) && (this.isLib == 1)) {
+        if ((this.isCommonLib) && (this.isCommonLib == 1)) {
             return true;
         } else {
             return false;
