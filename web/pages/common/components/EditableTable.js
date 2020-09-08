@@ -105,8 +105,8 @@ export default class EditableTable extends React.Component {
             item.key=item.id;
         });
         return (
-                <Collapse  accordion>
-                    <Panel header={headerTitle} key="4" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>
+                <Collapse  accordion  defaultActiveKey={['1']}>
+                    <Panel header={headerTitle} key="1" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>
 
                         <Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
                             {/* <Form.Item  >

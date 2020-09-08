@@ -183,9 +183,9 @@ app.prepare()
       //res.send('Hello,world! simple version 0.2.3')
     })
 
-    server.get('/', function (req, res) {
-      res.send('Hello,world! simple version 1.0.0')
-    })
+    // server.get('/', function (req, res) {
+    //   res.send('Hello,world! simple version 1.0.0')
+    // })
 
     server.get('/test/', function (req, res) {
       res.send('Hello,world! just for testing!');

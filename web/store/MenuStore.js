@@ -62,7 +62,7 @@ export default class MenuStore extends BaseStore{
     // {id:102,name: "项目管理",url:"/project/list",level:1,type:'header', parentId:0,channelName:"default"},
     // {id:103,name: "应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
     {id:104,name: "持续集成",url:"/applicationrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:105,name: "配置",url:"/public/personal/detail",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:105,name: "配置",url:"/public/applicationtype/home",level:1,type:'header', parentId:0,channelName:"default"},
 ],
   };
 
