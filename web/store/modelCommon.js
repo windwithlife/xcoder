@@ -18,7 +18,7 @@ function removeFirst(str) {
     let  result = str;
     if(!str){return ''}
     if(str.substring(0,1) == '/'){
-        result =  str.substring(1,str.length-1);
+        result =  str.substring(1);
     }
     
     return result;
