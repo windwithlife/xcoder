@@ -21,7 +21,7 @@ const PRODUCTION_HOST = 'soagateway.koudaibook.com';
 
 const DEVELOPMENT_HOST_WEB = 'localhost:8080';
 const UAT_HOST_WEB = 'uat.koudaibook.com';
-const PRODUCTION_HOST_WEB = 'www.koudaibook.com';
+const PRODUCTION_HOST_WEB = 'release.koudaibook.com';
 
 const DEV_UPLOAD_ROOT = '/tmp/my_uploads/';
 const PROD_UPLOAD_ROOT = '/tmp/my_uploads/';
