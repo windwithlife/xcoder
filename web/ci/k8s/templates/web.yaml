@@ -63,7 +63,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: web-service
+  name: <%=data.gatewayConfigName%> 
 spec:
   hosts:
   - "<%=data.webDomain%>"
