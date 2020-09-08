@@ -86,7 +86,7 @@ function pathIsReady(pathName) {
     
     loadConfigFiles() {
         var configFiles = [];
-        var mPath = configFilesRootPath();
+        var mPath = this.configFilesRootPath();
         if (!pathIsReady(mPath)){return  configFiles;}
         var files = fs.readdirSync(mPath);
         files.forEach(function (file) {
