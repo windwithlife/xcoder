@@ -32,6 +32,7 @@ class ParamsHelper {
         this.language = setting.language;
         this.framework = setting.framework;
         this.platform = setting.platform;
+        this.isLib    = setting.isLib;
         this.name = setting.name;
         this.path = setting.path;
         this.applicationName = setting.applicationName;
@@ -89,6 +90,7 @@ class ParamsHelper {
             gateway: this.gateway,
             webDomain: this.website,
             path: this.path,
+            isLib: this.isLib,
 
         }
         params.deploymentName = this.applicationName + "-deployment";
