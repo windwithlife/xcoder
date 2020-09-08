@@ -14,9 +14,19 @@ function firstUpperCase(str) {
     return strResult;
 }
 
+function removeFirst(str) {
+    let  result = str;
+    if(!str){return ''}
+    if(str.substring(0,1) == '/'){
+        result =  str.substring(1,str.length-1);
+    }
+    
+    return result;
+}
+
 function ModelClass(moduleName) {
     if (moduleName) {
-        this.moduleName = moduleName;
+        this.moduleName = removeFirst(moduleName);
     }else{
         this.moduleName = "";
     }
