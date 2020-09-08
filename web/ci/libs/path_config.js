@@ -22,6 +22,7 @@ function pathIsReady(pathName) {
 
    
     constructor(){
+        this.releaseType = 'prod';
         this.srcRoot = '../autoRelease/'; 
         this.dockerfilesRoot = './ci/k8s/dockerfiles/';
         this.templateRoot = './ci/k8s/templates/';
@@ -35,7 +36,10 @@ function pathIsReady(pathName) {
     init(projectConfig){
         this.projectConfig = projectConfig;
         this.applicationName = projectConfig.applicationName;
-        this.releaseType = projectConfig.releaseType;
+        if(projectConfig.releaseType){
+            this.releaseType = projectConfig.releaseType;
+        }
+       
         console.log(this.projectConfig);
     }
     rootPath(){

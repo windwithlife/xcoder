@@ -98,7 +98,7 @@ app.prepare()
       console.log('current directory is:' + process.cwd());
       console.log(req.body.defines);
 
-      var params = { isUseOwnDockerFile: false, isSubWebSite: true, useOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
+      var params = { releaseType: "prod",isUseOwnDockerFile: false, isSubWebSite: true, useOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
@@ -110,6 +110,9 @@ app.prepare()
       }
       if(request.repository){
         params.gitUrl = request.repository;
+      }
+      if(request.releaseType){
+        params.releaseType = request.releaseType;
       }
       console.log("Current repo url:" + params.gitUrl);
 
