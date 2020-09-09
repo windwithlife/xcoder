@@ -239,6 +239,12 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+  - port:
+      number: 80
+      name: rabbitmq-test
+      protocol: HTTP
+    hosts:
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -251,7 +257,10 @@ spec:
   gateways:
   - mqtt-gateway
   http: 
-  - route:
+  - match:
+    - uri:
+        prefix: /
+    route:
     - destination:
         host: rabbitmq
     
