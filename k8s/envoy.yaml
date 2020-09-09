@@ -35,6 +35,10 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
+        - containerPort: 1883
+        - containerPort: 15672
+        - containerPort: 15675
+        - containerPort: 5672
         volumeMounts:
         - name: front-envoy
           mountPath: /etc/front-envoy.yaml
