@@ -253,7 +253,7 @@ metadata:
   namespace: test-rabbitmq
 spec:
   hosts:
-  - "*.koudaibook.com"
+  - "www.test.com"
   gateways:
   - mqtt-gateway
   http: 
@@ -263,4 +263,6 @@ spec:
     route:
     - destination:
         host: rabbitmq
+        port:
+          number: 15672
     
