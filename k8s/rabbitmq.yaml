@@ -215,33 +215,15 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: mqtt-gateway
+  name: service-gateway
   namespace: test-rabbitmq
 spec:
   selector:
     istio: ingressgateway # use Istio test-test
   servers:
   - port:
-      number: 1883
-      name: mqtt-service
-      protocol: HTTP
-    hosts:
-    - "*"
-  - port:
-      number: 15675
-      name: mqtt-web-service
-      protocol: HTTP
-    hosts:
-    - "*"
-  - port:
-      number: 15672
-      name: rabbitmq-manager
-      protocol: HTTP
-    hosts:
-    - "*"
-  - port:
       number: 80
-      name: rabbitmq-test
+      name: http-service
       protocol: HTTP
     hosts:
     - "*"
@@ -255,7 +237,7 @@ spec:
   hosts:
   - "www.test.com"
   gateways:
-  - mqtt-gateway
+  - service-gateway
   http: 
   - match:
     - uri:
