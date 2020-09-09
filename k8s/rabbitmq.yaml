@@ -254,16 +254,4 @@ spec:
   - route:
     - destination:
         host: rabbitmq
-    corsPolicy:
-      allowOrigin:
-      - "*"
-      allowMethods:
-      - POST
-      - PUT
-      - GET
-      allowHeaders:
-      - X-Custom-Header
-      exposeHeaders:
-      - X-Expose-Header
-      maxAge: 24h
-      allowCredentials: false 
+    
