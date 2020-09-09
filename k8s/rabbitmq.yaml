@@ -209,3 +209,53 @@ spec:
               path: rabbitmq.conf
             - key: enabled_plugins
               path: enabled_plugins
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: mqtt-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio test-test
+  servers:
+  - port:
+      number: 1883
+      name: mqtt-service
+      protocol: HTTP
+    hosts:
+    - "*"
+  - port:
+      number: 15675
+      name: mqtt-web-service
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mqtt-vservice
+spec:
+  hosts:
+  - "*.koudaibook.com"
+  gateways:
+  - mqtt-gateway
+  http: 
+  - route:
+    - destination:
+        host: rabbitmq
+    corsPolicy:
+      allowOrigin:
+      - "*"
+      allowMethods:
+      - POST
+      - PUT
+      - GET
+      allowHeaders:
+      - X-Custom-Header
+      exposeHeaders:
+      - X-Expose-Header
+      maxAge: 24h
+      allowCredentials: false 
