@@ -23,7 +23,7 @@ import NetworkHelper from '../../store/network';
 //import AddorEditPage from './AddorEditColumn';
 
 
-@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')
+@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')@inject('buildRecordStore')
 @observer
 export default class EditPage extends React.Component {
     formRef = React.createRef();

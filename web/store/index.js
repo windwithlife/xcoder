@@ -16,6 +16,7 @@ import TempalteStore from '../pages/pagetemplate/models/TemplateStore';
 import ApplicationStore from '../pages/application/models/ApplicationStore';
 import ReleaseStore from '../pages/applicationrelease/models/ReleaseStore';
 import ApplicationPointStore from '../pages/applicationpoint/models/PointStore';
+import BuildRecordStore from '../pages/buildrecord/models/BuildStore';
 //import TestStore from '../zxtable/models/TestStore.js'
 /*import AppStore from "./AppStore";
 
@@ -45,6 +46,7 @@ let stores = {
     applicationreleasesStore: new ReleaseStore(),
     applicationTypesStore: new ApplicationTypeStore(),
     applicationPointStore: new ApplicationPointStore(),
+    buildRecordStore: new BuildRecordStore(),
     
 }   
 
