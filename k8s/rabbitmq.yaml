@@ -216,6 +216,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: mqtt-gateway
+  namespace: test-rabbitmq
 spec:
   selector:
     istio: ingressgateway # use Istio test-test
@@ -243,6 +244,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: mqtt-vservice
+  namespace: test-rabbitmq
 spec:
   hosts:
   - "*.koudaibook.com"
