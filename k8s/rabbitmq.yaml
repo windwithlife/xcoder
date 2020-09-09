@@ -96,7 +96,7 @@ spec:
      port: 1883
      targetPort: 1883
      nodePort: 
-   - name: mqtt_web
+   - name: mqtt-web
      protocol: TCP
      port: 15675
      targetPort: 15675
