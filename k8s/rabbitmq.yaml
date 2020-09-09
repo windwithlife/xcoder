@@ -147,7 +147,7 @@ spec:
           - name: mqtt
             protocol: TCP
             containerPort: 1883
-          - name: web_mqtt
+          - name: web-mqtt
             protocol: TCP
             containerPort: 15675
 
