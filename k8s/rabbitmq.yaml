@@ -232,6 +232,12 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+  - port:
+      number: 15672
+      name: rabbitmq-manager
+      protocol: HTTP
+    hosts:
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
