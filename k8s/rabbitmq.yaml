@@ -249,6 +249,9 @@ spec:
     - uri:
         prefix: /
       port: 15672
+    - uri:
+        prefix: /
+      port: 80
     route:
     - destination:
         host: rabbitmq
