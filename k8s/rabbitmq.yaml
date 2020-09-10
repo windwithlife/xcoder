@@ -241,7 +241,7 @@ metadata:
   namespace: test-rabbitmq
 spec:
   hosts:
-  - "mq.koudaibook.com"
+  - "*"
   gateways:
   - service-gateway
   http: 
