@@ -221,18 +221,18 @@ spec:
   selector:
     istio: ingressgateway # use Istio test-test
   servers:
-  # - port:
-  #     number: 80
-  #     name: http-service
-  #     protocol: HTTP
-  #   hosts:
-  #   - "mq.koudaibook.com"
+  - port:
+      number: 80
+      name: http-service
+      protocol: HTTP
+    hosts:
+    - "*"
   - port:
       number: 15672
       name: http-service2
       protocol: HTTP
     hosts:
-    - "mq.koudaibook.com"
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
