@@ -85,22 +85,22 @@ spec:
      protocol: TCP
      port: 15672
      targetPort: 15672
-     nodePort: 
+     nodePort: 85672
    - name: amqp
      protocol: TCP
      port: 5672
      targetPort: 5672
-     nodePort: 
+     nodePort: 35672
    - name: mqtt
      protocol: TCP
      port: 1883
      targetPort: 1883
-     nodePort: 
+     nodePort: 3883
    - name: mqtt-web
      protocol: TCP
      port: 15675
      targetPort: 15675
-     nodePort:
+     nodePort: 85675
   selector:
     app: rabbitmq
 ---

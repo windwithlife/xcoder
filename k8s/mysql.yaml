@@ -19,7 +19,6 @@ spec:
       terminationGracePeriodSeconds: 60
       nodeSelector:
         resourceType: enough
-      #hostNetwork: true
       containers:
       - name: mysql
         image: windwithlife/xmysql:latest
