@@ -226,13 +226,13 @@ spec:
       name: http-service
       protocol: HTTP
     hosts:
-    - "*"
+    - "mq.koudaibook.com"
   - port:
       number: 15672
       name: http-service2
       protocol: HTTP
     hosts:
-    - "*"
+    - "mq.koudaibook.com"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -245,14 +245,7 @@ spec:
   gateways:
   - service-gateway
   http: 
-  - match:
-    - uri:
-        prefix: /
-      port: 15672
-    - uri:
-        prefix: /
-      port: 80
-    route:
+  - route:
     - destination:
         host: rabbitmq
         port:
