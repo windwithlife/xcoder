@@ -107,10 +107,12 @@ export default class EditPage extends React.Component {
                         < Form.Item name="description" label="描述信息：">
                             {itemData.description}
                         </Form.Item>
-                        < Form.Item name="serverAddress" label="端点地址与端口：">
+                        < Form.Item name="serverAddress" label="UAT发布系统端点地址与端口：">
                             {itemData.serverAddress}
                         </Form.Item>
-                       
+                        < Form.Item name="serverAddressProd" label="生产发布系统端点地址与端口：">
+                            {itemData.serverAddressProd}
+                        </Form.Item>
                        
                       
 

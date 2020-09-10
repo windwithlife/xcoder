@@ -25,10 +25,12 @@ export default class AddPage extends React.Component {
 
     componentDidMount() {
         let that = this;
-        let appId = this.props.query.applicationId;
-        console.log('appid' + appId);
-        if (appId){
-            this.props.applicationPointStore.queryById(appId, function(values){
+        //let appId = this.props.query.applicationId;
+        let id = this.props.query.id;
+
+        console.log('appid' + id);
+        if (id){
+            this.props.applicationPointStore.queryById(id, function(values){
                 console.log(values);
                 that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
@@ -41,7 +43,7 @@ export default class AddPage extends React.Component {
         //let projectId = this.props.query.projectId;
         values.releaseStatus = "DEV";
         console.log(values);
-        this.Store().add(values, () => { console.log('finished add row'); router.back(); });
+        this.Store().update(values, () => { console.log('finished add row'); router.back(); });
     }
 
     render() {

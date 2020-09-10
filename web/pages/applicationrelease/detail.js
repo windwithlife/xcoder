@@ -94,6 +94,14 @@ export default class EditPage extends React.Component {
         let appType =   this.props.applicationTypesStore.dataObject.currentItem
         let appPoint =   this.props.applicationPointStore.dataObject.currentItem
         let appPointAddress = "http://" + appPoint.serverAddress;
+        if("UAT" === envType){
+            appPointAddress = "http://" + appPoint.serverAddress;
+        }else if("PROD" === envType){
+            appPointAddress = "http://" + appPoint.serverAddressProd;
+        }else if("BACK" === envType){
+            appPointAddress = "http://" + appPoint.serverAddressProd;
+        }
+        let appPointAddress = "http://" + appPoint.serverAddress;
         let itemData = this.StoreData().currentItem;
         itemData.projectName = this.projectName;
         itemData.envType = envType;
@@ -171,7 +179,7 @@ export default class EditPage extends React.Component {
                            
                                 <Button type="primary" onClick={that.releaseTo.bind(that, "UAT")} size="large">UAT发布</Button>
                                 <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">PROD发布</Button>
-                                <Button type="primary" onClick={that.releaseTo.bind(that, "PROD")} size="large">PROD回退</Button>
+                                <Button type="primary" onClick={that.releaseTo.bind(that, "BACK")} size="large">PROD回退</Button>
                          
                         </Card>
 

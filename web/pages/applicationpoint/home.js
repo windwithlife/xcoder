@@ -78,7 +78,9 @@ export default class EditPage extends React.Component {
    
 
     handleLineUpdate(index, record) {
-        
+        let path = '/applicationpoint/edit';
+        console.log(path);
+        router.push({ pathname: path, query: { id: record.id } });
        
     }
     handleLineDetail(record) {

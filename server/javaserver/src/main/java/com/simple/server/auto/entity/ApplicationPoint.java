@@ -24,7 +24,6 @@ public class ApplicationPoint implements Serializable {
     private String description;
     private String topicName;
     private String idString;
-    private String pointAppType;
     private String serverAddress;
     private String serverAddressProd;
 
@@ -71,13 +70,7 @@ public class ApplicationPoint implements Serializable {
         this.idString = idString;
     }
 
-    //编号
-    public String getPointAppType(){
-        return this.pointAppType;
-    };
-    public void setPointAppType(String type){
-        this.pointAppType = type;
-    }
+
     //编号
     public String getServerAddress(){
         return this.serverAddress;
