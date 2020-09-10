@@ -248,8 +248,7 @@ spec:
   - match:
     - uri:
         prefix: /
-      port: 
-          number: 15672
+      port: 15672
     route:
     - destination:
         host: rabbitmq
