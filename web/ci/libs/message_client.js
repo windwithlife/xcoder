@@ -13,7 +13,7 @@ const axios = require('axios');
     updateReleaseStatus(buildId, releaseStatus){
         let requestData = {releaseId: buildId, status:releaseStatus};
         let path = this.server + "/xcoder/buildrecord/updateReleaseStatus";
-        axios.get(path, requestData)
+        axios.get(path, {params:requestData})
         .then(response => {
             console.log(response.data);
         }).catch(error => {
@@ -23,7 +23,7 @@ const axios = require('axios');
     sendReleaseLog(buildId, text){
         let requestData = {releaseId: buildId, log:text};
         let path = this.server + "/xcoder/buildrecord/sendReleaseLog";
-        axios.get(path, requestData)
+        axios.get(path, {params:requestData})
         .then(response => {
             console.log(response.data);
         }).catch(error => {
