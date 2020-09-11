@@ -12,7 +12,7 @@ var get = function(path, params, cb){
 
     }).catch(function (error) {
         console.log(error);
-        if(cb){cb(error);}
+        //if(cb){cb(error);}
             
     });
 }
@@ -24,7 +24,7 @@ var post = function(path,params,cb){
         })
         .catch(function (error) {
             console.log(error);
-            if(cb){cb(error);}
+            //if(cb){cb(error);}
             
         });
 }

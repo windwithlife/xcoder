@@ -140,7 +140,22 @@ export default class EditPage extends React.Component {
 
                  });
         }else if("PROD" === envType){
-            appPointAddress = "http://" + appPoint.serverAddressProd;
+            
+            let values = {name: itemData.applicationName, applicationReleaseId:itemData.id,releaseVersion:itemData.releaseVersion,releaseType: envType,
+                releaseStatus:"pending", buildNumber: Utils.getNowDateString()};
+            this.props.buildRecordStore.add(values, (result) => {
+                 console.log('finished result:');
+                 console.log(result);
+                 //itemData.domainName = itemData.domainName;
+                 itemData.buildId = result.id;
+                 finalParams.buildRecord = result;
+                 appPointAddress = "http://" + appPoint.serverAddressProd;
+                 NetworkHelper.switchService(appPointAddress);
+                 NetworkHelper.webPost("releaseByParams/", finalParams);
+                 var interval3=setInterval(function(){
+                    that.traceCurrentBuildRecord(result.id);
+               },5000);
+            });
         }else if("BACK" === envType){
             appPointAddress = "http://" + appPoint.serverAddressProd;
         }
