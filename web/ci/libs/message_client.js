@@ -10,7 +10,10 @@ var networkHelper = require('../../store/network');
     }
     updateReleaseStatus(buildId, releaseStatus){
         let requestData = {releaseId: buildId, status:releaseStatus};
-        networkHelper.webGet("/xcoder/buildrecord/updateReleaseStatus", requestData);
+        networkHelper.webGet("/xcoder/buildrecord/updateReleaseStatus", requestData,function(result){
+            console.log('**********************************************finished to send updatestatus');
+            console.log(result);
+        });
     }
     sendReleaseLog(buildId, text){
         let requestData = {releaseId: buildId, log:text};
