@@ -16,6 +16,17 @@ console.log("current upload root path"  + uploadRootPath);
 
 var messageClient = require('./ci/libs/message_client');
 
+const axios = require('axios');
+  
+console.log('test axios**********************');
+axios.get('http://soagateway.koudaibook.com/xcoder/buildrecord/updateReleaseStatus?releaseId=55&status=start')
+ .then(response => {
+  console.log(response.data);
+ })
+ .catch(error => {
+  console.log(error);
+ });
+
 app.prepare()
   .then(() => {
     const server = express()
