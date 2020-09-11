@@ -26,7 +26,7 @@ var messageClient = require('./ci/libs/message_client');
 //  .catch(error => {
 //   console.log(error);
 //  });
-messageClient.updateReleaseStatus(55,"startxx");
+
 
 app.prepare()
   .then(() => {

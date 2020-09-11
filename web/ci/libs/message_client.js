@@ -10,10 +10,10 @@ const axios = require('axios');
         //networkHelper.switchService(server);
         this.server = server;
     }
-    updateReleaseStatus(buildId, releaseStatus){
+    async updateReleaseStatus(buildId, releaseStatus){
         let requestData = {releaseId: buildId, status:releaseStatus};
         let path = this.server + "/xcoder/buildrecord/updateReleaseStatus";
-        axios.get(path, {params:requestData})
+        await axios.get(path, {params:requestData})
         .then(response => {
             console.log(response.data);
         }).catch(error => {
