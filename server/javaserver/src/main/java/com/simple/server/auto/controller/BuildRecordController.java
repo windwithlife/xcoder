@@ -85,7 +85,7 @@ public class BuildRecordController {
 	@ResponseBody
 	@RequestMapping(value = "/updateReleaseStatus", method = RequestMethod.GET)
 	public BuildRecord  updateReleaseStatus(@RequestParam("releaseId") Long releaseId, @RequestParam("status") String status) {
-		System.out.println("start to queryByApplicationReleaseId");
+		System.out.println("start to update Release Status, Status Value:" +  status);
 		BuildRecord buildRecord= service.findById(releaseId);
 		if(null != buildRecord){
 			buildRecord.setReleaseStatus(status);
