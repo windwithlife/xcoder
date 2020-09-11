@@ -138,6 +138,7 @@ app.prepare()
       params.domainName = request.domainName;
       params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
       params.label = params.version;
+      params.buildId = buildRecord.id;
 
 
       console.log("release request params is *****************8:", params);
