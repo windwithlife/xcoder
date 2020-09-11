@@ -107,7 +107,7 @@ export default class EditPage extends React.Component {
         let appPointAddress = "http://" + appPoint.serverAddress;
        
        
-        let itemData = this.StoreData().currentItem;
+        let itemData = Object.assign({},this.StoreData().currentItem);
         itemData.projectName = this.projectName;
         itemData.envType = envType;
         itemData.sideType = appType.sideType;

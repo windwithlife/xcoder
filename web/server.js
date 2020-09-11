@@ -157,10 +157,10 @@ app.prepare()
       //res.send('begin to fetch source code.....')
       
       if (releaseServer.autoRelease(params)) {
-        messageClient.updateReleaseStatus(buildRecord.id, "success");
+        //messageClient.updateReleaseStatus(buildRecord.id, "success");
         res.send('successful to auto release!')    
       } else {
-        messageClient.updateReleaseStatus(buildRecord.id, "failure");
+        //messageClient.updateReleaseStatus(buildRecord.id, "failure");
         res.send('failed to auto release!')
       }
     })
