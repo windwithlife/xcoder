@@ -25,6 +25,9 @@ public class BuildRecord implements Serializable {
     private String buildNumber;
     private String releaseStatus;
     private String releaseVersion;
+    private String releaseType;
+    private String logText;
+    private Long applicationReleaseId;
 
     public BuildRecord() {
     }
@@ -35,6 +38,14 @@ public class BuildRecord implements Serializable {
     };
     public void setId(Long id){
         this.id = id;
+    }
+
+    //发布单号
+    public Long getApplicationReleaseId(){
+        return this.applicationReleaseId;
+    };
+    public void setApplicationReleaseId(Long id){
+        this.applicationReleaseId = id;
     }
 
     //发布状态
@@ -57,6 +68,21 @@ public class BuildRecord implements Serializable {
     };
     public void setReleaseVersion(String version){
         this.releaseVersion= version;
+    }
+
+    //发布状态
+    public String getReleaseType(){
+        return this.releaseType;
+    };
+    public void setReleaseType(String type){
+        this.releaseType= type;
+    }
+
+    public String getLogText(){
+        return this.logText;
+    };
+    public void setLogText(String logText){
+        this.logText= logText;
     }
 
 

@@ -5,10 +5,7 @@ let  ModuleItem = {
     id:1,
     name:"releaseName",
     description:"new release",
-    defineText:'',
-    status:-1,
-    pages:[],
-    modules:[],
+   
 }
 let Data = {
     currentItem :ModuleItem,
@@ -21,9 +18,9 @@ export default class ReleaseStore extends BaseStore {
     }
 
     @action.bound
-    queryByReleaseId(id){
+    queryByApplicationReleaseId(id,callback){
         let that = this;
-        this.model.query("/queryByProject",{id:id},function (response) {
+        this.model.query("/queryByApplicationReleaseId",{releaseId:id},function (response) {
             if (response && response.data) {
                 //console.log(JSON.stringify(response.data));
                 console.log(response.data);
@@ -31,6 +28,9 @@ export default class ReleaseStore extends BaseStore {
                     item.key = item.id
                 });
                 that.dataObject.list= response.data;
+                if (callback){
+                    callback(response.data);
+                }
             }
         });
  

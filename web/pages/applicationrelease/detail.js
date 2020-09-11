@@ -20,6 +20,7 @@ import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
 import NetworkHelper from '../../store/network';
+import Utils from '../../utils/utils';
 //import AddorEditPage from './AddorEditColumn';
 
 
@@ -88,20 +89,24 @@ export default class EditPage extends React.Component {
                 values.releaseStatus = "DEV";
             }
         });
+        this.props.buildRecordStore.queryByApplicationReleaseId(id, function(result){
+            console.log("Build Record of current release");
+            console.log(result);
+        });
     }
 
+    traceCurrentBuildRecord=(recordId)=>{
+        this.props.buildRecordStore.queryById(recordId, function(result){
+            console.log(result);
+        });
+    }
     releaseTo = (envType) => {
+        let that = this;
         let appType =   this.props.applicationTypesStore.dataObject.currentItem
         let appPoint =   this.props.applicationPointStore.dataObject.currentItem
         let appPointAddress = "http://" + appPoint.serverAddress;
-        if("UAT" === envType){
-            appPointAddress = "http://" + appPoint.serverAddress;
-        }else if("PROD" === envType){
-            appPointAddress = "http://" + appPoint.serverAddressProd;
-        }else if("BACK" === envType){
-            appPointAddress = "http://" + appPoint.serverAddressProd;
-        }
-        let appPointAddress = "http://" + appPoint.serverAddress;
+       
+       
         let itemData = this.StoreData().currentItem;
         itemData.projectName = this.projectName;
         itemData.envType = envType;
@@ -113,9 +118,34 @@ export default class EditPage extends React.Component {
         finalParams.type = 'release';
         finalParams.defines = itemData;
         //NetworkHelper.switchService("http://www.koudaibook.com:8080");
-        NetworkHelper.switchService(appPointAddress);
-        NetworkHelper.webPost("releaseByParams/", finalParams);
-        console.log(finalParams);
+
+        if("UAT" === envType){
+            
+           
+            let values = {name: itemData.applicationName, applicationReleaseId:itemData.id,releaseVersion:itemData.releaseVersion,releaseType: envType,
+                releaseStatus:"pending", buildNumber: Utils.getNowDateString()};
+            this.props.buildRecordStore.add(values, (result) => {
+                 console.log('finished result:');
+                 console.log(result);
+                 itemData.domainName = "uat." + itemData.domainName;
+                 itemData.buildRecordId = result.id;
+                 appPointAddress = "http://" + appPoint.serverAddress;
+                 //NetworkHelper.switchService(appPointAddress);
+                 //NetworkHelper.webPost("releaseByParams/", finalParams);
+                 var interval3=setInterval(function(){
+                    that.traceCurrentBuildRecord(result.id);
+               },5000);
+                 
+
+                 });
+        }else if("PROD" === envType){
+            appPointAddress = "http://" + appPoint.serverAddressProd;
+        }else if("BACK" === envType){
+            appPointAddress = "http://" + appPoint.serverAddressProd;
+        }
+
+        
+        //console.log(finalParams);
     }
 
     changeEditMode = (event) => {
@@ -128,6 +158,7 @@ export default class EditPage extends React.Component {
         let that = this;
         let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
         let appPointName = this.props.applicationPointStore.dataObject.currentItem.name;
+        let buildRecords =  this.props.buildRecordStore.dataObject.list;
         let itemData = that.Store().dataObject.currentItem;
         if (!itemData.releaseStatus) {
             itemData.releaseStatus = "DEV";
@@ -187,12 +218,10 @@ export default class EditPage extends React.Component {
 
                 </Card>
                 <Collapse  accordion  defaultActiveKey={['1']}>
-                <Panel header="发布记录1" key="1" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>}>
-                <div>试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志</div>
-                </Panel>
-                <Panel header="发布记录2" key="2" extra={<SettingOutlined onClick={that.changeEditMode}></SettingOutlined>} >
-                <div>试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志试测试测试测试测试测试日志</div>
-                </Panel>
+                    {buildRecords.map(function(record,index){
+                        let headerText = "发布记录"+index + "  版本:"+ record.releaseVersion + " 构建序号:"+ record.buildNumber + "  当前状态:" + record.releaseStatus;
+                        return  (<Panel header={headerText} key={index}>test</Panel>);
+                    })}
 
                 </Collapse>
                

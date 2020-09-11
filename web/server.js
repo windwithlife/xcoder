@@ -14,6 +14,8 @@ var releaseServer = require('./ci/libs/release');
 var uploadRootPath = config['current'].UPLOAD_PATH;
 console.log("current upload root path"  + uploadRootPath);
 
+var messageClient = require('./ci/libs/message_client');
+
 app.prepare()
   .then(() => {
     const server = express()
@@ -87,6 +89,7 @@ app.prepare()
       }
       console.log("release params is :", params);
       if (releaseServer.autoRelease(params)) {
+        
         res.send('successful to auto release!')
       } else {
         res.send('failed to auto release!')
@@ -100,6 +103,7 @@ app.prepare()
 
       var params = { releaseType: "prod",isUseOwnDockerFile: false, isSubWebSite: true, useOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
       let request = req.body.defines;
+      let buildRecord = req.body.buildRecord;
       if (req.body.repository) {
         params.name = params.codeName = req.body.repository.name;
         params.gitUrl = req.body.repository.git_url;
@@ -138,9 +142,12 @@ app.prepare()
 
       console.log("release request params is *****************8:", params);
       //res.send('begin to fetch source code.....')
+      
       if (releaseServer.autoRelease(params)) {
-        res.send('successful to auto release!')
+        messageClient.updateReleaseStatus(buildRecord.id, "success");
+        res.send('successful to auto release!')    
       } else {
+        messageClient.updateReleaseStatus(buildRecord.id, "failure");
         res.send('failed to auto release!')
       }
     })

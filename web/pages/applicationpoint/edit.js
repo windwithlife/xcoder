@@ -32,7 +32,8 @@ export default class AddPage extends React.Component {
         if (id){
             this.props.applicationPointStore.queryById(id, function(values){
                 console.log(values);
-                that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
+                that.formRef.current.setFieldsValue(values);
+                //that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
         }
         this.props.applicationTypesStore.queryAll();
@@ -41,7 +42,7 @@ export default class AddPage extends React.Component {
     onFinish = values => {
         var that = this;
         //let projectId = this.props.query.projectId;
-        values.releaseStatus = "DEV";
+        //values.releaseStatus = "DEV";
         console.log(values);
         this.Store().update(values, () => { console.log('finished add row'); router.back(); });
     }
@@ -52,6 +53,10 @@ export default class AddPage extends React.Component {
         return (
             <Card>
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                    <Form.Item
+                            name="id"
+                            noStyle='true'
+                        ></Form.Item>
                     <Form.Item name="name" label="发布单名称"
                         rules={[{
                             required: true,
