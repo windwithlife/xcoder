@@ -128,10 +128,11 @@ export default class EditPage extends React.Component {
                  console.log('finished result:');
                  console.log(result);
                  itemData.domainName = "uat." + itemData.domainName;
-                 itemData.buildRecordId = result.id;
+                 itemData.buildId = result.id;
+                 finalParams.buildRecord = result;
                  appPointAddress = "http://" + appPoint.serverAddress;
-                 //NetworkHelper.switchService(appPointAddress);
-                 //NetworkHelper.webPost("releaseByParams/", finalParams);
+                 NetworkHelper.switchService(appPointAddress);
+                 NetworkHelper.webPost("releaseByParams/", finalParams);
                  var interval3=setInterval(function(){
                     that.traceCurrentBuildRecord(result.id);
                },5000);
