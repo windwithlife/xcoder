@@ -61,8 +61,8 @@ function autoRelease(params) {
     if (paramsHelper.isServer()){
         //messageClient.updateReleaseStatus(params.buildId, "building-code...");
         console.log('*********************************begin to compile sourcecode!....******************************************');
-        if(builderTools.build(paramsHelper,pathConfig)){
-            return falese;
+        if(!builderTools.build(paramsHelper,pathConfig)){
+            return false;
         }
         //messageClient.updateReleaseStatus(params.buildId, "building-code-finished");
         console.log('begin to buildDockerImage!....');
