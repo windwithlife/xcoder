@@ -15,21 +15,21 @@ function autoRelease(params) {
     //get sourcecode or execute scripts
     paramsHelper.init(params);
     pathConfig.init(params);
-    messageClient.updateReleaseStatus(params.buildId, "starting...");
+    //messageClient.updateReleaseStatus(params.buildId, "starting...");
     var resultgit = gitTools.fetchSourceFromGit(params);
     if (!resultgit) {
         console.log('failed to get source from git,root case: git fetch a failure!')
        
-        messageClient.updateReleaseStatus(params.buildId, "failed");
+        //messageClient.updateReleaseStatus(params.buildId, "failed");
         return false;
     }
     //messageClient.updateReleaseStatus(params.buildId, "fetching-code-finished");
     if (paramsHelper.isScript()){
         if(shellTools.execReleaseScript(paramsHelper,pathConfig)){
-            messageClient.updateReleaseStatus(params.buildId, "success");
+            //messageClient.updateReleaseStatus(params.buildId, "success");
             return true;
         }else{
-            messageClient.updateReleaseStatus(params.buildId, "failed");
+            //messageClient.updateReleaseStatus(params.buildId, "failed");
             return false;
         }
         
@@ -39,10 +39,10 @@ function autoRelease(params) {
     if (paramsHelper.isLib()){
         //messageClient.updateReleaseStatus(params.buildId, "building-code...");
         if(builderTools.build(paramsHelper,pathConfig)){
-            messageClient.updateReleaseStatus(params.buildId, "success");
+            //messageClient.updateReleaseStatus(params.buildId, "success");
             return true;
         }else{
-            messageClient.updateReleaseStatus(params.buildId, "failed");
+            //messageClient.updateReleaseStatus(params.buildId, "failed");
             return false;
         }
    
