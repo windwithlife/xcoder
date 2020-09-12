@@ -18,7 +18,7 @@ function autoRelease(params) {
     //messageClient.updateReleaseStatus(params.buildId, "starting...");
     var resultgit = gitTools.fetchSourceFromGit(params);
     if (!resultgit) {
-        console.log('failed to get source from git,root case: git fetch a failure!')
+        console.log('failed to get source from git, release is stopped!')
        
         //messageClient.updateReleaseStatus(params.buildId, "failed");
         return false;

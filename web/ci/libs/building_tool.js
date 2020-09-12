@@ -23,8 +23,9 @@ function compileAndBuild(paramsHelper,pathConfig) {
     console.log('compile command:' + compileCommand);
     let result = exec(compileCommand);
     if (result.code !== 0) {
-        console.log('failed to compile  compile command:[' + compileCommand + ']');
         console.log(result.stderr);
+        console.log('failed to compile sourcecode, release is stopped!  compile command:[' + compileCommand + ']');
+       
         return false;
     }
     return true;
