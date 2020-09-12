@@ -127,7 +127,11 @@ export default class EditPage extends React.Component {
             this.props.buildRecordStore.add(values, (result) => {
                  console.log('finished result:');
                  console.log(result);
-                 itemData.domainName = "uat." + itemData.domainName;
+                 //itemData.domainName = "uat." + itemData.domainName;
+                 if(!itemData.domainNameUAT){
+                     itemData.domainNameUAT = 'uat.' + itemData.domainName;
+                 }
+                 itemData.domainName = "uat." + itemData.domainNameUAT;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
                  appPointAddress = "http://" + appPoint.serverAddress;
@@ -176,6 +180,12 @@ export default class EditPage extends React.Component {
         let appPointName = this.props.applicationPointStore.dataObject.currentItem.name;
         let buildRecords =  this.props.buildRecordStore.dataObject.list;
         let itemData = that.Store().dataObject.currentItem;
+
+        if(!itemData.domainNameUAT){
+            itemData.domainNameUAT = 'uat.'+ itemData.domainName;
+        }
+        let domainName = itemData.domainName + "[UAT:" +itemData.domainNameUAT + "]"
+        
         if (!itemData.releaseStatus) {
             itemData.releaseStatus = "DEV";
         }
@@ -198,7 +208,7 @@ export default class EditPage extends React.Component {
                             {appPointName}
                         </Form.Item>
                         < Form.Item name="path" label="发布目标网关或网站域名：">
-                            {itemData.domainName}
+                            {domainName}
                         </Form.Item>
                         < Form.Item name="path" label="服务应用PATH：">
                             {itemData.path}

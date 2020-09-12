@@ -65,6 +65,7 @@ export default class EditPage extends React.Component {
         this.props.applicationPointStore.queryAll();
         this.Store().queryById(id, function (values) {
             console.log(values);
+            if(!values.domainNameUAT){values.domainNameUAT='uat.' + values.domainName}
             that.formRef.current.setFieldsValue(values);
         });
     }
@@ -112,6 +113,9 @@ export default class EditPage extends React.Component {
     render() {
         let that = this;
         let itemData = that.Store().dataObject.currentItem;
+        if(!itemData.domainNameUAT){
+            itemData.domainNameUAT = 'uat.' + itemData.domainName;
+        }
         let isShowPage = itemData.sideType == 'server' ? false : true;
         return (
             < div >
@@ -152,6 +156,9 @@ export default class EditPage extends React.Component {
                         <Form.Item name="domainName" label="发布目标网关或站点域名">
                            <Input />
                         </Form.Item>
+                        <Form.Item name="domainNameUAT" label="UAT网关或站点域名">
+                        <Input />
+                    </Form.Item>
                         <Form.Item name="path" label="发布应用到目标PATH">
                             <Input />
                         </Form.Item>

@@ -39,6 +39,7 @@ public class ApplicationRelease implements Serializable {
     private String releaseVersion;
     private String applicationName;
     private String domainName;
+    private String domainNameUAT;
 
 
     public ApplicationRelease() {
@@ -166,6 +167,14 @@ public class ApplicationRelease implements Serializable {
     };
     public void setDomainName(String name){
         this.domainName = name;
+    }
+
+    //域名称
+    public String getDomainNameUAT(){
+        return this.domainNameUAT;
+    };
+    public void setDomainNameUAT(String name){
+        this.domainNameUAT = name;
     }
 
     //名称

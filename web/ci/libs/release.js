@@ -11,7 +11,7 @@ let paramsHelper = new ParamsHelper();
 
 
 function autoRelease(params) {
-    console.log('begin to fetch git source code!....')
+    console.log('************************************************begin to fetch git source code!....************************')
     //get sourcecode or execute scripts
     paramsHelper.init(params);
     pathConfig.init(params);
@@ -25,16 +25,27 @@ function autoRelease(params) {
     }
     //messageClient.updateReleaseStatus(params.buildId, "fetching-code-finished");
     if (paramsHelper.isScript()){
-        shellTools.execReleaseScript(paramsHelper,pathConfig);
-        messageClient.updateReleaseStatus(params.buildId, "success");
-        return true;
+        if(shellTools.execReleaseScript(paramsHelper,pathConfig)){
+            messageClient.updateReleaseStatus(params.buildId, "success");
+            return true;
+        }else{
+            messageClient.updateReleaseStatus(params.buildId, "failed");
+            return false;
+        }
+        
+        
     }
 
     if (paramsHelper.isLib()){
         //messageClient.updateReleaseStatus(params.buildId, "building-code...");
-        builderTools.build(paramsHelper,pathConfig);
-        messageClient.updateReleaseStatus(params.buildId, "success");
-        return true;
+        if(builderTools.build(paramsHelper,pathConfig)){
+            messageClient.updateReleaseStatus(params.buildId, "success");
+            return true;
+        }else{
+            messageClient.updateReleaseStatus(params.buildId, "failed");
+            return false;
+        }
+   
     }
 
     /*
@@ -49,7 +60,10 @@ function autoRelease(params) {
     */
     if (paramsHelper.isServer()){
         //messageClient.updateReleaseStatus(params.buildId, "building-code...");
-        builderTools.build(paramsHelper,pathConfig);
+        console.log('*********************************begin to compile sourcecode!....******************************************');
+        if(builderTools.build(paramsHelper,pathConfig)){
+            return falese;
+        }
         //messageClient.updateReleaseStatus(params.buildId, "building-code-finished");
         console.log('begin to buildDockerImage!....');
         //messageClient.updateReleaseStatus(params.buildId, "deploying-to-k8s");

@@ -164,7 +164,7 @@ kubectl apply -f ./cloud-resources/k8s/resources/deployments/docker-registry.yam
 #echo "finished to create some common services \n"
 
 #创建TLS证书
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykeyfile -out mycert -subj "/CN=*.koudaibook.com/O=test.koudaibook.com"
+#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykeyfile -out mycert -subj "/CN=*.e-healthcare.net/O=test.e-healthcare.net"
 #kubectl create secret tls istio-ingressgateway-certs  --key mykeyfile --cert mycert
 
 

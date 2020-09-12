@@ -81,6 +81,9 @@ export default class AddPage extends React.Component {
                     <Form.Item name="domainName" label="发布目标网关或站点域名">
                         <Input />
                     </Form.Item>
+                    <Form.Item name="domainNameUAT" label="UAT网关或站点域名">
+                        <Input />
+                    </Form.Item>
                     <Form.Item name="path" label="发布应用PATH">
                         <Input />
                     </Form.Item>
