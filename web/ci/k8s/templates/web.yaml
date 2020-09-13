@@ -51,7 +51,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: <%=data.gatewayConfigName%> 
+  name: <%=data.gatewayConfigName%>
 spec:
   selector:
     istio: ingressgateway # use Istio default gateway implementation
@@ -82,7 +82,7 @@ spec:
   hosts:
   - "<%=data.webDomain%>"
   gateways:
-  - <%=data.gatewayConfigName%> 
+  - "<%=data.gatewayConfigName%>"
   http: <%data.routes.forEach(function(route){%>
   - match:
     - uri:
