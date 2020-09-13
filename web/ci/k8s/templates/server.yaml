@@ -42,11 +42,23 @@ spec:
   selector:
     app: <%=data.applicationName%>
 ---
-
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: <%=data.certConfigName%> 
+  namespace: istio-system
+spec:
+  dnsNames:
+    - <%=data.gateway%>
+  secretName: <%=data.certConfigName%> 
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: service-gateway
+  name: <%=data.gatewayConfigName%> 
 spec:
   selector:
     istio: ingressgateway # use Istio test-test
@@ -57,8 +69,9 @@ spec:
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
-      privateKey: /etc/istio/ingressgateway-certs/tls.key
+      #serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      #privateKey: /etc/istio/ingressgateway-certs/tls.key
+      credentailName: <%=data.certConfigName%> 
     hosts:
     - "*"
   - port:
@@ -71,12 +84,12 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: <%=data.gatewayConfigName%> 
+  name: <%=data.vServiceConfigName%> 
 spec:
   hosts:
   - "<%=data.gateway%>"
   gateways:
-  - service-gateway
+  - <%=data.gatewayConfigName%> 
   http: <%data.routes.forEach(function(route){%>
   - match:
     - uri:

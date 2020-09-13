@@ -96,7 +96,9 @@ class ParamsHelper {
         params.deploymentName = this.applicationName + "-deployment";
         params.applicationName = this.applicationName + "-app";
         //params.gatewayConfigName = this.applicationName + "-" +this.sideType + "-vservice";
-        params.gatewayConfigName = this.hostName + "-vservice";
+        params.gatewayConfigName = this.hostName + "-gateway";
+        params.vServiceConfigName = this.hostName + "-vservice";
+        params.certConfigName = this.hostName + "-cert";
         params.imageName = this.imageName();
         params.serviceName = this.serviceName();
         params.ingressName = this.applicationName + "-ingress";

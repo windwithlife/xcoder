@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ingress-cert
+  namespace: istio-system
+spec:
+  dnsNames:
+    - hello.app.nafanli.com
+  secretName: ingress-cert
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
