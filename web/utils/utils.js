@@ -22,11 +22,36 @@ function getDatetime() {
 }
 
 
+function removeFirst(str) {
+    let  result = str;
+    if(!str){return ''}
+    if(str.substring(0,1) == '/'){
+        result =  str.substring(1);
+    }
+    
+    return result;
+}
+
+function changeDomainFormat(str) {
+    let  result = str;
+    str.map(function(charElement,i){
+        if ('.' == charElement){
+            //result.replace(i,)
+        }
+    })
+   
+    
+    return result;
+}
+
 // module.exports = {
 //         getNowDateString:getDatetime,
 // }
 export default {
     getNowDateString:getDatetime,
+    removeFirst:removeFirst,
+
+
 }
 
 
