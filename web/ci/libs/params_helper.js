@@ -95,9 +95,9 @@ class ParamsHelper {
         }
         params.deploymentName = this.applicationName + "-deployment";
         params.applicationName = this.applicationName + "-app";
-        //params.gatewayConfigName = this.applicationName + "-" +this.sideType + "-vservice";
-        params.gatewayConfigName = this.hostName + "-gateway";
-        params.gatewayConfigName.replace('.','-');
+        let gatewayName = this.hostName + "-gateway";
+        params.gatewayConfigName = gatewayName.replace(/\./g,'-');
+       
         params.vServiceConfigName = this.hostName + "-vservice";
         params.certConfigName = this.hostName + "-cert";
 
