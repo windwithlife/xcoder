@@ -34,6 +34,7 @@ export default class EditPage extends React.Component {
     constructor() {
         super();
         this.projectName = "tempName";
+        this.buildRecord = {};
     }
     Store = () => {
         return this.props.applicationreleasesStore;
@@ -120,7 +121,7 @@ export default class EditPage extends React.Component {
         //NetworkHelper.switchService("http://www.koudaibook.com:8080");
 
         if("UAT" === envType){
-            
+            itemData.releaseType='uat';
            
             let values = {name: itemData.applicationName, applicationReleaseId:itemData.id,releaseVersion:itemData.releaseVersion,releaseType: envType,
                 releaseStatus:"pending", buildNumber: Utils.getNowDateString()};
@@ -131,7 +132,7 @@ export default class EditPage extends React.Component {
                  if(!itemData.domainNameUAT){
                      itemData.domainNameUAT = 'uat.' + itemData.domainName;
                  }
-                 itemData.domainName = "uat." + itemData.domainNameUAT;
+                 itemData.domainName = itemData.domainNameUAT;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
                  appPointAddress = "http://" + appPoint.serverAddress;
@@ -144,7 +145,7 @@ export default class EditPage extends React.Component {
 
                  });
         }else if("PROD" === envType){
-            
+            itemData.releaseType='prod';
             let values = {name: itemData.applicationName, applicationReleaseId:itemData.id,releaseVersion:itemData.releaseVersion,releaseType: envType,
                 releaseStatus:"pending", buildNumber: Utils.getNowDateString()};
             this.props.buildRecordStore.add(values, (result) => {
@@ -181,9 +182,7 @@ export default class EditPage extends React.Component {
         let buildRecords =  this.props.buildRecordStore.dataObject.list;
         let itemData = that.Store().dataObject.currentItem;
 
-        if(!itemData.domainNameUAT){
-            itemData.domainNameUAT = 'uat.'+ itemData.domainName;
-        }
+       
         let domainName = itemData.domainName + "[UAT:" +itemData.domainNameUAT + "]"
         
         if (!itemData.releaseStatus) {

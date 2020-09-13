@@ -12,7 +12,8 @@ let  ModuleItem = {
 }
 let Data = {
     currentItem :ModuleItem,
-    list:[]
+    list:[],
+    buildRecord:{},
 }
 export default class ReleaseStore extends BaseStore {
     constructor() {
