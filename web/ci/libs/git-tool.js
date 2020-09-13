@@ -90,6 +90,7 @@ function push_do (path){
 }
 
 function fetch_project_src(params) {
+    console.log('*********************************begin to fetch sourcecode!....******************************************');
     pathConfig.init(params);
     paramsHelper.init(params);
     let result = true;
@@ -124,7 +125,7 @@ function fetch_project_src(params) {
     }
     //pathConfig.prepareSourceCode();
     pathConfig.resetWorkPath();
-
+    console.log('*********************************finish to compile sourcecode!....******************************************');
     return result;
 }
 

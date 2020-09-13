@@ -60,7 +60,7 @@ function autoRelease(params) {
     */
     if (paramsHelper.isServer()){
         //messageClient.updateReleaseStatus(params.buildId, "building-code...");
-        console.log('*********************************begin to compile sourcecode!....******************************************');
+        
         if(!builderTools.build(paramsHelper,pathConfig)){
             return false;
         }

@@ -30,7 +30,7 @@ function buildDockerByMultifile(workPath,dockfile, imageName){
  * 根据Docker的multi-stage文件进行分段创建镜像
  */
 function buildServiceDockerImage(params) {
-   
+    console.log('*********************************begin to build docker image!....******************************************');
     let dockerfile = pathConfig.dockerfilesRootPath() + "/"  +paramsHelper.dockerfile();
     if(paramsHelper.useOwnDockerFile()){
         dockerfile = pathConfig.releaseTargetSrcPath() + "/Dockerfile" ;
@@ -40,6 +40,7 @@ function buildServiceDockerImage(params) {
     let workPath = pathConfig.releaseTargetSrcPath();
     
     let buildResult = buildDockerByMultifile(workPath, dockerfile, imageName);
+    console.log('*********************************finish to build docker image!******************************************');
     return buildResult;
 }
 
@@ -84,6 +85,7 @@ function deployConfigFiles(){
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
  */
 function deploy2Cloud(){
+    console.log('*********************************begin to deploy to k8s!....******************************************');
     let deploymentfileName = paramsHelper.deploymentfile();
     let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
     let runUnDeployCommand = 'kubectl delete -f  ' + depolymentfile;
@@ -99,7 +101,7 @@ function deploy2Cloud(){
         console.log('sucessfule to release service to k8s cloud platform!')
         
     }
-
+    console.log('*********************************finish to deploy to k8s!....******************************************');
 }
 
 /**

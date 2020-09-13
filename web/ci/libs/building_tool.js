@@ -12,6 +12,7 @@ require('shelljs/global');
  * 对源代码进行编译构建
  */
 function compileAndBuild(paramsHelper,pathConfig) {
+    console.log('*********************************begin to compile sourcecode!....******************************************');
     let workPath = pathConfig.releaseTargetSrcPath();
     let compileCommand = "";
     if (paramsHelper.isJava()) {
@@ -24,10 +25,11 @@ function compileAndBuild(paramsHelper,pathConfig) {
     let result = exec(compileCommand);
     if (result.code !== 0) {
         console.log(result.stderr);
-        console.log('failed to compile sourcecode, release is stopped!  compile command:[' + compileCommand + ']');
+        console.log('*********************failed to compile sourcecode, release is stopped!  compile command:[' + compileCommand + ']');
        
         return false;
     }
+    console.log('*********************************finish to compile sourcecode!....******************************************');
     return true;
 
 }
