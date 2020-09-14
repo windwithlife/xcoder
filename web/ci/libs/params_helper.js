@@ -96,10 +96,11 @@ class ParamsHelper {
         params.deploymentName = this.applicationName + "-deployment";
         params.applicationName = this.applicationName + "-app";
         let gatewayName = this.hostName + "-gateway";
+        let certName =this.hostName + "-cert";
+        let vServiceName = this.hostName + "-vservice";
         params.gatewayConfigName = gatewayName.replace(/\./g,'-');
-       
-        params.vServiceConfigName = this.hostName + "-vservice";
-        params.certConfigName = this.hostName + "-cert";
+        params.vServiceConfigName = vServiceName.replace(/\./g,'-');
+        params.certConfigName = certName.replace(/\./g,'-');
 
         params.imageName = this.imageName();
         params.serviceName = this.serviceName();

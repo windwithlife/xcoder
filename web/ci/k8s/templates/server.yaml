@@ -73,13 +73,13 @@ spec:
       #privateKey: /etc/istio/ingressgateway-certs/tls.key
       credentailName: <%=data.certConfigName%> 
     hosts:
-    - "*"
+    - "<%=data.gateway%>"
   - port:
       number: 80
       name: http-service
       protocol: HTTP
     hosts:
-    - "*"
+    - "<%=data.gateway%>"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
