@@ -65,7 +65,7 @@ function routeToMicroservice() {
       return `${HTTP_PREFIX}${UAT_HOST}`;
 
     case ENV_NAME_PRODUCTION:
-      return `${HTTP_PREFIX}${PRODUCTION_HOST}`;
+      return `${HTTPS_PREFIX}${PRODUCTION_HOST}`;
 
     default:
       return devRoute;
