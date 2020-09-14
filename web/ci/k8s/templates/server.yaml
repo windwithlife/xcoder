@@ -71,7 +71,7 @@ spec:
       mode: SIMPLE
       #serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
       #privateKey: /etc/istio/ingressgateway-certs/tls.key
-      credentailName: <%=data.certConfigName%> 
+      credentialName: <%=data.certConfigName%> 
     hosts:
     - "<%=data.gateway%>"
   - port:
