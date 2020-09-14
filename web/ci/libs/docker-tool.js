@@ -66,6 +66,7 @@ function modifyOwnDeploymentFile(){
 }
 
 function deployConfigFiles(){
+    console.log('*********************************begin to deploy config files !....******************************************');
     let configFiles = pathConfig.loadConfigFiles();
     configFiles.forEach(function(configFile){
         let runDeployCommand = 'kubectl create -f  ' + configFile;
@@ -79,6 +80,7 @@ function deployConfigFiles(){
             
         }
     });
+     console.log('*********************************finish to deploy config files !*****************************************');
 }
 
 /**
