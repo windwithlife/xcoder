@@ -106,12 +106,12 @@ function pathIsReady(pathName) {
 
     loadConfigFiles() {
         var mPath = this.configFilesRootPath();
-        return loadfiles(mPath); 
+        return this.loadfiles(mPath); 
     }
 
     loadK8sFiles() {
         var mPath = this.k8sFilesRootPath();
-        return loadfiles(mPath); 
+        return this.loadfiles(mPath); 
     }
     prepareClonePath(){
         let pathName  = path.join(this.projectSrcRootPath());
