@@ -39,7 +39,7 @@ function buildServiceDockerImage(params) {
     let imageName = paramsHelper.imageName();
     let workPath = pathConfig.releaseTargetSrcPath();
 
-    let compileCommand = "docker build " + workPath + " -t " + imageName + " -f " + dockfile;
+    let compileCommand = "docker build " + workPath + " -t " + imageName + " -f " + dockerfile;
     let removeCommand = "docker rmi  " + imageName;
    
     let result = executeCommand(removeCommand,'remove old image');
