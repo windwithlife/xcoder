@@ -63,12 +63,12 @@ export default class AddPage extends React.Component {
                     < Form.Item name="platform" label="目标操作系统">
                         < XSelect category="os" />
                     </Form.Item>
-                  
+                    
                     < Form.Item name="isLib" label="是否为公共库">
                         < XSelect category="isLib" />
                     </Form.Item>
-                    <Form.Item name="nickname" label="别名(用于识别应用类型，英文输入)">
-                        <Input />
+                    <Form.Item name="nickname" label="应用类型可识别名">
+                        < XSelect category="applicationTypeName" />
                     </Form.Item>
                     
 

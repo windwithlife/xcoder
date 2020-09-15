@@ -33,7 +33,11 @@ function autoRelease(params) {
             return false;
         }
         
+    }
+
+    if (paramsHelper.isK8s()){
         
+        return dockerTools.releaseFilesToK8s(paramsHelper,path_config);
     }
 
     if (paramsHelper.isLib()){

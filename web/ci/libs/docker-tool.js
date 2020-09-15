@@ -79,6 +79,8 @@ function deployConfigFiles(){
      console.log('*********************************finish to deploy config files !*****************************************');
 }
 
+
+
 /**
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
  */
@@ -90,6 +92,19 @@ function deploy2Cloud(){
     
     executeCommand(runUnDeployCommand,"delete origin k8s objects");
     return executeCommand(runDeployCommand,"application deployment");
+}
+
+
+function deployK8sFiles(pathObj){
+    console.log('*********************************begin to deploy k8s files !....******************************************');
+    let k8sFiles = pathObj.loadK8sFiles();
+    k8sFiles.forEach(function(k8sFile){
+        let runUnDeployCommand = 'kubectl delete -f  ' + k8sFile;
+        let runDeployCommand = 'kubectl create -f  ' + k8sFile;
+        executeCommand(runUnDeployCommand,"delete origin configMap");
+        executeCommand(runDeployCommand,"create configMap");
+    });
+     console.log('*********************************finish to deploy config files !*****************************************');
 }
 
 /**
@@ -112,7 +127,14 @@ function release2K8sCloud(params) {
 }
 
 
+
+function releaseFilesToK8s(paramsObj, pathObj) {
+    return deployK8sFiles(pathObj);
+}
+
+
 module.exports = {
-    release2K8sCloud:release2K8sCloud
+    release2K8sCloud:release2K8sCloud,
+    releaseFilesToK8s:releaseFilesToK8s,
 }
 

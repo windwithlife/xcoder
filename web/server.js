@@ -136,6 +136,7 @@ app.prepare()
       console.log("Current repo url:" + params.gitUrl);
 
       params.name = request.name;
+      params.applicationType = request.applicationType;
       params.isLib = request.isLib;
       params.useOwnDeploymentFile = request.useOwnDeploymentFile;
       params.useOwnDockerFile = request.useOwnDeploymentFile;

@@ -28,6 +28,7 @@ class ParamsHelper {
     }
 
     init(setting) {
+        this.applicationType = setting.applicationType;
         this.sideType = setting.sideType;
         this.language = setting.language;
         this.framework = setting.framework;
@@ -170,7 +171,14 @@ class ParamsHelper {
         }
     }
     isScript() {
-        if ((this.isLib) && (this.isLib == 2)) {
+        if ((this.applicationType) && ('script' == this.applicationType)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    isK8s() {
+        if ((this.applicationType) && ('k8s' == this.applicationType)) {
             return true;
         } else {
             return false;
@@ -183,7 +191,8 @@ class ParamsHelper {
             return false;
         }
     }
-    isJava() {
+   
+    isJavaServer() {
         if ((this.language) && ('java' == this.language)) {
             return true;
         } else {
