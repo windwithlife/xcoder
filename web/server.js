@@ -1,5 +1,8 @@
+
 const express = require('express')
 const next = require('next')
+let https = require('https');
+let fs = require('fs');
 const generator = require('./generator')
 const port = parseInt(process.env.PORT, 10) || 8080
 const dev = process.env.NODE_ENV !== 'production'
@@ -232,10 +235,23 @@ app.prepare()
       return handle(req, res)
     })
 
+
+
     server.listen(port, (err) => {
       if (err) throw err
       console.log(`> Ready on http://localhost:${port}`)
     })
+
+   const httpsOption ={
+     key : fs.readFileSync("../certs/private.pem"),
+     cert : fs.readFileSync("../certs/file.crt"),
+     passphrase: '123456',
+   }
+
+
+    https.createServer(httpsOption, server).listen(443);
+
+
   })
 
 

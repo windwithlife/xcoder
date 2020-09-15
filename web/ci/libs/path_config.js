@@ -88,9 +88,9 @@ function pathIsReady(pathName) {
         return deploymentfile;
     }
     
-    loadConfigFiles() {
-        var configFiles = [];
-        var mPath = this.configFilesRootPath();
+    loadfiles(mPath){
+         var configFiles = [];
+       
         if (!pathIsReady(mPath)){return  configFiles;}
         var files = fs.readdirSync(mPath);
         files.forEach(function (file) {
@@ -102,6 +102,16 @@ function pathIsReady(pathName) {
         });
         console.log(configFiles);
         return configFiles;
+    }
+
+    loadConfigFiles() {
+        var mPath = this.configFilesRootPath();
+        return loadfiles(mPath); 
+    }
+
+    loadK8sFiles() {
+        var mPath = this.k8sFilesRootPath();
+        return loadfiles(mPath); 
     }
     prepareClonePath(){
         let pathName  = path.join(this.projectSrcRootPath());
@@ -125,9 +135,21 @@ function pathIsReady(pathName) {
         checkPath(pathName);
         return pathName;
     }
-
+    interfacePath(){
+        let pathName  = path.join(this.releaseTargetSrcPath(), "../api");
+        return pathName;
+       
+    }
     scriptFile(){
         let pathName  = path.join(this.releaseTargetSrcPath(),"startup.sh");
+        return pathName;
+    }
+    k8sFilesRootPath(){
+        let releaseEnvirnoment = "";
+        if (this.releaseType){
+            releaseEnvirnoment = this.releaseType;
+        }
+        let pathName  = path.join(this.releaseTargetSrcPath(),"k8s",releaseEnvirnoment);
         return pathName;
     }
     configFilesRootPath(){
