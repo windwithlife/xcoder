@@ -10,38 +10,40 @@ var ParamsHelper = require('./params_helper');
 pathConfig = new PathConfig();
 paramsHelper = new ParamsHelper();
 
-/**
- * 根据Docker的multi-stage文件进行分段创建镜像
- */
-function buildDockerByMultifile(workPath,dockfile, imageName){
-    let compileCommand = "docker build " + workPath + " -t " + imageName + " -f " + dockfile;
-    console.log('compile command:' + compileCommand);
-    let removeCommand = "docker rmi  " + imageName;
-    exec(removeCommand);
-    let result = exec(compileCommand);
+
+function executeCommand(command,commandTag){
+    console.log('*************************************************************************');
+    console.log('****************************** going to execute ' + commandTag + ' command:[' + command + "] *************");
+    console.log('*************************************************************************');
+    let result = exec(command);
     if (result.code !== 0) {
-        console.log('failed to compile  compile command:[' + compileCommand +']');
-        console.log(result.stderr); 
+        console.log(result.stderr);
+        console.log('*********************failed to excute '+ commandTag + ' command:[' + command + ']');
         return false;
     }
+    console.log('*************************************************************************');
+    console.log('*********************************finish to excute ' + commandTag + ' command *******************************');
+    console.log('*************************************************************************');
     return true;
 }
+
+
 /**
  * 根据Docker的multi-stage文件进行分段创建镜像
  */
 function buildServiceDockerImage(params) {
-    console.log('*********************************begin to build docker image!....******************************************');
     let dockerfile = pathConfig.dockerfilesRootPath() + "/"  +paramsHelper.dockerfile();
     if(paramsHelper.useOwnDockerFile()){
         dockerfile = pathConfig.releaseTargetSrcPath() + "/Dockerfile" ;
     }
     let imageName = paramsHelper.imageName();
-    //let workPath = pathConfig.dockerWorkPath();
     let workPath = pathConfig.releaseTargetSrcPath();
-    
-    let buildResult = buildDockerByMultifile(workPath, dockerfile, imageName);
-    console.log('*********************************finish to build docker image!******************************************');
-    return buildResult;
+
+    let compileCommand = "docker build " + workPath + " -t " + imageName + " -f " + dockfile;
+    let removeCommand = "docker rmi  " + imageName;
+   
+    let result = executeCommand(removeCommand,'remove old image');
+    return executeCommand(compileCommand,'build docker image:' + imageName);
 }
 
 
@@ -69,16 +71,10 @@ function deployConfigFiles(){
     console.log('*********************************begin to deploy config files !....******************************************');
     let configFiles = pathConfig.loadConfigFiles();
     configFiles.forEach(function(configFile){
+        let runUnDeployCommand = 'kubectl delete -f  ' + configFile;
         let runDeployCommand = 'kubectl create -f  ' + configFile;
-        console.log("Exec Command String:" + runDeployCommand);
-        let result = exec(runDeployCommand);
-        if(result.code !== 0){   
-            console.log('failed to apply configMap to k8s! configMap file Name:' + configFile);
-            console.log('root cause:' + result.stderr);
-        }else{
-            console.log('sucessfule to apply configMap to k8s cloud platform!')
-            
-        }
+        executeCommand(runUnDeployCommand,"delete origin configMap");
+        executeCommand(runDeployCommand,"create configMap");
     });
      console.log('*********************************finish to deploy config files !*****************************************');
 }
@@ -87,23 +83,13 @@ function deployConfigFiles(){
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
  */
 function deploy2Cloud(){
-    console.log('*********************************begin to deploy to k8s!....******************************************');
     let deploymentfileName = paramsHelper.deploymentfile();
     let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
     let runUnDeployCommand = 'kubectl delete -f  ' + depolymentfile;
     let runDeployCommand = 'kubectl create -f  ' + depolymentfile;
-
-    console.log("Exec Command String:" + runDeployCommand);
-    exec(runUnDeployCommand);
-    let result = exec(runDeployCommand);
-    if(result.code !== 0){   
-        console.log('failed to release service to k8s based service Name:' + serviceName);
-        console.log('root cause:' + result.stderr);
-    }else{
-        console.log('sucessfule to release service to k8s cloud platform!')
-        
-    }
-    console.log('*********************************finish to deploy to k8s!....******************************************');
+    
+    executeCommand(runUnDeployCommand,"delete origin k8s objects");
+    return executeCommand(runDeployCommand,"application deployment");
 }
 
 /**

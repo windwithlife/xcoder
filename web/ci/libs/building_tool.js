@@ -26,6 +26,16 @@ function compileJava(workPath){
 }
 
 
+function compileNodeNext(workPath){
+    let compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
+    return execCommand(compileCommand);
+}
+
+function compilePython(workPath){
+    let compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
+    return execCommand(compileCommand);
+}
+
 function compileJavaApplication(){
     let result = false;
     let interfacePath = pathConfig.interfacePath();
@@ -37,20 +47,38 @@ function compileJavaApplication(){
     return result;
     
 }
+function compileNodeNextApplication(){
+    let applicationPath = pathConfig.releaseTargetSrcPath();
+    result = compileNodeNext(applicationPath);
+    return result;
+    
+}
+function compilePythonApplication(){
+    let applicationPath = pathConfig.releaseTargetSrcPath();
+    result = compilePython(applicationPath);
+    return result;
+    
+}
 /**
  * 对源代码进行编译构建
  */
 function compileAndBuild(paramsHelper,pathConfig) {
-    console.log('*********************************begin to compile sourcecode!....******************************************');
-    let workPath = pathConfig.releaseTargetSrcPath();
-    let compileCommand = "";
     if (paramsHelper.isJava()) {
-        compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath + ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install package -Dmaven.test.skip=true"';
-    } else {
-        compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
-    
+        return compileJavaApplication();
+    }else{
+        return compileNodeNextApplication();
     }
-    return execCommand(compileCommand);
+   
+    // let workPath = pathConfig.releaseTargetSrcPath();
+    // let compileCommand = "";
+    // if (paramsHelper.isJava()) {
+    //     compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath + ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install package -Dmaven.test.skip=true"';
+    // } else {
+    //     compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
+    
+    // }
+    // return execCommand(compileCommand);
+    
 }
 
 module.exports = {
