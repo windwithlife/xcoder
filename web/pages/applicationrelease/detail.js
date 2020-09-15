@@ -154,7 +154,7 @@ export default class EditPage extends React.Component {
                  //itemData.domainName = itemData.domainName;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
-                 appPointAddress = "http://" + appPoint.serverAddressProd;
+                 appPointAddress = "https//" + appPoint.serverAddressProd;
                  NetworkHelper.switchService(appPointAddress);
                  NetworkHelper.webPost("releaseByParams/", finalParams);
                  var interval3=setInterval(function(){
