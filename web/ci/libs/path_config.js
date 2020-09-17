@@ -135,6 +135,10 @@ function pathIsReady(pathName) {
         checkPath(pathName);
         return pathName;
     }
+    hasInterface(){
+        let iPath = this.interfacePath();
+        return pathIsReady(iPath);
+    }
     interfacePath(){
         let pathName  = path.join(this.releaseTargetSrcPath(), "../api");
         return pathName;

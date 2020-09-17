@@ -38,8 +38,9 @@ function compilePython(workPath){
 
 function compileJavaApplication(pathConfig){
     let result = false;
-    let interfacePath = pathConfig.interfacePath();
-    if (pathConfig.pathIsReady(interfacePath)){
+   
+    if (pathConfig.hasInterface()){
+        let interfacePath = pathConfig.interfacePath();
         result = compileJava(interfacePath);
     }
     let applicationPath = pathConfig.releaseTargetSrcPath();
