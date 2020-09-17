@@ -36,7 +36,7 @@ function compilePython(workPath){
     return execCommand(compileCommand);
 }
 
-function compileJavaApplication(){
+function compileJavaApplication(pathConfig){
     let result = false;
     let interfacePath = pathConfig.interfacePath();
     if (pathConfig.pathIsReady(interfacePath)){
@@ -47,7 +47,7 @@ function compileJavaApplication(){
     return result;
     
 }
-function compileNodeNextApplication(){
+function compileNodeNextApplication(pathConfig){
     let applicationPath = pathConfig.releaseTargetSrcPath();
     result = compileNodeNext(applicationPath);
     return result;
@@ -64,9 +64,9 @@ function compilePythonApplication(){
  */
 function compileAndBuild(paramsHelper,pathConfig) {
     if (paramsHelper.isJavaServer()) {
-        return compileJavaApplication();
+        return compileJavaApplication(pathConfig);
     }else{
-        return compileNodeNextApplication();
+        return compileNodeNextApplication(pathConfig);
     }
     
 }
