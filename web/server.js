@@ -243,14 +243,14 @@ app.prepare()
       console.log(`> Ready on http://localhost:${port}`)
     })
 
-   const httpsOption ={
-     key : fs.readFileSync("../certs/private.pem"),
-     cert : fs.readFileSync("../certs/file.crt"),
-     passphrase: '123456',
-   }
+  //  const httpsOption ={
+  //    key : fs.readFileSync("../certs/private.pem"),
+  //    cert : fs.readFileSync("../certs/file.crt"),
+  //    passphrase: '123456',
+  //  }
 
 
-    https.createServer(httpsOption, server).listen(8443);
+  //   https.createServer(httpsOption, server).listen(8443);
 
 
   })
