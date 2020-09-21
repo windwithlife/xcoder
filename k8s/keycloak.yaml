@@ -92,7 +92,7 @@ spec:
   http: 
   - match:
     - uri:
-        prefix: /keycloak
+        prefix: /
     route:
     - destination:
         host: keycloak
