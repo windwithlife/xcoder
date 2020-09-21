@@ -80,6 +80,9 @@ spec:
   gateways:
   - auth-gateway
   http: 
+  - match
+    - uri:
+        prefix: /keycloak
   - route:
     - destination:
         host: keycloak
