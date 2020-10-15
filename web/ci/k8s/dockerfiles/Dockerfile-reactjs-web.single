@@ -1,6 +1,5 @@
-#FROM node:8.10.0-slim
-FROM node:latest
- 
+#FROM node:latest
+FROM node:12.19.0-alpine
 MAINTAINER Joe
 
 RUN npm config set registry http://registry.npm.taobao.org

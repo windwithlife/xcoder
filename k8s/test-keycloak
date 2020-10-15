@@ -1,0 +1,26 @@
+
+curl --insecure -d "client_secret=0065931f-9e01-44b7-a922-e80a48f43a68" -d "client_id=istioclient" -d "grant_type=client_credentials" https://service.e-healthcare.net:7443/auth/realms/master/protocol/openid-connect/token | jq -r ".access_token"
+
+curl -k --insecure -d "requested_issuer=http://service.e-healthcare.net:8888/auth/realms/myrealm" -d "client_secret=0065931f-9e01-44b7-a922-e80a48f43a68" -d "client_id=istioclient" -d "grant_type=client_credentials" https://service.e-healthcare.net:7443/auth/realms/myrealm/protocol/openid-connect/token | jq -r ".access_token"
+
+TOKEN=`curl -k --insecure -d "audience=zhangyq" -d "requested_issuer=http://service.e-healthcare.net:8888/auth/realms/myrealm" -d "client_secret=0065931f-9e01-44b7-a922-e80a48f43a68" -d "client_id=istioclient" -d "grant_type=client_credentials" https://service.e-healthcare.net:7443/auth/realms/myrealm/protocol/openid-connect/token | jq -r ".access_token"`
+
+curl -k --insecure -d "audience=testuser" -d "requested_issuer=http://service.e-healthcare.net:8888/auth/realms/myrealm" -d "client_secret=0065931f-9e01-44b7-a922-e80a48f43a68" -d "client_id=istioclient" -d "grant_type=client_credentials" https://service.e-healthcare.net:7443/auth/realms/myrealm/protocol/openid-connect/token | jq -r ".access_token"
+
+curl --insecure -k -X POST -d "grant_type=password&username=zhangyq&password=123456&client_id=istioclient&client_secret=0065931f-9e01-44b7-a922-e80a48f43a68" https://localhost:7443/auth/realms/myrealm/protocol/openid-connect/token
+
+
+kubectl apply -f - <<EOF
+apiVersion: "security.istio.io/v1beta1"
+kind: "RequestAuthentication"
+metadata:
+  name: "jwt-example"
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: "https://service.e-healthcare.net:7443/auth/realms/myrealm"
+    jwksUri: "http://service.e-healthcare.net:8888/auth/realms/myrealm/protocol/openid-connect/certs"
+ 
+EOF
