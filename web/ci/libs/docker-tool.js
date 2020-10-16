@@ -122,9 +122,11 @@ function push2DockerRepository(paramsObj){
     let runTagDockerImageCommand = 'docker tag ' + imageName + ' ' + imageNameRepo;
     let runPushDockerImageCommand = 'docker push  ' + imageNameRepo;
     
-    executeCommand(runTagDockerImageCommand,"tag image to " + imageNameRepo);
+    if(!executeCommand(runTagDockerImageCommand,"tag image to " + imageNameRepo)){
+        return false;
+    }
     return executeCommand(runPushDockerImageCommand,"push docker image to " + imageNameRepo);
-}
+} 
 
 
 /**
@@ -137,6 +139,10 @@ function release2K8sCloud(params) {
     if(!buildServiceDockerImage(params)){
         return;
     }
+    if (!push2DockerRepository(paramsHelper)){
+        return;
+    }
+    
     if (paramsHelper.useOwnDepolymentFile()){
          modifyOwnDeploymentFile();
     }else{
