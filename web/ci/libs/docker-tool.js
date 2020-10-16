@@ -4,9 +4,12 @@
 
 require('shelljs/global');
 yaml = require('node-yaml');
+
 var codeTools = require('./code_tools');
 var PathConfig = require('./path_config');
 var ParamsHelper = require('./params_helper');
+
+
 pathConfig = new PathConfig();
 paramsHelper = new ParamsHelper();
 
@@ -107,6 +110,23 @@ function deployK8sFiles(pathObj){
      console.log('*********************************finish to deploy config files !*****************************************');
 }
 
+
+/**
+ * 把结果镜像ush到docker镜像仓库中。
+ */
+function push2DockerRepository(paramsObj){
+   
+    let imageName = paramsObj.imageName();
+    let imageNameRepo = paramsObj.imageNameRepo();
+    
+    let runTagDockerImageCommand = 'docker tag ' + imageName + ' ' + imageNameRepo;
+    let runPushDockerImageCommand = 'docker push  ' + imageNameRepo;
+    
+    executeCommand(runTagDockerImageCommand,"tag image to " + imageNameRepo);
+    return executeCommand(runPushDockerImageCommand,"push docker image to " + imageNameRepo);
+}
+
+
 /**
  * 创建并使用发布文件，发布服务到k8s中。
  */
@@ -122,6 +142,7 @@ function release2K8sCloud(params) {
     }else{
          createK8sDeploymentFiles();
     }
+
     deployConfigFiles();
     deploy2Cloud();
 }

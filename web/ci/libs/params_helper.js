@@ -5,6 +5,8 @@ const low = require('lowdb');
 var codeTools = require('./code_tools');
 const FileSync = require('lowdb/adapters/FileSync');  // 有多种适配器可选择
 const adapter = new FileSync('route.json');
+var config = require('../../config/config').current;
+
 const db = low(adapter);
 
 class ParamsHelper {
@@ -21,6 +23,7 @@ class ParamsHelper {
         this.gateway = 'gateway.koudaibook.com';
         this.website = 'www.koudaibook.com';
         this.hostName = this.gateway;
+        this.dockerRepo = config.DOCKER_REPO;
 
         console.log('init project config')
 
@@ -103,7 +106,7 @@ class ParamsHelper {
         params.vServiceConfigName = vServiceName.replace(/\./g,'-');
         params.certConfigName = certName.replace(/\./g,'-');
 
-        params.imageName = this.imageName();
+        params.imageName = this.imageNameRepo();
         params.serviceName = this.serviceName();
         params.ingressName = this.applicationName + "-ingress";
         params.applicationPath = this.path;
@@ -131,6 +134,9 @@ class ParamsHelper {
         console.log('imageName is ....................' + imageName);
 
         return imageName;
+    }
+    imageNameRepo(){
+        return this.dockerRepo + this.imageName();
     }
     serviceName(){
         let name = this.applicationName + "-" + this.sideType;

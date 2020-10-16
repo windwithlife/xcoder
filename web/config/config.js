@@ -129,6 +129,7 @@ module.exports = {
     WEB_RELEASE: routeToWebRelease(),
     UPLOAD_PATH: uploadRoot(),
     RESOURCE_PATH: "/xcoder",
+    DOCKER_REPO: "registry.cn-hangzhou.aliyuncs.com/windwithlife/",
    }
 }
 
