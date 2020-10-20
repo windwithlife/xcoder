@@ -15,7 +15,7 @@ const SENTRY_UAT_KEY = 'https://6d2bfa8c878d4905b2537647032f61c8@sentry.io/10647
 const HTTP_PREFIX = 'http://';
 const HTTPS_PREFIX = 'https://';
 
-const DEVELOPMENT_HOST = 'localhost:8888';
+const DEVELOPMENT_HOST = 'localhost:9999';
 const UAT_HOST = 'uat.gateway.koudaibook.com';
 const PRODUCTION_HOST = 'soagateway.koudaibook.com';
 

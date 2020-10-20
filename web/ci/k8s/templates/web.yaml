@@ -18,13 +18,7 @@ spec:
         image: <%=data.imageName%>
         ports:
         - containerPort: 8080
-        volumeMounts:
-        - name: nfs-pvc
-          mountPath: "/mnt/simpleweb"
-      volumes:
-      - name: nfs-pvc
-        persistentVolumeClaim:
-          claimName: simple-claim
+        
         
        
 ---
