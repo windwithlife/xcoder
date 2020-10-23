@@ -18,8 +18,7 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../../common/components/EditableTable';
-//import NetworkHelper from '../../store/network';
-//import AddorEditPage from './AddorEditColumn';
+
 
 
 @inject('applicationTypesStore') 

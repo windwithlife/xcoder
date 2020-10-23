@@ -17,7 +17,8 @@ const HTTPS_PREFIX = 'https://';
 
 const DEVELOPMENT_HOST = 'localhost:9999';
 const UAT_HOST = 'uat.gateway.koudaibook.com';
-const PRODUCTION_HOST = 'soagateway.koudaibook.com';
+//const PRODUCTION_HOST = 'soagateway.koudaibook.com';
+const PRODUCTION_HOST = 'xcoder-service';
 
 const DEVELOPMENT_HOST_WEB = 'localhost:8080';
 const UAT_HOST_WEB = 'uat.koudaibook.com';

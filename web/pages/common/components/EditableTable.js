@@ -1,8 +1,5 @@
 import React from 'react';
-//import model from './models/model.js';
-//import Table from 'antd/lib/table';
-//import Button from 'antd/lib/button';
-//import Popconfirm from 'antd/lib/popconfirm';
+
 
 import {
     Collapse,

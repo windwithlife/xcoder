@@ -1,15 +1,13 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
+
 import {
     Modal,
     Form,
     Card,
-    Select,
-    Input
+    Table,
+    Icon,
+    Button,
+    Popconfirm
 } from 'antd';
 
 import router from 'next/router';

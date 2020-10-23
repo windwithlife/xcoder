@@ -19,16 +19,6 @@ console.log("current upload root path"  + uploadRootPath);
 
 var messageClient = require('./ci/libs/message_client');
 
-// const axios = require('axios');
-  
-// console.log('test axios**********************');
-// axios.get('http://soagateway.koudaibook.com/xcoder/buildrecord/updateReleaseStatus?releaseId=55&status=start')
-//  .then(response => {
-//   console.log(response.data);
-//  })
-//  .catch(error => {
-//   console.log(error);
-//  });
 
 
 app.prepare()
@@ -210,27 +200,13 @@ app.prepare()
       //res.send('Hello,world! simple version 0.2.3')
     })
 
-    // server.get('/', function (req, res) {
-    //   res.send('Hello,world! simple version 1.0.0')
-    // })
+    
 
     server.get('/test/', function (req, res) {
       res.send('Hello,world! just for testing!');
     })
-    // server.get('/initK8s', function (req, res) {
-    //   let script = "/bin/sh ./initK8s-master.sh";
-    //   shellTools.execScript(script);
-    //   res.send('Hello,K8s!')
-    // })
+    
 
-
-
-    // server.get('/test', function (req, res) {
-    //   //dockerTools.releasdockerTools.release2K8sCloud(params.name,params.label,params.type);
-    //   dockerTools.release2K8sCloud("coder", "latest", "soa");
-
-    //   res.send('Hello,world! test!');
-    // })
 
     server.get('*', (req, res) => {
       return handle(req, res)
@@ -243,17 +219,10 @@ app.prepare()
       console.log(`> Ready on http://localhost:${port}`)
     })
 
-  //  const httpsOption ={
-  //    key : fs.readFileSync("../certs/private.pem"),
-  //    cert : fs.readFileSync("../certs/file.crt"),
-  //    passphrase: '123456',
-  //  }
 
-
-  //   https.createServer(httpsOption, server).listen(8443);
-
+  
 
   })
 
 
-  console.log("starting to register mysefl");
+  console.log("starting to register myself");

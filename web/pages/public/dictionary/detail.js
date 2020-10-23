@@ -2,7 +2,7 @@
 
 import { Form, Input, Button, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
-//import { Router } from 'next/router';
+
 import router from 'next/router';
 
 const { Option } = Select;

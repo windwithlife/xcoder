@@ -13,18 +13,16 @@ const themeVariables = lessToJS(
 )
 
 module.exports = withLess({
-   //publicRuntimeConfig: {
-    // staticFolder: '/account/static',
-   //},
-  async rewrites() {
-    return [
-      {
-        source: resourcePath + '/_next/:slug*',
-        destination: '/_next/:slug*',
-      },
-    ]
-  },
-  assetPrefix:  process.env.NODE_ENV === "production" ? resourcePath: "" ,
+  basePath: resourcePath, //process.env.NODE_ENV === "production" ? resourcePath: "" ,
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: resourcePath + '/:slug*',
+  //       destination: '/:slug*',
+  //     },
+  //   ]
+  // },
+  // assetPrefix: process.env.NODE_ENV === "production" ? resourcePath: "" ,
   lessLoaderOptions: {
     javascriptEnabled: true,
     modifyVars: themeVariables, // make your antd custom effective
