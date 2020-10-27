@@ -1,36 +1,107 @@
-var networkHelper = require('../../store/network');
-const axios = require('axios');
+
+let config = require('../../config/config').current;
+let mqtt = require('mqtt')
+
+//let MQTT_HOST  =  config.MQTT_HOST;
+let MQTT_HOST = "mqtt:mq.koudaibook.com:31883/";
+//const
+const MQTT_CI_TOPIC =  'ci/release/#';
+const MQTT_EXEC_TOPIC   =  "ci/release/execute";
+const MQTT_STATUS_TOPIC =  "ci/release/status";
+const MQTT_LOG_TOPIC    =  "ci/release/logs";
+const ON_CREATE         =  "ci/oncreate";
+
+
+const isString = (data) => {
+	return Object.prototype.toString.call(data) === '[object String]';
+}
+
+
 
  class MessageCenter{
     constructor(){
-        //networkHelper.switchService('http://soagateway.koudaibook.com');
-        this.server = "http://soagateway.koudaibook.com";
+        this.isConnected = false;
+        let that = this;
+        this.callbacks= {};
+        this.client = mqtt.connect(MQTT_HOST);
+        this.execCommandTopic = MQTT_EXEC_TOPIC;
+        this.statusTopic      = MQTT_STATUS_TOPIC;
+        this.logTopic         = MQTT_LOG_TOPIC;
+        this.client.on('connect', function () {
+            console.log("connected!");
+            that.client.subscribe(MQTT_CI_TOPIC, {qos:1}, function (err) {
+              if (!err) {
+                //that.client.publish('ci/release/test', 'Hello, test message for  MQTT!');
+                that.isConnected = true;
+                that.handleRecievedMsg(ON_CREATE,"connected");
+                console.log("successful to  subscribe " + MQTT_CI_TOPIC);
+              }
+            });
+            
+          });
+
+        
+          that.client.on('message', function (topic, message) {
+            console.log("**************** Received mqtt data topic:"+ topic + "******************");
+            console.log("message:"+  message.toString());
+            console.log("**************** The end of receiving mqtt data ******************");
+            that.handleRecievedMsg(topic,message);
+
+        });
+
     }
-    initMessageServer(server){
-        //networkHelper.switchService(server);
-        this.server = server;
+    handleRecievedMsg(topic, data){
+        let execObj = this.callbacks[topic];
+        if (execObj instanceof Function){
+            execObj(data);
+        }
     }
+    
+    onCreate(callback){
+        this.setCallback(ON_CREATE, callback);
+    }
+    setCallback(topic, callback){
+        this.callbacks[topic] = callback;
+    }
+    sendMsg(topic, data){
+        if(!this.isConnected){
+            console.log('mqtt is not yet readay!');
+            return;
+        }
+        if (isString(data)){
+            this.client.publish(topic,data);
+        }else{
+            let strMsg = JSON.stringify(data);
+            this.client.publish(topic,strMsg);
+        }
+        
+    }
+    setExecCallback(callback){
+        this.setCallback(MQTT_EXEC_TOPIC,callback);
+    }
+    setLogsCallback(callback){
+        this.setCallback(MQTT_LOG_TOPIC,callback);
+    }
+    setStatusCallback(callback){
+        this.setCallback(MQTT_STATUS_TOPIC,callback);
+    }
+    sendExecCommand(params){
+        this.sendMsg(this.execCommandTopic,params);
+    }
+    sendLogs(params){
+        console.log(params);
+        this.sendMsg(this.logTopic,params);
+    }
+    sendStatus(params){
+        //let strParams = params.toString;
+        this.sendMsg(this.statusTopic,strParams);
+    }
+    
     updateReleaseStatus(buildId, releaseStatus){
         let requestData = {releaseId: buildId, status:releaseStatus};
-        let path = this.server + "/xcoder/buildrecord/updateReleaseStatus";
-        axios.get(path, {params:requestData})
-        .then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.log(error);
-        });
+        this.sendStatus(requestData);
     }
-    sendReleaseLog(buildId, text){
-        let requestData = {releaseId: buildId, log:text};
-        let path = this.server + "/xcoder/buildrecord/sendReleaseLog";
-        axios.get(path, {params:requestData})
-        .then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.log(error);
-        });
-        //networkHelper.webGet("/xcoder/buildrecord/sendReleaseLog", requestData);
-    }   
+    
 }
 
 let messageCenter = new MessageCenter();

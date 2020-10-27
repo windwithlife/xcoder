@@ -30,7 +30,7 @@ export default class MenuStore extends BaseStore{
     "xtable":"project",
     "xmodule":"project",
     "applicationrelease":'ci',
-    "applicationpoint":'ci',
+    "applicationpoint":'config',
     "buildrecord":'ci',
     "pagetemplate":'component',
     "xwidget":'component',
@@ -44,16 +44,17 @@ export default class MenuStore extends BaseStore{
    
     {id:21,name: "持续集成管理",url:"/applicationrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
     {id:22,name: "发布历史",url:"/buildrecord/home",level:1,type:'sider', parentId:0,channelName:"ci"},
-    {id:23,name: "发布端点配置",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+    
 
     {id:11,name: "项目管理",url:"/project/list",level:1,type:'sider', parentId:0,channelName:"project"},
     {id:12,name: "应用管理",url:"/application/home",level:1,type:'sider', parentId:0,channelName:"project"},
   
    
+    {id:23,name: "发布端点配置",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"config"},
     {id:2,name: "应用类型管理",url:"/public/applicationtype/home",level:1,type:'sider', parentId:0,channelName:"config"},
     {id:3,name: "字典表分类配置",url:"/public/category/home",level:1,type:'sider', parentId:0,channelName:"config"},
     {id:4,name: "字典表维护",url:"/public/dictionary/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:5,name: "用户权限配置",url:"/public/menu/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    
 
     {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},
     {id:52,name: "页面区域组件管理",url:"/xwidget/home",level:1,type:'sider', parentId:0,channelName:"component"},

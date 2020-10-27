@@ -54,13 +54,23 @@ function buildServiceDockerImage(params) {
 
 function createK8sDeploymentFiles(serviceName,imageName,type,name,webDomainName,isSubWebSite,exName){
 
-     paramsHelper.updateRoute(); //新增一条当前路由记录。
+    
+    paramsHelper.updateRoute(); //新增一条当前路由记录。
+
+    //发布到带istio的k8s集群或者普通的集群。
     let templatefileName = paramsHelper.templatefile();
     let deploymentfileName = paramsHelper.deploymentfile();
     let templatefile = pathConfig.deploymentTemplateFile(templatefileName);
-    let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
+    let deploymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
     let params = paramsHelper.buildParamsForDeployment();
-    codeTools.generateCode(templatefile,params,depolymentfile);
+    codeTools.generateCode(templatefile,params,deploymentfile);
+
+
+    //保存发布文件到项目目录中
+    deploymentfile = pathConfig.deploymentK8sTargetFile(deploymentfileName);
+    codeTools.generateCode(templatefile,params,deploymentfile);
+
+    //生成降低docker compose方案
 
 
 
@@ -148,6 +158,7 @@ function release2K8sCloud(params) {
     }else{
          createK8sDeploymentFiles();
     }
+
 
     deployConfigFiles();
     deploy2Cloud();

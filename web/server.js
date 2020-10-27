@@ -12,11 +12,7 @@ var bodyParser = require('body-parser');
 var config = require('./config/config');
 var fileupload = require('./utils/fileupload').fileupload;
 
-const rewrite = require('express-urlrewrite');
 var releaseServer = require('./ci/libs/release');
-var uploadRootPath = config['current'].UPLOAD_PATH;
-console.log("current upload root path"  + uploadRootPath);
-
 var messageClient = require('./ci/libs/message_client');
 
 
@@ -26,11 +22,8 @@ app.prepare()
     const server = express()
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
-    server.use('/images',express.static(uploadRootPath));
-    // server.use(rewrite(/^\/coder\/?(.*)/, '/$1'));
-    // server.get('/a', (req, res) => {
-    //   return app.render(req, res, '/b', req.query)
-    // })
+    
+
     server.all('*', function (req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
@@ -57,8 +50,7 @@ app.prepare()
     server.post('/generateCodeByProjectId/', (req, res) => {
       console.log('generator params------------');
       console.log(req.body);
-      //generator.initByQuery(req.body);
-      //generator.generate(req.body);
+   
       generator.generateByQuery(req.body);
       res.sendStatus(200)
     })
@@ -133,7 +125,7 @@ app.prepare()
       params.applicationName = request.applicationName;
       params.path = request.path;
       params.version = request.releaseVersion ? request.releaseVersion : "1.0.8";
-      //params.codeName = request.name;
+      
       params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
       params.sideType = request.sideType;
       params.language = request.language;
@@ -196,8 +188,7 @@ app.prepare()
           //res.send("success to download");
         }
       })
-     
-      //res.send('Hello,world! simple version 0.2.3')
+    
     })
 
     
@@ -223,6 +214,57 @@ app.prepare()
   
 
   })
+  messageClient.onCreate(function(){
+    messageClient.sendLogs({status:"started...."});
+  });
+  
+  messageClient.setExecCallback(function(request){
+      
+      console.log("begin deploy project-------------")
+      console.log('current directory is:' + process.cwd());
+      console.log(request);
+    
+      var params = { releaseType: "prod",isUseOwnDockerFile: false, isSubWebSite: true, useOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
+     
+      let buildRecord = req.body.buildRecord;
+      
+      if(request.repository){
+        params.gitUrl = request.repository;
+      }
+      if(request.releaseType){
+        params.releaseType = request.releaseType;
+      }
+      console.log("Current repo url:" + params.gitUrl);
+
+      params.name = request.name;
+      params.applicationType = request.applicationType;
+      params.isLib = request.isLib;
+      params.useOwnDeploymentFile = request.useOwnDeploymentFile;
+      params.useOwnDockerFile = request.useOwnDeploymentFile;
+      params.applicationName = request.applicationName;
+      params.path = request.path;
+      params.version = request.releaseVersion ? request.releaseVersion : "1.0.8";
+      
+      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
+      params.sideType = request.sideType;
+      params.language = request.language;
+      params.framework = request.framework;
+      params.platform = request.platform;
+      params.serviceName = request.name;
+      params.webDomainName = request.webDN;
+      params.domainName = request.domainName;
+      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
+      params.label = params.version;
+      params.buildId = buildRecord.id;
 
 
+      console.log("release request params is *****************8:", params);
+      
+      if (releaseServer.autoRelease(params)) {
+         messageClient.updateReleaseStatus(buildRecord.id, "finished");
+      } else {
+         messageClient.updateReleaseStatus(buildRecord.id, "failure");
+      }
+
+  });
   console.log("starting to register myself");

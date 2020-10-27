@@ -131,6 +131,6 @@ module.exports = {
     UPLOAD_PATH: uploadRoot(),
     RESOURCE_PATH: "/xcoder",
     DOCKER_REPO: "registry.cn-hangzhou.aliyuncs.com/windwithlife/",
-   }
+    MQTT_HOST: "ws:mq.koudaibook.com:30083/mqtt",
+  }
 }
-

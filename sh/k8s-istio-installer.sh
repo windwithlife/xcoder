@@ -20,5 +20,7 @@ kubectl label nodes node1 edgenode=true
 kubectl apply -f ../k8s/envoy.yaml -n istio-system
 
 #kubectl create secret tls tls-xxx.xxx.com -n default --cert=xxx.xxx.xxx.pem --key=xxx.xxx.xxx.key --dry-run -o yaml > tls.yaml
-# kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager-legacy.yaml
-
+# Kubernetes <1.16
+# kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager-legacy.yaml
+# Kubernetes 1.16+
+# kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.yaml

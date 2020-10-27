@@ -24,8 +24,8 @@ class ParamsHelper {
         this.website = 'www.koudaibook.com';
         this.hostName = this.gateway;
         this.dockerRepo = config.DOCKER_REPO;
-
-        console.log('init project config')
+        this.releasePointSupport = "istio";
+        console.log('init application config')
 
 
     }
@@ -143,15 +143,16 @@ class ParamsHelper {
         return name;
     }
     templatefile() {
-        if ('cinode' == this.sideType){
-            return 'xcoder-web.yaml';
+        if (this.releasePoint){
+            return this.sideType + "-" + this.releasePointSupport +".yaml";
         }else{
             return this.sideType + ".yaml";
         }
         
     }
     deploymentfile() {
-        return this.language + "-" + this.sideType + "-" + this.applicationName + "-" + this.version + ".yaml";
+            return this.sideType + "-" + this.releasePointSupport +".yaml";
+            return this.language + "-" + this.sideType + "-" + this.applicationName + "-" + this.version + "-" +this.releasePointSupport + ".yaml";
     }
 
     useOwnDepolymentFile() {

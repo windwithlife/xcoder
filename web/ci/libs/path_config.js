@@ -28,19 +28,20 @@ function pathIsReady(pathName) {
         this.templateRoot = './ci/k8s/templates/';
         this.currentRootPath = process.cwd();
         this.applicationName = "applicationName";
+        this.projectName = "simple";
         console.log('current sourcecode root path:' + this.currentRootPath);
     }
     switchSourceRootPath(srcRoot){
         this.srcRoot = srcRoot;
     }
-    init(projectConfig){
-        this.projectConfig = projectConfig;
-        this.applicationName = projectConfig.applicationName;
-        if(projectConfig.releaseType){
-            this.releaseType = projectConfig.releaseType;
+    init(appConfig){
+        this.appConfig = appConfig;
+        this.applicationName = appConfig.applicationName;
+        if(appConfig.releaseType){
+            this.releaseType = appConfig.releaseType;
         }
        
-        console.log(this.projectConfig);
+        console.log(this.appConfig);
     }
     rootPath(){
         let pathName  = path.join(this.currentRootPath, this.srcRoot);
@@ -60,6 +61,7 @@ function pathIsReady(pathName) {
         checkPath(pathName);
         return pathName;
     }
+   
     projectSrcRootPath(){
         let pathName  = path.join(this.projectRootPath(), "sourcecode/");
         checkPath(pathName);
@@ -86,6 +88,18 @@ function pathIsReady(pathName) {
         let deploymentfile  = this.deploymentRootPath() +"/" + filename;
         //checkPath(pathName);
         return deploymentfile;
+    }
+    deploymentK8sTargetFile(filename){
+        let pathName  = path.join(this.rootPath(), "k8s/", this.projectName);
+        checkPath(pathName);
+        let filePath = path.join(pathName, filename);
+        return filePath;
+    }
+    deploymentComposeTargetFile(filename){
+        let pathName  = path.join(this.rootPath(), "compose/", this.projectName);
+        checkPath(pathName);
+        let filePath = path.join(pathName, filename);
+        return filePath;
     }
     
     loadfiles(mPath){
@@ -130,7 +144,7 @@ function pathIsReady(pathName) {
         if (relativePath){
             childPath = relativePath;
         }
-        let targetPath =  this.projectConfig.targetPath;
+        let targetPath =  this.appConfig.targetPath;
         let pathName  = path.join(this.projectSrcRootPath(), targetPath,childPath);
         checkPath(pathName);
         return pathName;
