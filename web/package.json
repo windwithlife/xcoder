@@ -22,11 +22,10 @@
     "lowdb": "^1.0.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
-    "mqtt": "^4.2.1",
-    "multer": "^1.4.2",
     "next": "latest",
     "node-yaml": "^4.0.1",
     "null-loader": "^4.0.0",
+    "qunar-sharp": "^0.22.11",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "shelljs": "^0.8.3"

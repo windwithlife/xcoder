@@ -2,9 +2,7 @@
 let config = require('../../config/config').current;
 let mqtt = require('mqtt')
 
-//let MQTT_HOST  =  config.MQTT_HOST;
-let MQTT_HOST = "mqtt:mq.koudaibook.com:31883/";
-//const
+let MQTT_HOST = "ws:mq.koudaibook.com:30083/";
 const MQTT_CI_TOPIC =  'ci/release/#';
 const MQTT_EXEC_TOPIC   =  "ci/release/execute";
 const MQTT_STATUS_TOPIC =  "ci/release/status";
@@ -20,6 +18,7 @@ const isString = (data) => {
 
  class MessageCenter{
     constructor(){
+        console.log("initialize mqtt");
         this.isConnected = false;
         let that = this;
         this.callbacks= {};

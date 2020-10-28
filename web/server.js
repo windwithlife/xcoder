@@ -10,12 +10,10 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
 var config = require('./config/config');
-var fileupload = require('./utils/fileupload').fileupload;
+//var fileupload = require('./utils/fileupload').fileupload;
 
 var releaseServer = require('./ci/libs/release');
 var messageClient = require('./ci/libs/message_client');
-
-
 
 app.prepare()
   .then(() => {
@@ -152,29 +150,29 @@ app.prepare()
     })
 
 
-    server.post('/profile', fileupload.single('avatar'), function (req, res, next) {
-      // req.file is the `avatar` file
-      // req.body will hold the text fields, if there were any
-      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
-      res.json({
-        code: true,
-        filename: req.file.filename,
-        path: "/images/" + req.file.filename,//req.file.path,
-        msg: '上传成功'
-      });
-    });
+    // server.post('/profile', fileupload.single('avatar'), function (req, res, next) {
+    //   // req.file is the `avatar` file
+    //   // req.body will hold the text fields, if there were any
+    //   console.log('[upload filename:' + JSON.stringify(req.file) + "]");
+    //   res.json({
+    //     code: true,
+    //     filename: req.file.filename,
+    //     path: "/images/" + req.file.filename,//req.file.path,
+    //     msg: '上传成功'
+    //   });
+    // });
 
-    server.post('/imageupload', fileupload.single('imagefile'), function (req, res, next) {
-      // req.file is the `avatar` file
-      // req.body will hold the text fields, if there were any
-      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
-      res.json({
-        code: true,
-        filename: req.file.filename,
-        path: "/images/" + req.file.filename,//req.file.path,
-        msg: '上传成功'
-      });
-    });
+    // server.post('/imageupload', fileupload.single('imagefile'), function (req, res, next) {
+    //   // req.file is the `avatar` file
+    //   // req.body will hold the text fields, if there were any
+    //   console.log('[upload filename:' + JSON.stringify(req.file) + "]");
+    //   res.json({
+    //     code: true,
+    //     filename: req.file.filename,
+    //     path: "/images/" + req.file.filename,//req.file.path,
+    //     msg: '上传成功'
+    //   });
+    // });
     server.get('/download', function (req, res) {
       let filename = req.query.filename;
       if (!filename){
