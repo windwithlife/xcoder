@@ -10,7 +10,7 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
 var config = require('./config/config');
-var fileupload = require('./utils/fileupload').fileupload;
+
 
 var releaseServer = require('./ci/libs/release');
 var messageClient = require('./ci/libs/message_client');
@@ -152,44 +152,44 @@ app.prepare()
     })
 
 
-    server.post('/profile', fileupload.single('avatar'), function (req, res, next) {
-      // req.file is the `avatar` file
-      // req.body will hold the text fields, if there were any
-      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
-      res.json({
-        code: true,
-        filename: req.file.filename,
-        path: "/images/" + req.file.filename,//req.file.path,
-        msg: '上传成功'
-      });
-    });
+    // server.post('/profile', fileupload.single('avatar'), function (req, res, next) {
+    //   // req.file is the `avatar` file
+    //   // req.body will hold the text fields, if there were any
+    //   console.log('[upload filename:' + JSON.stringify(req.file) + "]");
+    //   res.json({
+    //     code: true,
+    //     filename: req.file.filename,
+    //     path: "/images/" + req.file.filename,//req.file.path,
+    //     msg: '上传成功'
+    //   });
+    // });
 
-    server.post('/imageupload', fileupload.single('imagefile'), function (req, res, next) {
-      // req.file is the `avatar` file
-      // req.body will hold the text fields, if there were any
-      console.log('[upload filename:' + JSON.stringify(req.file) + "]");
-      res.json({
-        code: true,
-        filename: req.file.filename,
-        path: "/images/" + req.file.filename,//req.file.path,
-        msg: '上传成功'
-      });
-    });
-    server.get('/download', function (req, res) {
-      let filename = req.query.filename;
-      if (!filename){
-        filename =  req.body.files;
-      }
-      let fileFullName = "/tmp/my-uploads/" +filename;
-      res.download(fileFullName, err=>{
-        if(err){
-          res.send("failed to download");
-        }else{
-          //res.send("success to download");
-        }
-      })
+    // server.post('/imageupload', fileupload.single('imagefile'), function (req, res, next) {
+    //   // req.file is the `avatar` file
+    //   // req.body will hold the text fields, if there were any
+    //   console.log('[upload filename:' + JSON.stringify(req.file) + "]");
+    //   res.json({
+    //     code: true,
+    //     filename: req.file.filename,
+    //     path: "/images/" + req.file.filename,//req.file.path,
+    //     msg: '上传成功'
+    //   });
+    // });
+    // server.get('/download', function (req, res) {
+    //   let filename = req.query.filename;
+    //   if (!filename){
+    //     filename =  req.body.files;
+    //   }
+    //   let fileFullName = "/tmp/my-uploads/" +filename;
+    //   res.download(fileFullName, err=>{
+    //     if(err){
+    //       res.send("failed to download");
+    //     }else{
+    //       //res.send("success to download");
+    //     }
+    //   })
     
-    })
+    // })
 
     
 
@@ -214,8 +214,10 @@ app.prepare()
   
 
   })
-  messageClient.onCreate(function(){
-    messageClient.sendLogs({status:"started...."});
+  messageClient.onCreate(function(message){
+    console.log("oncreate:" + message);
+    //messageClient.sendLogs({status:"started!!!"});
+    messageClient.sendLogs("Ready to excute the CI command!!")
   });
   
   messageClient.setExecCallback(function(request){

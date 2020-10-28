@@ -1,9 +1,10 @@
 
 let config = require('../../config/config').current;
 let mqtt = require('mqtt')
+let msgpack = require('msgpack-lite');
 
 //let MQTT_HOST  =  config.MQTT_HOST;
-let MQTT_HOST = "mqtt:mq.koudaibook.com:31883/";
+let MQTT_HOST = "mqtt://mq.koudaibook.com:31883/";
 //const
 const MQTT_CI_TOPIC =  'ci/release/#';
 const MQTT_EXEC_TOPIC   =  "ci/release/execute";
@@ -20,6 +21,7 @@ const isString = (data) => {
 
  class MessageCenter{
     constructor(){
+        console.log("start to initialize the mqtt!!!");
         this.isConnected = false;
         let that = this;
         this.callbacks= {};
@@ -53,7 +55,14 @@ const isString = (data) => {
     handleRecievedMsg(topic, data){
         let execObj = this.callbacks[topic];
         if (execObj instanceof Function){
-            execObj(data);
+           
+            if (!isString(data)){
+                 let dataObj = msgpack.decode(data);
+                 execObj(dataObj);
+            }else{
+                execObj(data);
+            }
+            
         }
     }
     
@@ -71,7 +80,8 @@ const isString = (data) => {
         if (isString(data)){
             this.client.publish(topic,data);
         }else{
-            let strMsg = JSON.stringify(data);
+            //let strMsg = JSON.stringify(data);
+            let strMsg = msgpack.encode(data);
             this.client.publish(topic,strMsg);
         }
         
@@ -89,7 +99,7 @@ const isString = (data) => {
         this.sendMsg(this.execCommandTopic,params);
     }
     sendLogs(params){
-        console.log(params);
+        //console.log(params);
         this.sendMsg(this.logTopic,params);
     }
     sendStatus(params){

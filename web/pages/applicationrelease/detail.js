@@ -21,6 +21,7 @@ import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
 import NetworkHelper from '../../store/network';
 import Utils from '../../utils/utils';
+import MessageCenter from '../../ci/libs/message_client';
 //import AddorEditPage from './AddorEditColumn';
 
 
@@ -136,12 +137,12 @@ export default class EditPage extends React.Component {
                  itemData.domainName = itemData.domainNameUAT;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
-                 appPointAddress = "http://" + appPoint.serverAddress;
-                 NetworkHelper.switchService(appPointAddress);
-                 NetworkHelper.webPost("releaseByParams/", finalParams);
-                 var interval3=setInterval(function(){
-                    that.traceCurrentBuildRecord(result.id);
-               },5000);
+            //      appPointAddress = "http://" + appPoint.serverAddress;
+            //      NetworkHelper.switchService(appPointAddress);
+            //      NetworkHelper.webPost("releaseByParams/", finalParams);
+            //      var interval3=setInterval(function(){
+            //         that.traceCurrentBuildRecord(result.id);
+            //    },5000);
                  
 
                  });
@@ -155,12 +156,13 @@ export default class EditPage extends React.Component {
                  //itemData.domainName = itemData.domainName;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
-                 appPointAddress = "http://" + appPoint.serverAddressProd;
-                 NetworkHelper.switchService(appPointAddress);
-                 NetworkHelper.webPost("releaseByParams/", finalParams);
-                 var interval3=setInterval(function(){
-                    that.traceCurrentBuildRecord(result.id);
-               },5000);
+            //      appPointAddress = "http://" + appPoint.serverAddressProd;
+            //      NetworkHelper.switchService(appPointAddress);
+            //      NetworkHelper.webPost("releaseByParams/", finalParams);
+            //      var interval3=setInterval(function(){
+            //         that.traceCurrentBuildRecord(result.id);
+            //    },5000);
+            MessageCenter.sendExecCommand(finalParams);
             });
         }else if("BACK" === envType){
             appPointAddress = "http://" + appPoint.serverAddressProd;
@@ -195,10 +197,10 @@ export default class EditPage extends React.Component {
             < div >
                 <Card size="small" title="基本信息" style={{ width: 800 }}  >
                     <Form ref={this.formRef}>
-                        < Form.Item name="name" label="发布单名称：">
+                        < Form.Item  label="发布单名称：">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item name="applicationName" label="应用名称：">
+                        < Form.Item label="应用名称：">
                             {itemData.applicationName}
                         </Form.Item>
                         < Form.Item  label="应用类型：">
@@ -207,29 +209,29 @@ export default class EditPage extends React.Component {
                         < Form.Item  label="应用端点：">
                             {appPointName}
                         </Form.Item>
-                        < Form.Item name="path" label="发布目标网关或网站域名：">
+                        < Form.Item  label="发布目标网关或网站域名：">
                             {domainName}
                         </Form.Item>
-                        < Form.Item name="path" label="服务应用PATH：">
+                        < Form.Item  label="服务应用PATH：">
                             {itemData.path}
                         </Form.Item>
                        
-                        <Form.Item name="repository" label="代码仓库地址">
+                        <Form.Item  label="代码仓库地址">
                         {itemData.repository}
                         </Form.Item>
-                        <Form.Item name="repositoryBranch" label="代码分支">
+                        <Form.Item  label="代码分支">
                         {itemData.repositoryBranch}
                         </Form.Item>
-                        <Form.Item name="targetPath" label="待发布代码路径">
+                        <Form.Item  label="待发布代码路径">
                         {itemData.targetPath}
                         </Form.Item>
-                        <Form.Item name="releaseVersion" label="待发布版本">
+                        <Form.Item  label="待发布版本">
                         {itemData.releaseVersion}
                         </Form.Item>
-                        < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
+                        < Form.Item  label="是否用自己的布署文件">
                             {itemData.useOwnDeploymentFile}
                         </Form.Item>
-                        < Form.Item name="description" label="描述信息：">
+                        < Form.Item  label="描述信息：">
                             {itemData.description}
                         </Form.Item>
                         <Card type="inner">
