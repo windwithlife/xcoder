@@ -3,9 +3,10 @@ let config = require('../../config/config').current;
 let mqtt = require('mqtt')
 let msgpack = require('msgpack-lite');
 
+
 //let MQTT_HOST  =  config.MQTT_HOST;
 let MQTT_HOST = "mqtt://mq.koudaibook.com:31883/";
-//const
+
 const MQTT_CI_TOPIC =  'ci/release/#';
 const MQTT_EXEC_TOPIC   =  "ci/release/execute";
 const MQTT_STATUS_TOPIC =  "ci/release/status";

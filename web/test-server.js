@@ -23,3 +23,5 @@ client.on('message', function (topic, message) {
 
 //messageClient.sendLogs("testlog");
 console.log("starting to register mq");
+
+//var messageClient = require('./ci/libs/message_client');

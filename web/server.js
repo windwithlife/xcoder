@@ -10,12 +10,14 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 var bodyParser = require('body-parser');
 var config = require('./config/config');
+<<<<<<< HEAD
 
+=======
+//var fileupload = require('./utils/fileupload').fileupload;
+>>>>>>> 332b53d498f760cccd3684c9ba746ff30c108cf7
 
 var releaseServer = require('./ci/libs/release');
 var messageClient = require('./ci/libs/message_client');
-
-
 
 app.prepare()
   .then(() => {
@@ -175,6 +177,7 @@ app.prepare()
     //     msg: '上传成功'
     //   });
     // });
+<<<<<<< HEAD
     // server.get('/download', function (req, res) {
     //   let filename = req.query.filename;
     //   if (!filename){
@@ -188,6 +191,21 @@ app.prepare()
     //       //res.send("success to download");
     //     }
     //   })
+=======
+    server.get('/download', function (req, res) {
+      let filename = req.query.filename;
+      if (!filename){
+        filename =  req.body.files;
+      }
+      let fileFullName = "/tmp/my-uploads/" +filename;
+      res.download(fileFullName, err=>{
+        if(err){
+          res.send("failed to download");
+        }else{
+          //res.send("success to download");
+        }
+      })
+>>>>>>> 332b53d498f760cccd3684c9ba746ff30c108cf7
     
     // })
 

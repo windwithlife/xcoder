@@ -20,6 +20,7 @@ import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
 import NetworkHelper from '../../store/network';
+import MessageCenter from  '../../ci/libs/message_client';
 import Utils from '../../utils/utils';
 import MessageCenter from '../../ci/libs/message_client';
 //import AddorEditPage from './AddorEditColumn';
@@ -156,6 +157,7 @@ export default class EditPage extends React.Component {
                  //itemData.domainName = itemData.domainName;
                  itemData.buildId = result.id;
                  finalParams.buildRecord = result;
+
             //      appPointAddress = "http://" + appPoint.serverAddressProd;
             //      NetworkHelper.switchService(appPointAddress);
             //      NetworkHelper.webPost("releaseByParams/", finalParams);
@@ -163,6 +165,7 @@ export default class EditPage extends React.Component {
             //         that.traceCurrentBuildRecord(result.id);
             //    },5000);
             MessageCenter.sendExecCommand(finalParams);
+
             });
         }else if("BACK" === envType){
             appPointAddress = "http://" + appPoint.serverAddressProd;
