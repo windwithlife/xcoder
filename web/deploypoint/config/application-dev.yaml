@@ -1,0 +1,16 @@
+
+application:  
+  name: pointa
+  port: 8081
+  contextPath: /xcoder
+  basePath : /xcoder
+servers:  
+  mqServer : mqtt://localhost:8083/mqtt
+ 
+repositories:
+  docker: registry.cn-hangzhou.aliyuncs.com/windwithlife/
+  
+
+
+ 
+  

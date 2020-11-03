@@ -22,11 +22,6 @@ public class ApplicationRelease implements Serializable {
 
     private Long projectId;
 
-//    private String sideType;
-//    private String language;
-//    private String framework;
-//    private String platform;
-
     private Long applicationTypeId;
     private Long applicationPointId;
 

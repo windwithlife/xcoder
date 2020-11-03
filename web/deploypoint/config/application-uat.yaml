@@ -1,0 +1,13 @@
+
+application:  
+  name: deploycenter
+  servicePort: 8080 
+servers:
+  soaServer: localhost:9999
+  mqServer : localhost:8083
+  releasesServer: localhost:8080
+  
+
+
+ 
+  
