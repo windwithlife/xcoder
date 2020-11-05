@@ -158,9 +158,10 @@ function pathIsReady(pathName) {
         return pathName;
        
     }
-    scriptFile(){
-        let pathName  = path.join(this.releaseTargetSrcPath(),"startup.sh");
-        return pathName;
+    executeScriptFiles(){
+        let mPath  = path.join(this.releaseTargetSrcPath(),"/script/");
+        return this.loadfiles(mPath); 
+       
     }
     k8sFilesRootPath(){
         let releaseEnvirnoment = "";

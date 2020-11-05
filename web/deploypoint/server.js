@@ -10,8 +10,8 @@ const messageClient = require('./store/message-point');
 let serverPort = config.APPLICATION.port;
 const port =  serverPort || parseInt(process.env.PORT, 10) || 8080;
 const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+//const app = next({ dev })
+//const handle = app.getRequestHandler()
 
 
 

@@ -2,9 +2,7 @@
   "name": "coder",
   "version": "1.0.1",
   "scripts": {
-    "dev": "next",
-    "devx": "node server.js",
-    "build": "next build",
+    "dev": "node server.js",
     "start": "export NODE_ENV=production&&node server.js",
     "startx": "export NODE_ENV=production&&pm2 start server.js --name release.server"
   },

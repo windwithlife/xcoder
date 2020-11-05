@@ -62,6 +62,10 @@ metadata:
   name: <%=data.ingressName%>
 spec:
   ingressClassName: nginx
+  tls:
+  - secretName: <%=data.certConfigName%>
+    hosts:
+    - <%=data.gateway%>
   rules:
   - host: <%=data.gateway%>
     http:
