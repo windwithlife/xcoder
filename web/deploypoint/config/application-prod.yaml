@@ -1,11 +1,14 @@
 
 application:  
-  name: deploycenter
-  servicePort: 8080 
-servers:
-  soa: localhost:9999
-  mq : localhost:8083
-  releasesServer: localhost:8080
+  name: pointa
+  port: 8081
+  contextPath: /xcoder
+  basePath : /xcoder
+servers:  
+  mqServer : mqtt://localhost:8083/mqtt
+ 
+repositories:
+  docker: registry.cn-hangzhou.aliyuncs.com/windwithlife/
   
 
 
