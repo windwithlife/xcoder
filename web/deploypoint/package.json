@@ -19,7 +19,7 @@
     "mobx-react": "^6.1.8",
     "mqtt": "4.2.1",
     "msgpack-lite": "^0.1.26",
-    "next": "9.5.2",
+    //"next": "9.5.2",
     "node-yaml": "^4.0.1",
     "npm": "^6.14.8",
     "null-loader": "^4.0.0",
