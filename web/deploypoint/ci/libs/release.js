@@ -2,13 +2,12 @@
 let logInfo = require('../../utils/globalUtils').logInfo;
 var gitTools = require('./git-tool');
 var dockerTools = require('./docker-tool');
-var shellTools = require('./shell-tool');
+//var shellTools = require('./shell-tool');
+var shellTools = require('./execute-tool');
 var builderTools = require('./building_tool');
-var PathConfig = require('./path_config');
-var ParamsHelper = require('./params_helper');
+
 var messageClient = require('../../store/message-client');
-let pathConfig = new PathConfig();
-let paramsHelper = new ParamsHelper();
+
 
 
 function autoRelease(params) {
@@ -32,7 +31,7 @@ function autoRelease(params) {
         }
     }
     if (applicationType.needExecuteScript){
-        if(!shellTools.execReleaseScript(paramsHelper,pathConfig)){ 
+        if(!shellTools.executeScripts(paramsHelper,pathConfig)){ 
             logInfo("execuite script", "failed to execute script!");    
             return false;
         } 
