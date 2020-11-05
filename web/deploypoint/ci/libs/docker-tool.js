@@ -4,14 +4,7 @@
 
 require('shelljs/global');
 yaml = require('node-yaml');
-
 var codeTools = require('./code_tools');
-var PathConfig = require('./path_config');
-var ParamsHelper = require('./params_helper');
-
-
-pathConfig = new PathConfig();
-paramsHelper = new ParamsHelper();
 
 
 function executeCommand(command,commandTag){
@@ -34,7 +27,7 @@ function executeCommand(command,commandTag){
 /**
  * 根据Docker的multi-stage文件进行分段创建镜像
  */
-function buildServiceDockerImage(params) {
+function buildServiceDockerImage(paramsHelper,pathConfig) {
     let dockerfile = pathConfig.dockerfilesRootPath() + "/"  +paramsHelper.dockerfile();
     if(paramsHelper.useOwnDockerFile()){
         dockerfile = pathConfig.releaseTargetSrcPath() + "/Dockerfile" ;
@@ -52,7 +45,7 @@ function buildServiceDockerImage(params) {
 
 
 
-function createK8sDeploymentFiles(){
+function createK8sDeploymentFiles(paramsHelper,pathConfig){
 
     
     paramsHelper.updateRoute(); //新增一条当前路由记录。
@@ -80,7 +73,7 @@ function modifyOwnDeploymentFile(){
 
 }
 
-function deployConfigFiles(){
+function deployConfigFiles(paramsHelper,pathConfig){
     console.log('*********************************begin to deploy config files !....******************************************');
     let configFiles = pathConfig.loadConfigFiles();
     configFiles.forEach(function(configFile){
@@ -97,7 +90,7 @@ function deployConfigFiles(){
 /**
  * 使用发布到k8s的发布文件全路径名，发布服务到k8s中。
  */
-function deploy2Cloud(){
+function deploy2Cloud(paramsHelper,pathConfig){
     let deploymentfileName = paramsHelper.deploymentfile();
     let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
     let runUnDeployCommand = 'kubectl delete -f  ' + depolymentfile;
@@ -108,7 +101,7 @@ function deploy2Cloud(){
 }
 
 
-function deployK8sFiles(pathObj){
+function deployK8sFiles(paramsHelper,pathObj){
     console.log('*********************************begin to deploy k8s files !....******************************************');
     let k8sFiles = pathObj.loadK8sFiles();
     k8sFiles.forEach(function(k8sFile){
@@ -124,7 +117,7 @@ function deployK8sFiles(pathObj){
 /**
  * 把结果镜像ush到docker镜像仓库中。
  */
-function push2DockerRepository(paramsObj){
+function push2DockerRepository(paramsObj,pathObj){
    
     let imageName = paramsObj.imageName();
     let imageNameRepo = paramsObj.imageNameRepo();
@@ -138,41 +131,40 @@ function push2DockerRepository(paramsObj){
     return executeCommand(runPushDockerImageCommand,"push docker image to " + imageNameRepo);
 } 
 
-
+function buildDockerImage(paramsHelper,pathConfig) {
+    if(!buildServiceDockerImage(paramsHelper,pathConfig)){
+        return false;
+    }
+    if (!push2DockerRepository(paramsHelper,pathConfig)){
+        return false;
+    }
+    return true;
+}
 /**
  * 创建并使用发布文件，发布服务到k8s中。
  */
-function release2K8sCloud(params) {
-    pathConfig.init(params);
-    paramsHelper.init(params);
-
-    if(!buildServiceDockerImage(params)){
-        return;
-    }
-    if (!push2DockerRepository(paramsHelper)){
-        return;
-    }
-    
+function deploy2K8sCloud(paramsHelper,pathConfig) {
+    let isSuccessful = true;
     if (paramsHelper.useOwnDepolymentFile()){
          modifyOwnDeploymentFile();
     }else{
-         createK8sDeploymentFiles();
+         createK8sDeploymentFiles(paramsHelper,pathConfig);
     }
 
-
-    deployConfigFiles();
-    deploy2Cloud();
+    //Deploy the server configmap to K8s Cluster if there are a 'config' directory
+    deployConfigFiles(paramsHelper,pathConfig);
+    if(!deploy2Cloud(paramsHelper,pathConfig)){
+        isSuccessful = false;
+    }
+    return isSuccessful;
 }
 
 
-
-function releaseFilesToK8s(paramsObj, pathObj) {
-    return deployK8sFiles(pathObj);
-}
 
 
 module.exports = {
-    release2K8sCloud:release2K8sCloud,
-    releaseFilesToK8s:releaseFilesToK8s,
+    buildDockerImage: buildDockerImage,
+    deploy2K8sCloud:deploy2K8sCloud,
+    deployFilesToK8s:deployK8sFiles,
 }
 

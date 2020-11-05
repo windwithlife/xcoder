@@ -1,4 +1,5 @@
 
+let logInfo = require('../../utils/globalUtils').logInfo;
 var gitTools = require('./git-tool');
 var dockerTools = require('./docker-tool');
 var shellTools = require('./shell-tool');
@@ -15,67 +16,40 @@ function autoRelease(params) {
     //get sourcecode or execute scripts
     paramsHelper.init(params);
     pathConfig.init(params);
-    //messageClient.updateReleaseStatus(params.buildId, "starting...");
+   
     var resultgit = gitTools.fetchSourceFromGit(params);
     if (!resultgit) {
         console.log('failed to get source from git, release is stopped!')
-       
-        //messageClient.updateReleaseStatus(params.buildId, "failed");
         return false;
     }
-    //messageClient.updateReleaseStatus(params.buildId, "fetching-code-finished");
-    if (paramsHelper.isScript()){
-        if(shellTools.execReleaseScript(paramsHelper,pathConfig)){
-            //messageClient.updateReleaseStatus(params.buildId, "success");
-            return true;
-        }else{
-            //messageClient.updateReleaseStatus(params.buildId, "failed");
-            return false;
-        }
-        
-    }
-
-    if (paramsHelper.isK8s()){
-        
-        return dockerTools.releaseFilesToK8s(paramsHelper,path_config);
-    }
-
-    if (paramsHelper.isLib()){
-        //messageClient.updateReleaseStatus(params.buildId, "building-code...");
-        if(builderTools.build(paramsHelper,pathConfig)){
-            //messageClient.updateReleaseStatus(params.buildId, "success");
-            return true;
-        }else{
-            //messageClient.updateReleaseStatus(params.buildId, "failed");
-            return false;
-        }
    
-    }
+    const applicationType = paramsHelper.getApplicationType();
 
-    /*
-    if (paramsHelper.isIOS()){
-        //builderTools.compileAndBuild(paramsHelper,pathConfig);
-        //let result = dockerTools.release2K8sCloud(params);
-    }
-    if (paramsHelper.isAndroid()){
-        //builderTools.compileAndBuild(paramsHelper,pathConfig);
-        //let result = dockerTools.release2K8sCloud(params);
-    }
-    */
-    if (paramsHelper.isServer()){
-        //messageClient.updateReleaseStatus(params.buildId, "building-code...");
-        
+    if (applicationType.needBuildAndInstall){
         if(!builderTools.build(paramsHelper,pathConfig)){
+            logInfo("build", "failed to build sourcecode!");
             return false;
         }
-        //messageClient.updateReleaseStatus(params.buildId, "building-code-finished");
-        console.log('begin to buildDockerImage!....');
-        //messageClient.updateReleaseStatus(params.buildId, "deploying-to-k8s");
-        let result = dockerTools.release2K8sCloud(params);
-        messageClient.updateReleaseStatus(params.buildId, "success");
-        return result;
     }
-    
+    if (applicationType.needExecuteScript){
+        if(!shellTools.execReleaseScript(paramsHelper,pathConfig)){ 
+            logInfo("execuite script", "failed to execute script!");    
+            return false;
+        } 
+    }
+    if (applicationType.needBuildDocker){
+        if(!dockerTools.buildDockerImage(paramsHelper,pathConfig)){ 
+            logInfo("build docker image", "failed to build docker iamge!");
+            return false;
+        }
+    }
+
+    if (applicationType.needDeploy){
+        if(!dockerTools.deploy2K8sCloud(paramsHelper,pathConfig)){ 
+            logInfo("deploy", "failed to deploy application!");
+            return false;
+        }
+    }    
     return true;
 }
 

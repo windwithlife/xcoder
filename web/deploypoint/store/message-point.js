@@ -18,8 +18,8 @@ const isString = (data) => {
     connect(){
         messageClient.connect();
     }
-    onCreate(callback){
-        messageClient.onCreate(callback);
+    onConnect(callback){
+        messageClient.onConnect(callback);
     }
     onExecute(callback){
         messageClient.setCallback(TOPIC_SUB_CENTER,callback);

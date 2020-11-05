@@ -126,58 +126,49 @@ const handle = app.getRequestHandler()
     })
 
     //messageClient.connect();
-    messageClient.onCreate(function(message){
-      messageClient.sendLogs({info:"Finished to create deployment point!"});
-      messageClient.registerPoint({command:"register",params:{name:"pointa",active:"true",status:"running",locationTopic:"ci/simple/point/pointa/",supportType: "k8s", supportActions:["build", "deploy"] }});
+    messageClient.onConnect(function(message){
+      //messageClient.sendLogs({info:"Finished to create deployment point!"});
+      //messageClient.registerPoint({command:"register",params:{name:"pointa",active:"true",status:"running",locationTopic:"ci/simple/point/pointa/",supportType: "k8s", supportActions:["build", "deploy"] }});
     });
     messageClient.onExecute(function(topic,msg){
       console.log(topic);
-      console.log(msg);
+      //console.log(msg);
       deployApplication(msg);
     });
-    
+    messageClient.registerPoint({command:"register",params:{name:"pointa",active:"true",status:"running",locationTopic:"ci/simple/point/pointa/",supportType: "k8s", supportActions:["build", "deploy"] }});
+    messageClient.updateReleaseStatus(33, "starting phase1....");
 
   function deployApplication(msg){
       let request = msg.params;
       console.log("begin deploy project-------------")
-      console.log(msg);
-  
-      var params = { releaseType: "prod",isLib:true,isUseOwnDockerFile: false,  useOwnDeploymentFile: false, targetPath: './', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
-     
-      if(request.repository){
-        params.gitUrl = request.repository;
-      }
-      if(request.envType){
-        params.releaseType = request.envType;
-      }
+      //console.log("release request params is *****************8:", request);
+      messageClient.updateReleaseStatus(33, "starting phase2....");
+      let params = {releaseType:'PROD'};
+      params.gitUrl = request.repository;
+      params.releaseType = request.envType;
       console.log("Current repo url:" + params.gitUrl);
 
       params.name = request.name;
-      params.applicationType = request.applicationType;
-      params.isLib = request.isLib;
+      params.applicationType = request.applicationTypeInfo;
+      params.projectInfo = request.projectInfo;
       params.useOwnDeploymentFile = request.useOwnDeploymentFile;
-      params.useOwnDockerFile = request.useOwnDeploymentFile;
       params.applicationName = request.applicationName;
       params.path = request.path;
-      params.version = request.releaseVersion ? request.releaseVersion : "1.0.0";
+      params.version = request.releaseVersion;
       
-      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
-      params.sideType = request.sideType;
-      params.language = request.language;
+      params.targetPath = request.targetPath ;
+    
       params.serviceName = request.name;
-      
-      params.domainName = request.domainName;
-      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
+      params.targetPath = request.targetPath;
       params.label = params.version;
       params.buildId = request.buildId;
 
-      console.log("release request params is *****************8:", params);
-      
-      // if (releaseServer.autoRelease(params)) {
-      //    messageClient.updateReleaseStatus(buildRecord.id, "finished");
-      // } else {
-      //    messageClient.updateReleaseStatus(buildRecord.id, "failure");
-      // }
+      messageClient.updateReleaseStatus(33, "starting....");
+      if (releaseServer.autoRelease(params)) {
+         messageClient.updateReleaseStatus(request.buildId, "finished");
+      } else {
+         messageClient.updateReleaseStatus(request.buildId, "failure");
+      }
 
   }
   console.log("starting release point");

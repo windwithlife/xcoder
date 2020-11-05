@@ -1,3 +1,9 @@
 {
-  "routetable": []
+  "routetable": [
+    {
+      "host": "soagateway.koudaibook.com",
+      "path": "/xcoder",
+      "serviceName": "xcoder-server"
+    }
+  ]
 }

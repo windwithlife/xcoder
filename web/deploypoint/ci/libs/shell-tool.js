@@ -33,19 +33,6 @@ function restartServer (){
 }
 
 
-function installNPMPackages (){
-    console.log( "Start install NPM relatived packages!")
-    let installPackages = 'npm install';
-
-    if (exec(installPackages).code !== 0) {
-        console.log('Error: failed to install NPM relatived packages');
-        return false;
-    }else{
-        console.log('successful to install NPM relatived packages');
-        return true;
-    }
-
-}
 function execScript(script){
     console.log("going to execute script:[" + script + "].......");   
     let result = exec(script);
@@ -67,7 +54,6 @@ function execReleaseScript(paramHelper, pathConfig){
 module.exports = {
     restartNPM: restartNPM,
     restartServer:restartServer,
-    installPackages: installNPMPackages,
     execReleaseScript:execReleaseScript,
    
 }

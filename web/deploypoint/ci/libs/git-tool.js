@@ -100,7 +100,6 @@ function fetch_project_src(params) {
     }
 
     if (pathConfig.haveClonedCode()) {
-        //cd(release_directory);
         console.log('begin to pull source code!');
         pathConfig.preparePullPath();
         console.log(process.cwd());
@@ -108,9 +107,7 @@ function fetch_project_src(params) {
 
     } else {
         console.log('begin to clone project source code!');
-        //init_release_directory(project_name);
-        //cd(envConfig.releaseSourceCodeRootPath(project_name));
-        //console.log('begin to clone project source code!');
+       
         pathConfig.prepareClonePath();
         console.log(process.cwd());
         if (cloneSource(params.gitUrl)){
@@ -125,7 +122,7 @@ function fetch_project_src(params) {
     }
     //pathConfig.prepareSourceCode();
     pathConfig.resetWorkPath();
-    console.log('*********************************finish to compile sourcecode!....******************************************');
+    console.log('*********************************finish to fetch sourcecode!....******************************************');
     return result;
 }
 

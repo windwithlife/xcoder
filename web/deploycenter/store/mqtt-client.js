@@ -43,8 +43,8 @@ export default class MQTTClient {
         this.client.onMessageArrived = this.onMessageArrived; //onMessageArrived;
 
 
-        let timeout = 5;
-        let keepAlive = 100;
+        let timeout = 15;
+        let keepAlive = 10;
         var options = {
             invocationContext: {
                 host: MQTT_HOST,

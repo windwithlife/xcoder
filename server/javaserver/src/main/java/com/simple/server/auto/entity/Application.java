@@ -29,10 +29,7 @@ public class Application implements Serializable {
     private String applicationName;
     private String path;
     private String codePath;
-//    private String sideType;
-//    private String language;
-//    private String framework;
-//    private String platform;
+
 
 
 

@@ -18,7 +18,7 @@ function execCommand(command,commandTag){
 }
 
 function compileJava(workPath){
-    let compileCommand = 'docker run -i --rm  --name java-maven-project -v /root/.m2:/root/.m2 -v ' + workPath + ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install package -Dmaven.test.skip=true"';
+    let compileCommand = 'docker run -i --rm  --name java-maven-project -v ~/.m2:/root/.m2 -v ' + workPath + ':/usr/src/mymaven -w /usr/src/mymaven maven:3.5.0-jdk-8-alpine sh -c "mvn clean install package -Dmaven.test.skip=true"';
     return execCommand(compileCommand);
 }
 
@@ -51,17 +51,12 @@ function compileNodeNextApplication(pathConfig){
     return result;
     
 }
-function compilePythonApplication(){
-    let applicationPath = pathConfig.releaseTargetSrcPath();
-    result = compilePython(applicationPath);
-    return result;
-    
-}
+
 /**
  * 对源代码进行编译构建
  */
 function compileAndBuild(paramsHelper,pathConfig) {
-    if (paramsHelper.isJavaServer()) {
+    if (paramsHelper.getApplicationType().idName ==='JavaServer') {
         return compileJavaApplication(pathConfig);
     }else{
         return compileNodeNextApplication(pathConfig);

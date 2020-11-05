@@ -41,7 +41,7 @@ function pathIsReady(pathName) {
             this.releaseType = appConfig.releaseType;
         }
        
-        console.log(this.appConfig);
+        //console.log(this.appConfig);
     }
     rootPath(){
         let pathName  = path.join(this.currentRootPath, this.srcRoot);
@@ -175,7 +175,8 @@ function pathIsReady(pathName) {
         if (this.releaseType){
             releaseEnvirnoment = this.releaseType;
         }
-        let pathName  = path.join(this.releaseTargetSrcPath(),"config",releaseEnvirnoment);
+        
+        let pathName  = path.join(this.releaseTargetSrcPath(),"k8s/",releaseEnvirnoment.toLowerCase(),"config/");
         return pathName;
     }
     markClone(){

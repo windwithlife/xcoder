@@ -48,7 +48,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: <%=data.certConfigName%> 
-  namespace: istio-system
 spec:
   dnsNames:
     - <%=data.gateway%>
@@ -57,61 +56,18 @@ spec:
     name: letsencrypt
     kind: ClusterIssuer
 ---
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
-  name: <%=data.gatewayConfigName%> 
+  name: <%=data.ingressName%>
 spec:
-  selector:
-    istio: ingressgateway # use Istio test-test
-  servers:
-  - port:
-      number: 443
-      name: https-service
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      #serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
-      #privateKey: /etc/istio/ingressgateway-certs/tls.key
-      credentialName: <%=data.certConfigName%> 
-    hosts:
-    - "<%=data.gateway%>"
-  - port:
-      number: 80
-      name: http-service
-      protocol: HTTP
-    hosts:
-    - "<%=data.gateway%>"
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: <%=data.vServiceConfigName%> 
-spec:
-  hosts:
-  - "<%=data.gateway%>"
-  gateways:
-  - <%=data.gatewayConfigName%> 
-  http: <%data.routes.forEach(function(route){%>
-  - match:
-    - uri:
-        prefix: <%=route.path%>
-    route:
-    - destination:
-        host: <%=route.serviceName%>
-        port:
-          number: 80
-    corsPolicy:
-      allowOrigin:
-      - "*"
-      allowMethods:
-      - POST
-      - PUT
-      - GET
-      allowHeaders:
-      - X-Custom-Header
-      exposeHeaders:
-      - X-Expose-Header
-      maxAge: 24h
-      allowCredentials: false <%});%>
-
+  ingressClassName: nginx
+  rules:
+  - host: <%=data.gateway%>
+    http:
+      paths: <%data.routes.forEach(function(route){%>
+      - path: <%=route.path%>
+        pathType: Prefix
+        backend:
+          serviceName: <%=route.serviceName%>
+          servicePort: 80<%});%>

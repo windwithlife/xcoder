@@ -44,9 +44,7 @@ function changeDomainFormat(str) {
     return result;
 }
 
-// module.exports = {
-//         getNowDateString:getDatetime,
-// }
+
 export default {
     getNowDateString:getDatetime,
     removeFirst:removeFirst,
