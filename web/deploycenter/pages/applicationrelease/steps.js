@@ -6,7 +6,7 @@ const steps = [
   {
     title: '构建镜像',
     content: '开始构建',
-    envType: "TEST",
+    envType: "PROD",
     needRollingBack: false,
     rollingBackText: "回滚代码状态",
     status: "waiting",
@@ -56,7 +56,7 @@ const App = (props) => {
      setProcess(true);
      if(props.onDeploy){
         const envType = steps[current].envType;
-        props.onDeploy(envType);
+        props.onDeploy(envType, props.actionId);
      }     
   };
 

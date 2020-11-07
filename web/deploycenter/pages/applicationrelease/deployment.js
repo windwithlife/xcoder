@@ -57,7 +57,7 @@ export default class EditPage extends React.Component {
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-        this.deploymentId = 0;
+        this.deploymentId = id;
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.props.applicationTypesStore.queryById(values.applicationTypeId);
@@ -96,17 +96,26 @@ export default class EditPage extends React.Component {
         });
     }
     createNewDeployment = () => {
-        console.log("start to new release.....");
-        let releaseParams = { releaseId: this.deploymentId, envType: "BUILD" };
-        network.fetch_post("mqtt/deploy", releaseParams).then(function (result) {
-            console.log(result);
-        })
+        let values = {
+            name: "test", applicationReleaseId: this.deploymentId, releaseVersion: "v1", releaseType: "PROD",
+            releaseStatus: "pending", buildNumber: Utils.getNowDateString()
+        };
+        this.props.buildRecordStore.add(values, (result) => {
+           
+            console.log("create a new release action");
+            let releaseParams = { releaseId: this.deploymentId, buildId: result.id,envType: "PROD" };
+            // network.fetch_post("mqtt/deploy", releaseParams).then(function (msg) {
+            //     console.log(msg);
+            // })
+
+        });
+       
 
     }
-    releaseTo = (envType) => {
+    releaseTo = (envType, buildId) => {
         console.log("start to relerase.....", envType);
 
-        let releaseParams = { releaseId: this.deploymentId, envType: envType };
+        let releaseParams = { releaseId: this.deploymentId, buildId: buildId, envType: envType };
         network.fetch_post("mqtt/deploy", releaseParams).then(function (result) {
             console.log(result);
         })
@@ -240,8 +249,12 @@ export default class EditPage extends React.Component {
                     </Panel>
                 </Collapse>
                 <Divider />
-                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">创建部署</Button>
+                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">创建新部署</Button>
+                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">以最新镜像创建部署</Button>
+                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">选择新镜像创建部署</Button>
+                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">生产环境回滚上次发布状态</Button>
                 <Divider />
+                <Button type="primary" size="large">进行中发布部署</Button>
                 <Collapse accordion defaultActiveKey={['0']}>
                     {buildRecords.map(function (record, index) {
                         let headerText = "发布记录" + index + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber;
@@ -253,12 +266,27 @@ export default class EditPage extends React.Component {
                                     <Step title="UAT发布" />
                                     <Step title="生产部署" />
                                 </Steps>} >
-                                <DeploySteps onDeploy={that.releaseTo}></DeploySteps>
-                                {/* <Steps current={1}>
-                                    <Step title="构建(镜像)" description="完成" />
-                                    <Step title="UAT发布" subTitle="Left 00:00:08" description="开始发布" />
-                                    <Step title="生产部署" description="未进行" />
-                                </Steps> */}
+                                <DeploySteps actionId= {record.id} onDeploy={that.releaseTo}></DeploySteps>
+                               
+                            </Panel>);
+
+                    })}
+
+                </Collapse>
+                <Divider />
+                <Button type="primary" size="large">历史发布记录</Button>
+                <Collapse >
+                    {buildRecords.map(function (record, index) {
+                        let headerText = "发布记录" + index + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber;
+
+                        return (
+                            <Panel header={headerText} key={index} extra={
+                                <Steps size="small" current={2}>
+                                    <Step title="构建" />
+                                    <Step title="UAT发布" />
+                                    <Step title="生产部署" />
+                                </Steps>} >
+                              
                             </Panel>);
 
                     })}
