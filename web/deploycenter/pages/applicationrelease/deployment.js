@@ -1,25 +1,28 @@
 import React from 'react';
 
-import DeploySteps from './steps'
 import {
     Collapse,
     Modal,
+    Button,
     Form,
     Input,
     Card,
     Select,
-    Button,
     Steps,
+    Divider
 } from 'antd';
 const { Step } = Steps;
 const { Panel } = Collapse;
-const { TextArea } = Input;
-import router from 'next/router';
+import DeploySteps from './steps'
+
 import { inject, observer } from 'mobx-react';
 import Utils from '../../utils/utils';
+import { Network } from '../../store/Network';
 import MQTTClient from '../../store/mqtt-client';
-let mqttClient = new MQTTClient();
 
+let mqttClient = new MQTTClient();
+const network = new Network("simple/deployment/");
+network.switchWebServerHost('localhost:8888');
 
 
 @inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore') @inject('buildRecordStore')
@@ -28,13 +31,13 @@ export default class EditPage extends React.Component {
     formRef = React.createRef();
     state = {
         editMode: false,
-       
+
     }
     constructor() {
         super();
         this.projectName = "tempName";
+        this.deploymentId = 0;
         this.buildRecord = {};
-        this.currentId = 0;
 
     }
     Store = () => {
@@ -54,7 +57,7 @@ export default class EditPage extends React.Component {
     componentDidMount() {
         let that = this;
         let id = this.props.query.id;
-        this.currentId = id;
+        this.deploymentId = 0;
         this.Store().queryById(id, function (values) {
             console.log(values);
             that.props.applicationTypesStore.queryById(values.applicationTypeId);
@@ -92,30 +95,25 @@ export default class EditPage extends React.Component {
             console.log(result);
         });
     }
+    createNewDeployment = () => {
+        console.log("start to new release.....");
+        let releaseParams = { releaseId: this.deploymentId, envType: "BUILD" };
+        network.fetch_post("mqtt/deploy", releaseParams).then(function (result) {
+            console.log(result);
+        })
+
+    }
     releaseTo = (envType) => {
-        let path = '/applicationrelease/deployment';
-        router.push({ pathname: path, query: { id: this.currentId } });
-        return ;
+        console.log("start to relerase.....", envType);
 
-        let that = this;
-        let appType = this.props.applicationTypesStore.dataObject.currentItem
-        let appPoint = this.props.applicationPointStore.dataObject.currentItem
-        let appPointAddress = "http://" + appPoint.serverAddress;
+        let releaseParams = { releaseId: this.deploymentId, envType: envType };
+        network.fetch_post("mqtt/deploy", releaseParams).then(function (result) {
+            console.log(result);
+        })
+
+        return;
 
 
-        let itemData = Object.assign({}, this.StoreData().currentItem);
-        let applicationReleaseId = itemData.id;
-        itemData.projectName = this.projectName;
-        itemData.envType = envType;
-        itemData.sideType = appType.sideType;
-        itemData.language = appType.language;
-        itemData.framework = appType.framework;
-        itemData.isLib = appType.isLib;
-        itemData.applicationType = appType.nickname;
-        let finalParams = {};
-        finalParams.type = 'release';
-        finalParams.defines = itemData;
-       
 
         if ("UAT" === envType) {
             itemData.releaseType = 'uat';
@@ -134,15 +132,8 @@ export default class EditPage extends React.Component {
                 itemData.domainName = itemData.domainNameUAT;
                 itemData.buildId = result.id;
                 finalParams.buildRecord = result;
-                let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
+                let releaseParams = { releaseId: applicationReleaseId, envType: envType };
                 mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-                //mqttClient.sendMsg("ci/simple/center/server/test",{command:"execute",params:finalParams});
-                //      appPointAddress = "http://" + appPoint.serverAddress;
-                //      NetworkHelper.switchService(appPointAddress);
-                //      NetworkHelper.webPost("releaseByParams/", finalParams);
-                //      var interval3=setInterval(function(){
-                //         that.traceCurrentBuildRecord(result.id);
-                //    },5000);
 
 
 
@@ -162,13 +153,6 @@ export default class EditPage extends React.Component {
 
 
 
-                //      appPointAddress = "http://" + appPoint.serverAddressProd;
-                //      NetworkHelper.switchService(appPointAddress);
-                //      NetworkHelper.webPost("releaseByParams/", finalParams);
-                //      var interval3=setInterval(function(){
-                //         that.traceCurrentBuildRecord(result.id);
-                //    },5000);
-                //MessageCenter.sendExecCommand(finalParams);
                 let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
                 mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
 
@@ -185,6 +169,9 @@ export default class EditPage extends React.Component {
 
     changeEditMode = (event) => {
         event.stopPropagation();
+        //console.log('click on edit model');
+        //let nextMode = !this.state.editMode;
+        //this.setState({ editMode: nextMode });
     }
     render() {
         let that = this;
@@ -204,7 +191,8 @@ export default class EditPage extends React.Component {
 
         return (
             < div >
-                
+                <Collapse accordion >
+                    <Panel header="应用详情" key="1" >
                         <Card size="small" title="基本信息" style={{ width: 800 }}  >
                             <Form ref={this.formRef}>
                                 < Form.Item label="发布单名称：">
@@ -244,17 +232,39 @@ export default class EditPage extends React.Component {
                                 < Form.Item label="描述信息：">
                                     {itemData.description}
                                 </Form.Item>
-                                <Card type="inner">
 
-                                    <Button type="primary" onClick={that.releaseTo.bind(that, "UAT")} size="large">创建新部署</Button>
-                                  
-                                </Card>
 
                             </Form>
 
                         </Card>
-                
-               
+                    </Panel>
+                </Collapse>
+                <Divider />
+                <Button type="primary" onClick={that.createNewDeployment.bind(that)} size="large">创建部署</Button>
+                <Divider />
+                <Collapse accordion defaultActiveKey={['0']}>
+                    {buildRecords.map(function (record, index) {
+                        let headerText = "发布记录" + index + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber;
+
+                        return (
+                            <Panel header={headerText} key={index} extra={
+                                <Steps size="small" current={2}>
+                                    <Step title="构建" />
+                                    <Step title="UAT发布" />
+                                    <Step title="生产部署" />
+                                </Steps>} >
+                                <DeploySteps onDeploy={that.releaseTo}></DeploySteps>
+                                {/* <Steps current={1}>
+                                    <Step title="构建(镜像)" description="完成" />
+                                    <Step title="UAT发布" subTitle="Left 00:00:08" description="开始发布" />
+                                    <Step title="生产部署" description="未进行" />
+                                </Steps> */}
+                            </Panel>);
+
+                    })}
+
+                </Collapse>
+
 
             </div>
         );

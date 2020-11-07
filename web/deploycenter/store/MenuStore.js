@@ -43,7 +43,7 @@ export default class MenuStore extends BaseStore{
   list:[ 
    
     {id:21,name: "持续集成管理",url:"/applicationrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
-    {id:22,name: "发布历史",url:"/buildrecord/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+   
     
 
     {id:11,name: "项目管理",url:"/project/list",level:1,type:'sider', parentId:0,channelName:"project"},

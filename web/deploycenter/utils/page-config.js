@@ -45,23 +45,3 @@ function getConfigOption(){
 }
 module.exports = getConfigOption();
 
-// export const current = {
-//   ENV_NAME: detectEnvironment(),
-//   SOA_GATE: getConfigOption().servers.soaServer,
-//   WEB_GATE: getConfigOption().servers.releaseServer,
-//   WEB_RELEASE: getConfigOption().servers.releaseServer,
-//   MQTT_HOST: getConfigOption().servers.mqServer,
-//   RESOURCE_PATH: getConfigOption().application.service.contextPath,
-//   DOCKER_REPO: getConfigOption().repositories.docker,
-// };
-// module.exports = {
-//   current: {
-//   ENV_NAME: detectEnvironment(),
-//   SOA_GATE: getConfigOption().servers.soaServer,
-//   WEB_GATE: getConfigOption().servers.releaseServer,
-//   WEB_RELEASE: getConfigOption().servers.releaseServer,
-//   MQTT_HOST: getConfigOption().servers.mqServer,
-//   RESOURCE_PATH: getConfigOption().application.service.contextPath,
-//   DOCKER_REPO: getConfigOption().repositories.docker,
-//   }
-// }
