@@ -1,0 +1,8 @@
+logging:
+  config: /etc/simple/logback-spring.xml
+
+#redis参数配置
+spring:
+  redis:
+    host: redis-standalone
+    password: meetinglive
