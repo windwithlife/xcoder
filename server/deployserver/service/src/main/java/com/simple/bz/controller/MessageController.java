@@ -11,15 +11,13 @@ import com.simple.bz.service.MqttService;
 import com.simple.common.api.BaseResponse;
 import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
-import com.simple.common.auth.AuthConstant;
-import com.simple.common.mqtt.MqttGateway;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/mqtt")
