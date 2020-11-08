@@ -30,35 +30,15 @@ public class MessageController {
     static final ILogger logger = SLoggerFactory.getLogger(MessageController.class);
 
 
-//
-//    @Autowired
-//    private MqttGateway mqttGateway;
-
     @Autowired
     private MqttService mqttService;
     @Autowired
     private DeployService deployService;
 
-//    @RequestMapping("/send")
-//    @ResponseBody
-//    public void send(@RequestParam Map params) {
-//        // 发送消息到指定topic
-//        try {
-//            String topic = params.get("topic").toString();
-//            String message = params.get("message").toString();
-//            System.out.println("Received Topic is " +  topic);
-//            System.out.println("Received Message is " +  message);
-//            mqttGateway.sendToMqtt(topic, message);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//
-//        }
-//    }
 
 
 
-    @PostMapping(path = "/test")
+    @GetMapping(path = "/test")
     GenericResponse test5(@RequestParam(value = "request") String request){
         System.out.println("received  params is" +  request);
         return GenericResponse.build().addKey$Value("result",request);
