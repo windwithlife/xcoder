@@ -17,7 +17,7 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-  
+ 
 simple:
   common:
     sentry-dsn: ${SENTRY_DSN}
