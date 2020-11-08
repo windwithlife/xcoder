@@ -77,13 +77,19 @@ export default class EditPage extends React.Component {
         mqttClient.setSubscribe(TOPIC_PUB_STATUS, function (topic, data) {
             console.log(data);
             let buildId = data.buildId;
-            let releaseStatus = data.status;
-            console.log(buildId + "---" +  releaseStatus);
+            console.log(buildId + "---" +   data.status);
+            if(data.envType == "UAT"){
+                data.step = 1;
+            }else if(data.envType == "PROD"){
+                data.step = 2;
+            }else if (data.envType == "IMAGE"){
+                data.step = 0;
+            }
             that.props.buildRecordStore.dataObject.list.forEach(function (item) {
                 if (item.id == buildId) {
-                    item.releaseStatus = releaseStatus;
-                    console.log(item);
-
+                    item.releaseStatus = data.status; 
+                   
+                    item.step =  data.step;;        
                 }
             });
 
@@ -122,41 +128,11 @@ export default class EditPage extends React.Component {
             console.log(result);
         })
 
-        return;
-
-        if ("UAT" === envType) {
-            itemData.releaseType = 'uat';
-
-            let values = {
-                name: itemData.applicationName, applicationReleaseId: itemData.id, releaseVersion: itemData.releaseVersion, releaseType: envType,
-                releaseStatus: "pending", buildNumber: Utils.getNowDateString()
-            };
-            this.props.buildRecordStore.add(values, (result) => {
-                console.log('finished result:');
-                console.log(result);
-                //itemData.domainName = "uat." + itemData.domainName;
-                if (!itemData.domainNameUAT) {
-                    itemData.domainNameUAT = 'uat.' + itemData.domainName;
-                }
-                itemData.domainName = itemData.domainNameUAT;
-                itemData.buildId = result.id;
-                finalParams.buildRecord = result;
-                let releaseParams = { releaseId: applicationReleaseId, envType: envType };
-                mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-
-
-
-            });
-        } 
-
-        //console.log(finalParams);
     }
 
     changeEditMode = (event) => {
         event.stopPropagation();
-        //console.log('click on edit model');
-        //let nextMode = !this.state.editMode;
-        //this.setState({ editMode: nextMode });
+        
     }
     render() {
         let that = this;
@@ -234,7 +210,8 @@ export default class EditPage extends React.Component {
                 <Collapse accordion defaultActiveKey={['0']}>
                     {buildRecords.map(function (record, index) {
                         let headerText = "发布记录" + index + record.id + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber + "状态:" + record.releaseStatus;
-
+                        console.log(record);
+                        
                         return (
                             <Panel header={headerText} key={index} extra={
                                 <Steps size="small" current={2}>
@@ -242,7 +219,7 @@ export default class EditPage extends React.Component {
                                     <Step title="UAT发布" />
                                     <Step title="生产部署" />
                                 </Steps>} >
-                                <DeploySteps actionId={record.id} onDeploy={that.releaseTo}></DeploySteps>
+                                <DeploySteps currentStepIndex= {record.step?record.step:0} currentStepStatus = {record.releaseStatus} actionId={record.id} onDeploy={that.releaseTo}></DeploySteps>
 
                             </Panel>);
 

@@ -58,10 +58,12 @@ public class MessageController {
 
 
 
-    @PostMapping(path = "/test5")
-    GenericResponse test5(@RequestBody GenericRequest req){
-        return new GenericResponse(req);
+    @PostMapping(path = "/test")
+    GenericResponse test5(@RequestParam(value = "request") String request){
+        System.out.println("received  params is" +  request);
+        return GenericResponse.build().addKey$Value("result",request);
     }
+
     @PostMapping(path = "/test6")
     GenericResponse test6(@RequestBody GenericRequest req){
        GenericResponse result = new GenericResponse();
