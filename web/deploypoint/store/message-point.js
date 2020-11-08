@@ -30,8 +30,10 @@ const isString = (data) => {
     sendLogs(logs){
         messageClient.sendMsg(TOPIC_PUB_LOGS,logs);
     }
-    updateReleaseStatus(buildId, releaseStatus){
-        let requestData = {releaseId: buildId, status:releaseStatus};
+    updateReleaseStatus(buildId, releaseStatus, envType){
+        let currentEnvType = "UAT";
+        if(envType){currentEnvType = envType}
+        let requestData = {buildId: buildId, status:releaseStatus, envType: currentEnvType};
         this.sendStatus(requestData);
     }
     registerPoint(params){

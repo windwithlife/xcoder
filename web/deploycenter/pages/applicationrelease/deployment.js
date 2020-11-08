@@ -25,6 +25,10 @@ const network = new Network("simple/deployment/");
 network.switchWebServerHost('localhost:8888');
 
 
+const serverLocation = 'ci/simple/center/server/';
+const TOPIC_PUB_STATUS = serverLocation + 'status/test';
+const TOPIC_PUB_LOGS = serverLocation + 'logs/test';
+
 @inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore') @inject('buildRecordStore')
 @observer
 export default class EditPage extends React.Component {
@@ -70,20 +74,18 @@ export default class EditPage extends React.Component {
             console.log("Build Record of current release");
             console.log(result);
         });
-        mqttClient.setSubscribe('ci/simple/center/frontend/#', function (topic, data) {
+        mqttClient.setSubscribe(TOPIC_PUB_STATUS, function (topic, data) {
             console.log(data);
-            const action = topic.substring('ci/simple/center/frontend/'.length, topic.length - 1);
-            if (action.startsWith('status/')) {
-                let buildId = data.id;
-                let releaseStatus = data.status;
-                that.props.buildRecordStore.dataObject.list.forEach(function (item) {
-                    if (item.id == buildId) {
-                        item.releaseStatus = releaseStatus;
+            let buildId = data.buildId;
+            let releaseStatus = data.status;
+            console.log(buildId + "---" +  releaseStatus);
+            that.props.buildRecordStore.dataObject.list.forEach(function (item) {
+                if (item.id == buildId) {
+                    item.releaseStatus = releaseStatus;
+                    console.log(item);
 
-                    }
-                });
-            }
-
+                }
+            });
 
             that.props.buildRecordStore.dataObject.list = that.props.buildRecordStore.dataObject.list.slice();
 
@@ -101,15 +103,15 @@ export default class EditPage extends React.Component {
             releaseStatus: "pending", buildNumber: Utils.getNowDateString()
         };
         this.props.buildRecordStore.add(values, (result) => {
-           
+
             console.log("create a new release action");
-            let releaseParams = { releaseId: this.deploymentId, buildId: result.id,envType: "PROD" };
+            let releaseParams = { releaseId: this.deploymentId, buildId: result.id, envType: "PROD" };
             // network.fetch_post("mqtt/deploy", releaseParams).then(function (msg) {
             //     console.log(msg);
             // })
 
         });
-       
+
 
     }
     releaseTo = (envType, buildId) => {
@@ -121,8 +123,6 @@ export default class EditPage extends React.Component {
         })
 
         return;
-
-
 
         if ("UAT" === envType) {
             itemData.releaseType = 'uat';
@@ -147,31 +147,7 @@ export default class EditPage extends React.Component {
 
 
             });
-        } else if ("PROD" === envType) {
-            itemData.releaseType = 'prod';
-            let values = {
-                name: itemData.applicationName, applicationReleaseId: itemData.id, releaseVersion: itemData.releaseVersion, releaseType: envType,
-                releaseStatus: "pending", buildNumber: Utils.getNowDateString()
-            };
-            this.props.buildRecordStore.add(values, (result) => {
-                console.log('finished result:');
-                console.log(result);
-                //itemData.domainName = itemData.domainName;
-                itemData.buildId = result.id;
-                finalParams.buildRecord = result;
-
-
-
-                let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
-                mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-
-            });
-        } else if ("BACK" === envType) {
-            //appPointAddress = "http://" + appPoint.serverAddressProd;
-            let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
-            mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-        }
-
+        } 
 
         //console.log(finalParams);
     }
@@ -257,7 +233,7 @@ export default class EditPage extends React.Component {
                 <Button type="primary" size="large">进行中发布部署</Button>
                 <Collapse accordion defaultActiveKey={['0']}>
                     {buildRecords.map(function (record, index) {
-                        let headerText = "发布记录" + index + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber;
+                        let headerText = "发布记录" + index + record.id + "  版本:" + record.releaseVersion + " 构建序号:" + record.buildNumber + "状态:" + record.releaseStatus;
 
                         return (
                             <Panel header={headerText} key={index} extra={
@@ -266,8 +242,8 @@ export default class EditPage extends React.Component {
                                     <Step title="UAT发布" />
                                     <Step title="生产部署" />
                                 </Steps>} >
-                                <DeploySteps actionId= {record.id} onDeploy={that.releaseTo}></DeploySteps>
-                               
+                                <DeploySteps actionId={record.id} onDeploy={that.releaseTo}></DeploySteps>
+
                             </Panel>);
 
                     })}
@@ -286,7 +262,7 @@ export default class EditPage extends React.Component {
                                     <Step title="UAT发布" />
                                     <Step title="生产部署" />
                                 </Steps>} >
-                              
+
                             </Panel>);
 
                     })}

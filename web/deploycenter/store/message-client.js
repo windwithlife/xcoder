@@ -53,7 +53,7 @@ class MessageCenter {
         console.log(data);
         let resultData = this.dealWithReceivedData(data);
         let callback = null;
-        
+        /*
         this.callbacks.forEach(function (value, key) {
             
             let pureTopic = key;
@@ -95,26 +95,27 @@ class MessageCenter {
                 }
                 beHanled = true;
             }
+        
 
-        });
+        });*/
         if (!beHanled){
             console.log('Topic is not handled! topic is ' +  topic)
         }
     }
     dealWithReceivedData(data){
         let finalData = null;
-        try {
-            if (!isString(data)) {
-                finalData = msgpack.decode(data);
-                //finalData = JSON.parse(data);
-            } else {
-                finalData = data;
-            }
-        } catch (exception) {
-            console.log('failed to parse message data');
-            finalData = data;
-        }
-        return finalData;
+        // try {
+        //     if (!isString(data)) {
+        //         //finalData = msgpack.decode(data);
+        //         finalData = JSON.parse(data);
+        //     } else {
+        //         finalData = data;
+        //     }
+        // } catch (exception) {
+        //     console.log('failed to parse message data');
+        //     finalData = data;
+        // }
+        return data;
     }
     onCreate(callback) {
         this.setCallback(ON_CREATE, callback);

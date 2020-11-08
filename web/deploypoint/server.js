@@ -165,9 +165,9 @@ const dev = process.env.NODE_ENV !== 'production'
 
       messageClient.updateReleaseStatus(33, "starting....");
       if (releaseServer.autoRelease(params)) {
-         messageClient.updateReleaseStatus(request.buildId, "finished");
+         messageClient.updateReleaseStatus(request.buildId, "finished", request.envType);
       } else {
-         messageClient.updateReleaseStatus(request.buildId, "failure");
+         messageClient.updateReleaseStatus(request.buildId, "failure", request.envType);
       }
 
   }

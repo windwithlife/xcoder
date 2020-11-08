@@ -1,24 +1,15 @@
 //const PahoMQTT = require('paho-mqtt')
+
 import PahoMQTT from 'paho-mqtt';
-let msgpack = require('msgpack-lite');
+
 import config from '../utils/page-config';
 
-export const TOPIC_CENTER_SUB_EXECUTE = 'CI/exeute/center/server-page/#';
-export const TOPIC_CENTER_SUB_STATUS = 'CI/status/center/server-page/#';
-export const TOPIC_CENTER_SUB_LOGS = 'CI/logs/center/server-page/#';
-export const TOPIC_CENTER_SUB_REGISTER = 'CI/register/center/server-page/#';
-
-export const TOPIC_POINT_PUB_EXECUTE = 'CI/execute/point/';
-
-
-const MQTT_ENDPOINT_PREFIX = "CI/CD_ServerCenter_FrontEnd_";
+const MQTT_ENDPOINT_PREFIX = "ClientID_";
 const MQTT_HOST = config.MQTT_SERVER.host; // 'mq.koudaibook.com';
 const MQTT_PORT = config.MQTT_SERVER.port;
 const MQTT_PATH = config.MQTT_SERVER.path;
 
-export const MQTT_TOPIC_LOG = 'ci/release/logs';
-export const MQTT_TOPIC_STATUS = 'ci/release/status';
-export const MQTT_TOPIC_EXECUTE = 'ci/release/execute';
+
 
 
 
@@ -100,53 +91,37 @@ export default class MQTTClient {
         }
     }
     onMessageArrived = (message) => {
+        let that = this;
         let fromTopic = message.destinationName;
-        console.log(message);
+        console.log("Received message  ===>" + fromTopic);
+        console.log("Received message payload ===>" + message.payloadString);
+    
         let resultData = this.dealWithReceivedData(message);
-        let callback = null;
-        
+
         this.callbacks.forEach(function (value, key) {
-            let pureTopic = key;
-            if (key.lastIndexOf('#') >= 0) {
-                pureTopic = key.substring(0, key.lastIndexOf('#'));
-                if (fromTopic.indexOf(pureTopic) == 0) {
-                    callback = value;
-                    if ((callback) && (callback instanceof Function)) {
-                        callback(fromTopic,resultData);
-                    } else {
+            //let pureTopic = that.getPureTopic(key);
+            if(that.matchTopic(fromTopic, key)){
+                let callback = value;
+                if ((callback) && (callback instanceof Function)) {
+                        try{
+                            callback(fromTopic,resultData);
+                        }catch(exception){
+                            console.log("Exception Happened during the dealwith received message!");
+                            console.log(exception);
+                        }
+                       
+                } else {
                         console.log("<==No logic to deal with the recieved data==>");
                         console.log(resultData);
                         console.log("<=================+The End+==================>");
-                    }
-                }
-
-            } else if (topic.lastIndexOf('+') >= 0) {
-                pureTopic = key.substring(0, key.lastIndexOf('+'));
-                if (fromTopic.indexOf(pureTopic) == 0) {
-                    callback = value;
-                    if ((callback) && (callback instanceof Function)) {
-                        callback(resultData);
-                    } else {
-                        console.log("<==No logic to deal with the recieved data==>");
-                        console.log(fromTopic,resultData);
-                        console.log("<=================+The End+==================>");
-                    }
-                }
-            } else if (fromTopic === key) {
-                callback = value;
-                if ((callback) && (callback instanceof Function)) {
-                    callback(fromTopic,resultData);
-                } else {
-                    console.log("<==No logic to deal with the recieved data==>");
-                    console.log(resultData);
-                    console.log("<=================+The End+==================>");
                 }
             }
-
+           
         });
         //let callback = this.callbacks.get(message.destinationName);
 
     }
+    
     sendMsg = (topic, msg) => {
         let finalData = this.dealWithSendData(msg);
         let messageObj = new PahoMQTT.Message(finalData);
@@ -160,10 +135,32 @@ export default class MQTTClient {
         }
         return finalMsg;
     }
+    getPureTopic(topic){
+        console.log("ORIGIN TOPIC ==>" + topic);
+        let pureTopic = "";
+        if (topic.lastIndexOf('#') >= 0) {
+            pureTopic = topic.substring(0, topic.lastIndexOf('#'));
+        } else if (topic.lastIndexOf('+') >= 0) {
+            pureTopic = topic.substring(0, topic.lastIndexOf('+'));
+        }else{
+            pureTopic = topic;
+        }
+        console.log("PURE TOPIC ==>" + pureTopic);
+        return pureTopic;
+
+    }
+    matchTopic(fromTopic, topic){
+        let keyTopic = this.getPureTopic(topic);
+        if (fromTopic.indexOf(keyTopic) == 0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
     dealWithReceivedData = (message) => {
-        let dataObj = null;
+        let dataObj = message.payloadString;
         try {
-            //dataObj = msgpack.decode(message.payloadString);
+            
             dataObj = JSON.parse(message.payloadString);
         } catch (exception) {
             console.log('failed to parse the string');
