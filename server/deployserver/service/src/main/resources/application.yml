@@ -6,9 +6,9 @@ spring:
   application:
     name: example-service
   datasource:
-    url: ${NEWS_DATASOURCE_URL}
-    username: ${NEWS_DATASOURCE_USERNAME}
-    password: ${NEWS_DATASOURCE_PASSWORD}
+    url: ${ACCOUNT_DATASOURCE_URL}
+    username: ${ACCOUNT_DATASOURCE_USERNAME}
+    password: ${ACCOUNT_DATASOURCE_PASSWORD}
     tomcat:
       test-while-idle: true
       validation-query: SELECT 1
