@@ -13,7 +13,7 @@ import { SettingOutlined } from '@ant-design/icons';
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 
-import NetworkHelper from '../../store/network';
+//import NetworkHelper from '../../store/network';
 import EditTable from '../common/components/EditableTable';
 
 const rowSelection = {
@@ -63,7 +63,7 @@ export default class DetailPage extends React.Component {
         let finalParams = {};
         finalParams.type = "project";
         finalParams.defines = projectData;
-        NetworkHelper.webPost("generateCodeByProjectId/",finalParams);
+        //NetworkHelper.webPost("generateCodeByProjectId/",finalParams);
     }
     onGotoApplications=()=>{
         let pId = this.props.query.id;

@@ -1,11 +1,15 @@
 
 application:  
   name: deploycenter
-  servicePort: 8080 
+  service:
+    port: 8080
+    contextPath: /xcoder
+    routerPath : /xcoder
 servers:
-  soa: localhost:9999
-  mq : localhost:8083
-  releasesServer: localhost:8080
+  soaServer: http://soagateway.koudaibook.com
+  mqServer : mqtt://mq.koudaibook.com:30083/ws
+repositories:
+  docker: registry.cn-hangzhou.aliyuncs.com/windwithlife/
   
 
 

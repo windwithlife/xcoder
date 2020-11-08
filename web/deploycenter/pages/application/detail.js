@@ -18,8 +18,8 @@ const { TextArea } = Input;
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-import NetworkHelper from '../../store/network';
-//import AddorEditPage from './AddorEditColumn';
+import { Network } from '../../store/Network';
+
 
 
 @inject('modulesStore') @inject('applicationsStore') @inject('pagesStore') @inject('projectsStore')  @inject('applicationTypesStore')
@@ -94,7 +94,7 @@ export default class EditPage extends React.Component {
         finalParams.type = 'release';
         finalParams.defines = itemData;
 
-        NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
+        //NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
         console.log(finalParams);
     }
     createDeployment=()=>{
