@@ -136,7 +136,7 @@ const dev = process.env.NODE_ENV !== 'production'
       deployApplication(msg);
     });
     messageClient.registerPoint({command:"register",params:{name:"pointa",active:"true",status:"running",locationTopic:"ci/simple/point/pointa/",supportType: "k8s", supportActions:["build", "deploy"] }});
-    messageClient.updateReleaseStatus(33, "starting phase1....");
+    messageClient.updateReleaseStatus(0, "starting phase1....");
 
   function deployApplication(msg){
       let request = msg.params;
@@ -163,11 +163,11 @@ const dev = process.env.NODE_ENV !== 'production'
       params.label = params.version;
       params.buildId = request.buildId;
 
-      messageClient.updateReleaseStatus(33, "starting....");
+      messageClient.updateReleaseStatus(request.buildId, "starting....");
       if (releaseServer.autoRelease(params)) {
-         messageClient.updateReleaseStatus(request.buildId, "finished", request.envType);
+         messageClient.updateReleaseStatus(request.buildId, "finish", request.envType);
       } else {
-         messageClient.updateReleaseStatus(request.buildId, "failure", request.envType);
+         messageClient.updateReleaseStatus(request.buildId, "error", request.envType);
       }
 
   }
