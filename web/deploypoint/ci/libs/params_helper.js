@@ -107,7 +107,7 @@ class ParamsHelper {
 
         }
         params.deploymentName = this.applicationName + "-"+ this.sideType + "-deployment";
-        params.applicationName = this.applicationName + "-app";
+        params.applicationName = this.applicationName + "-"+ this.sideType + "-app";
         let gatewayName = this.hostName + "-gateway";
         let certName =this.hostName + "-cert";
         let vServiceName = this.hostName + "-vservice";
