@@ -4,22 +4,18 @@ spring:
   profiles:
     active: dev
   application:
-    name: example-service
+    name: simple-deployment
   datasource:
-    url: ${ACCOUNT_DATASOURCE_URL}
-    username: ${ACCOUNT_DATASOURCE_USERNAME}
-    password: ${ACCOUNT_DATASOURCE_PASSWORD}
+    url: jdbc:mysql://test.koudaibook.com:30006/mydb?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: Password!&
     tomcat:
       test-while-idle: true
       validation-query: SELECT 1
 
 simple:
   common:
-    sentry-dsn: ${SENTRY_DSN}
-    deploy-env: ${DEPLOY:V2}
-  signing-secret: ${SIGNING_SECRET}
-  email-service-endpoint: ${EMAIL_SERVICE_ENDPOINT:http://email-service:8080}
-
+    sentry-dsn: ${SENTRY_DSN:https://21cb9790be1545f195743a18c77f37d8@o461905.ingest.sentry.io/5464621}
 server:
   servlet:
     context-path: /simple/deployment
