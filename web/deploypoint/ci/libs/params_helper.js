@@ -106,7 +106,7 @@ class ParamsHelper {
             isCommonLib: this.isCommonLib,
 
         }
-        params.deploymentName = this.applicationName + "-deployment";
+        params.deploymentName = this.applicationName + "-"+ this.sideType + "-deployment";
         params.applicationName = this.applicationName + "-app";
         let gatewayName = this.hostName + "-gateway";
         let certName =this.hostName + "-cert";
