@@ -87,23 +87,33 @@ export async function uploadFile(file) {
 
 
 export class Network {
-    constructor(moduleName){
-        this.moduleName="";
-        if(moduleName){this.moduleName = moduleName;}
-        this.host = config.SOA_GATE
+    constructor(applicationName){
+        if(applicationName){this.applicationName = applicationName;}
+        if(config.SOA_GATE.port){
+            this.host = config.SOA_GATE.host + ':' + config.SOA_GATE.port;
+        }else{
+            this.host = config.SOA_GATE.host;
+        }
+        
     }
 
-    composeBaseUrl(){
-        const url = "http://" + this.host + '/' + this.moduleName + '/';
-        return url;
+    composeBaseUrl(path, useApplicationName){
+        let finalUrl = config.SOA_GATE.schema + '://' + this.host + '/';
+        if((useApplicationName) && this.applicationName){
+            finalUrl = finalUrl +  '/' + this.applicationName + path;  
+        }else{
+            finalUrl = finalUrl + path;
+        }
+        return  finalUrl;
+        
     }
-    switchWebServerHost(newHost) {
+    switchWebServerHost(newHost){
        this.host = newHost;
     }
     async fetch_post(url, params = {}) {
         try {
             //Loading.show();
-            const fullUrl = this.composeBaseUrl() + url;
+            const fullUrl = this.composeBaseUrl(url, true);
             axios.defaults.withCredentials = true;
             axios.defaults.crossDomain = true;
             let token = localStorage.getItem('token');
@@ -128,6 +138,7 @@ export class Network {
     async fetch_get(url, params = {}) {
         try {
             //Loading.show();
+            const fullUrl = this.composeBaseUrl(url, true);
             axios.defaults.withCredentials = true;
             axios.defaults.crossDomain = true;
             let token = localStorage.getItem('token');
@@ -139,7 +150,8 @@ export class Network {
                     'token': token
                 },
                 method: 'get',
-                url: `${soaPrefix}${url}`,
+                //url: `${soaPrefix}${url}`,
+                url: fullUrl,
                 params: params,
             }).then(checkStatus).then(dealToken)
             //Loading.hide();

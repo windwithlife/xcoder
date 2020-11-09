@@ -8,9 +8,4 @@ data:
   ACCOUNT_SERVICE_ENDPOINT: http://account-service
   SENTRY_DSN: https://21cb9790be1545f195743a18c77f37d8@o461905.ingest.sentry.io/5464621
   SIGNING_SECRET: your_signing_secret
-  ACCOUNT_DATASOURCE_URL: jdbc:mysql://db.koudaibook.com:30006/mydb?useUnicode=true&characterEncoding=utf-8
-  ACCOUNT_DATASOURCE_USERNAME: root
-  ACCOUNT_DATASOURCE_PASSWORD: Password!&
-  NEWS_DATASOURCE_URL: jdbc:mysql://edb.koudaibook.com:30006/mydb?useUnicode=true&characterEncoding=utf-8
-  NEWS_DATASOURCE_USERNAME: root
-  NEWS_DATASOURCE_PASSWORD: "Password!&"
+

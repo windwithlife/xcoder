@@ -7,9 +7,7 @@ const yaml = require('js-yaml');
 
 
 let getConfig = require('next/config');
-//let pageConfig = require('../config/application');
 
-// environment names
 const CONFIG_PREFIX  = "application-";
 const CONFIG_SUFFIX  =".yaml";
 
@@ -43,8 +41,6 @@ function getConfigOption(){
    const current = {
   ENV_NAME: detectEnvironment(),
   SOA_GATE: configOption.servers.soaServer,
-  //WEB_GATE: configOption.servers.releaseServer,
-  //WEB_RELEASE: configOption.servers.releaseServer,
   MQTT_HOST: configOption.servers.mqServer,
   RESOURCE_PATH: configOption.application.service.contextPath,
   DOCKER_REPO: configOption.repositories.docker,
@@ -53,23 +49,3 @@ function getConfigOption(){
 }
 module.exports = getConfigOption();
 
-// export const current = {
-//   ENV_NAME: detectEnvironment(),
-//   SOA_GATE: getConfigOption().servers.soaServer,
-//   WEB_GATE: getConfigOption().servers.releaseServer,
-//   WEB_RELEASE: getConfigOption().servers.releaseServer,
-//   MQTT_HOST: getConfigOption().servers.mqServer,
-//   RESOURCE_PATH: getConfigOption().application.service.contextPath,
-//   DOCKER_REPO: getConfigOption().repositories.docker,
-// };
-// module.exports = {
-//   current: {
-//   ENV_NAME: detectEnvironment(),
-//   SOA_GATE: getConfigOption().servers.soaServer,
-//   WEB_GATE: getConfigOption().servers.releaseServer,
-//   WEB_RELEASE: getConfigOption().servers.releaseServer,
-//   MQTT_HOST: getConfigOption().servers.mqServer,
-//   RESOURCE_PATH: getConfigOption().application.service.contextPath,
-//   DOCKER_REPO: getConfigOption().repositories.docker,
-//   }
-// }

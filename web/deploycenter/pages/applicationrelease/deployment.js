@@ -19,10 +19,13 @@ import { inject, observer } from 'mobx-react';
 import Utils from '../../utils/utils';
 import { Network } from '../../store/Network';
 import MQTTClient from '../../store/mqtt-client';
+import DeployModel from './models/DeployStore';
 
 let mqttClient = new MQTTClient();
 const network = new Network("simple/deployment/");
 network.switchWebServerHost('localhost:8888');
+
+
 
 
 const serverLocation = 'ci/simple/center/server/';
@@ -42,6 +45,7 @@ export default class EditPage extends React.Component {
         this.projectName = "tempName";
         this.deploymentId = 0;
         this.buildRecord = {};
+        this.deployModel = new DeployModel();
 
     }
     Store = () => {
@@ -112,6 +116,7 @@ export default class EditPage extends React.Component {
 
             console.log("create a new release action");
             let releaseParams = { releaseId: this.deploymentId, buildId: result.id, envType: "PROD" };
+            this.deployModel.deployTo(releaseParams);
             // network.fetch_post("mqtt/deploy", releaseParams).then(function (msg) {
             //     console.log(msg);
             // })
