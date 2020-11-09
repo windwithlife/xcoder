@@ -1,6 +1,5 @@
 import axios from "axios";
-import config from "../utils/page-config
-//import { Loading } from "../utils/PageHelper";
+import config from "../utils/page-config";
 const isServer = typeof window == 'undefined';
 
 var soaPrefix = config.SOA_GATE.schema + '://' + config.SOA_GATE.host + ':' + config.SOA_GATE.port + '/' ;
