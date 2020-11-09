@@ -24,7 +24,7 @@ function compileJava(workPath){
 
 
 function compileNodeNext(workPath){
-    let compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:latest  sh -c "npm install && npm run build"';
+    let compileCommand = 'docker run -i --rm  --name nodejs-project -v /root/.npm:/root/.npm -v ' + workPath + ':/usr/src/mynode -w /usr/src/mynode node:14.13.1  sh -c "npm install && npm run build"';
     return execCommand(compileCommand);
 }
 
