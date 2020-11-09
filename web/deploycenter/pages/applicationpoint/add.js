@@ -4,7 +4,7 @@ import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
 import XSelect from '../common/components/select';
 const { TextArea } = Input;
-//const FormItem = Form.Item;
+
 
 
 @inject('applicationPointStore')  @inject('applicationTypesStore')
