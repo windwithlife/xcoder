@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "../utils/page-config";
+import config from "../utils/page-config
 //import { Loading } from "../utils/PageHelper";
 const isServer = typeof window == 'undefined';
 
