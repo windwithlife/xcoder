@@ -9,7 +9,7 @@ const env={
     PROD:{
         application:{name:"server-center-page", projectName:'simple'},
         servers:{
-            soaServer: {schema:"http", host:'localhost',port:9999,path:'/'},
+            soaServer: {schema:"http", host:'soagateway.koudaibook.com',port:80,path:'/'},
             mqServer: {schema: "ws",host:'mq.koudaibook.com',port:30083,path:'/mqtt'},
             
         }
