@@ -3,6 +3,7 @@ package com.simple.common.mqtt;
 
 
 import com.simple.bz.service.MqttService;
+import org.apache.commons.lang.RandomStringUtils;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,7 +70,9 @@ public class MqttSenderConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
-        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(publishClientId, mqttClientFactory());
+        String clientId = publishClientId + "_" +RandomStringUtils.randomAlphanumeric(10);
+        System.out.println("MQTT Sender ClientId is " + clientId);
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(clientId, mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic(defaultTopic);
         return messageHandler;
@@ -109,7 +112,9 @@ public class MqttSenderConfig {
 //                topics[i] = topicDOS.get(i).getTopic();
 //            }
 //        }
-        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(subscribeClientId,
+        String clientId = subscribeClientId + "_" +RandomStringUtils.randomAlphanumeric(10);
+        System.out.println("MQTT Receiver ClientId is " + clientId);
+        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(clientId,
                 mqttClientFactory(), topics);
         adapter.setCompletionTimeout(completionTimeout);
         adapter.setConverter(new DefaultPahoMessageConverter());
