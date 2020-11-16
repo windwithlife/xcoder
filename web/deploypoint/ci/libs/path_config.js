@@ -45,7 +45,7 @@ function pathIsReady(pathName) {
     }
     rootPath(){
         //let pathName  = path.join(this.currentRootPath, this.srcRoot);
-        let pathName  = path.join('~', this.srcRoot);
+        let pathName  = path.join('../../', this.srcRoot);
         checkPath(pathName);
         return pathName;
        
