@@ -1,18 +1,14 @@
 import React from 'react';
 import {
     Collapse,
- 
- 
-    Input,
     Card,
- 
 } from 'antd';
 const { Panel } = Collapse;
 
 import router from 'next/router';
 
-import EditTable from '../common/components/EditableTable';
-import BasePage from '../common/pages/BasePage';
+import EditTable from '../../common/components/EditableTable';
+import BasePage from '../../common/pages/BasePage';
 import CategoryModel from './models/CategoryModel';
 
 

@@ -4,7 +4,7 @@ import router from 'next/router';
 
 import BasePage from '../../common/pages/BasePage';
 import DictionaryModel from './models/DictionaryModel'
-import CategoryModel from '../category/models/CategoryModel'
+
 
 
 export default class AddPage extends BasePage {

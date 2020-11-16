@@ -1,13 +1,13 @@
 
 
 import { Form, Input, Button, Select } from 'antd';
-import { inject, observer } from 'mobx-react';
+
 
 import router from 'next/router';
 
 const { Option } = Select;
-import BasePage from '../common/pages/BasePage';
-import ApplicationModel from './models/CategoryModel';
+import BasePage from '../../common/pages/BasePage';
+import ApplicationModel from './models/DictionaryModel';
 
 export default class EditPage extends BasePage {
     formRef = React.createRef();

@@ -14,6 +14,7 @@ import com.simple.common.error.ServiceHelper;
 import com.simple.common.mqtt.MqttGateway;
 import com.simple.common.props.AppProps;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -166,12 +167,18 @@ public class MqttService {
                 if(request.getEnvType().toLowerCase().equals("uat")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainNameUAT();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = "uat." + application.getDomainName();
+                        }
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGatewayUAT();
                     }
                 }else if(request.getEnvType().toLowerCase().equals("prod")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainName();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = application.getDomainName();
+                        }
 
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGateway();

@@ -63,6 +63,8 @@ export default class EditPage extends BasePage {
     
     onFinish = values => {
         var that = this;
+        console.log('**********************updated data===>');
+        console.log(values);
         this.Store().update(values, () => { console.log('finished update row'); router.back(); });
     }
 

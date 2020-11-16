@@ -86,7 +86,4 @@ export default class EditPage extends BasePage {
         );
     }
 }
-AddPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
-}
 

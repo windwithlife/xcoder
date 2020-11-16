@@ -12,8 +12,8 @@ const { Panel } = Collapse;
 
 import router from 'next/router';
 import { inject, observer } from 'mobx-react';
-import XSelect from '../common/components/select';
-import BasePage from '../common/pages/BasePage';
+
+import BasePage from '../../common/pages/BasePage';
 import ApplicationTypeModel from './models/CategoryModel';
 
 

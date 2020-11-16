@@ -11,7 +11,7 @@ import {
 } from 'antd';
 const { Panel } = Collapse;
 import router from 'next/router';
-import BasePage from '../common/pages/BasePage';
+import BasePage from '../../common/pages/BasePage';
 import ApplicationModel from './models/CategoryModel';
 
 export default class EditPage extends BasePage {

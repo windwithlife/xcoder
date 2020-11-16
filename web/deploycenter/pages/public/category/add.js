@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/select';
-import BasePage from '../common/pages/BasePage';
+
+import BasePage from '../../common/pages/BasePage';
 import CategoryModel from './models/CategoryModel';
 
 

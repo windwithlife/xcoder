@@ -47,8 +47,8 @@ export default class EditPage extends BasePage {
     }
     onFinish = values => {
         var that = this;
-        let projectId = this.params().projectId;
-        values.projectId = projectId;
+        //let projectId = this.params().projectId;
+        
         console.log(values);
         this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
