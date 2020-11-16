@@ -50,6 +50,19 @@ function createK8sDeploymentFiles(paramsHelper,pathConfig){
     
     paramsHelper.updateRoute(); //新增一条当前路由记录。
 
+    //网关路由文件处理
+    /*
+    let gatewayTemplatefile = paramsHelper.gatewayTemplatefile();
+    let gatewayDeploymentfile = paramsHelper.gatewayDeploymentfile();
+    let templatefile = pathConfig.deploymentTemplateFile(gatewayTemplatefile);
+    let deploymentfile = pathConfig.deploymentTargetFile(gatewayDeploymentfile);
+    let params = paramsHelper.buildParamsForDeployment();
+    codeTools.generateCode(templatefile,params,deploymentfile);
+    //保存发布文件到项目目录中
+    deploymentfile = pathConfig.deploymentK8sTargetFile(deploymentfileName);
+    codeTools.generateCode(templatefile,params,deploymentfile);
+    */
+
     //发布到带istio的k8s集群或者普通的集群。
     let templatefileName = paramsHelper.templatefile();
     let deploymentfileName = paramsHelper.deploymentfile();
@@ -64,7 +77,7 @@ function createK8sDeploymentFiles(paramsHelper,pathConfig){
     codeTools.generateCode(templatefile,params,deploymentfile);
 
     //生成降低docker compose方案
-
+    
 
 
 }

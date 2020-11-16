@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="endpoint")
+@Table(name="EndPoint")
 public class EndPointModel {
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid")

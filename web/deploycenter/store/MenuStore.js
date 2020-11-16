@@ -1,5 +1,6 @@
-import { observable, action } from "mobx";
-import BaseStore from "./BaseStore";
+
+import BaseModel from "./BaseModel";
+
 
 let composeMenuData= function(parentItem, list){
   list.forEach(function(menuItem){
@@ -13,9 +14,9 @@ let composeMenuData= function(parentItem, list){
 };
 
 
-export default class MenuStore extends BaseStore{
+export default class MenuStore extends BaseModel{
 
-  @observable dataObject= {
+  dataObject= {
     currentItem :{
       id:1,
       name:"oldName",
@@ -29,9 +30,10 @@ export default class MenuStore extends BaseStore{
     "application":"project",
     "xtable":"project",
     "xmodule":"project",
-    "applicationrelease":'ci',
-    "applicationpoint":'config',
-    "buildrecord":'ci',
+    "applicationrelease":'deploy',
+    "applicationtype":'deploy',
+    "applicationpoint":'deploy',
+    "buildrecord":'deploy',
     "pagetemplate":'component',
     "xwidget":'component',
     "config":"config",
@@ -42,16 +44,22 @@ export default class MenuStore extends BaseStore{
   },
   list:[ 
    
-    {id:21,name: "持续集成管理",url:"/applicationrelease/home",level:1,type:'sider', parentId:0,channelName:"ci"},
+    
    
     
 
-    {id:11,name: "项目管理",url:"/project/list",level:1,type:'sider', parentId:0,channelName:"project"},
-    {id:12,name: "应用管理",url:"/application/home",level:1,type:'sider', parentId:0,channelName:"project"},
-  
+    {id:11,name: "项目列表",url:"/project/home",level:1,type:'sider', parentId:0,channelName:"project"},
+    {id:12,name: "应用列表",url:"/application/home",level:1,type:'sider', parentId:0,channelName:"project"},
+    {id:2,name: "应用类型管理",url:"/applicationtype/home",level:1,type:'sider', parentId:0,channelName:"project"},
+    
    
-    {id:23,name: "发布端点配置",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"config"},
-    {id:2,name: "应用类型管理",url:"/public/applicationtype/home",level:1,type:'sider', parentId:0,channelName:"config"},
+    {id:21,name: "當前應用詳情",url:"/applicationrelease/application-detail",level:1,type:'sider', parentId:0,channelName:"deploy"},
+    {id:22,name: "部署管理",url:"/applicationrelease/deployment-home",level:1,type:'sider', parentId:0,channelName:"deploy"},
+    {id:23,name: "集群管理",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"deploy"},
+    {id:24,name: "构建镜像列表",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"deploy"},
+   
+    
+    
     {id:3,name: "字典表分类配置",url:"/public/category/home",level:1,type:'sider', parentId:0,channelName:"config"},
     {id:4,name: "字典表维护",url:"/public/dictionary/home",level:1,type:'sider', parentId:0,channelName:"config"},
     
@@ -59,11 +67,10 @@ export default class MenuStore extends BaseStore{
     {id:51,name: "页面布局组管理",url:"/pagetemplate/home",level:1,type:'sider', parentId:0,channelName:"component"},
     {id:52,name: "页面区域组件管理",url:"/xwidget/home",level:1,type:'sider', parentId:0,channelName:"component"},
 
-    // {id:101,name: "组件仓库",url:"/xwidget/home",level:1,type:'header', parentId:0,channelName:"default"},
-    // {id:102,name: "项目管理",url:"/project/list",level:1,type:'header', parentId:0,channelName:"default"},
-    // {id:103,name: "应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:104,name: "持续集成",url:"/applicationrelease/home",level:1,type:'header', parentId:0,channelName:"default"},
-    {id:105,name: "配置",url:"/public/applicationtype/home",level:1,type:'header', parentId:0,channelName:"default"},
+    
+    {id:103,name: "项目应用管理",url:"/application/home",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:104,name: "持续集成",url:"/applicationrelease/application-detail",level:1,type:'header', parentId:0,channelName:"default"},
+    {id:105,name: "配置",url:"/public/dictionary/home",level:1,type:'header', parentId:0,channelName:"default"},
 ],
   };
 

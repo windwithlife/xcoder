@@ -1,8 +1,9 @@
 
 
 import { Form, Input, Button, Select } from 'antd';
-import { inject, observer } from 'mobx-react';
-import XSelect from '../../common/components/select';
+import BasePage from '../../common/pages/BasePage';
+import DictionaryModel from './models/DictionaryModel'
+import CategoryModel from '../category/models/CategoryModel'
 
 const { Option } = Select;
 const layout = {
@@ -15,18 +16,23 @@ const layout = {
 };
 
 
-@inject('dictionarysStore') @inject('categorysStore')
-@observer
-export default class AddPage extends React.Component {
+
+export default class AddPage extends BasePage {
   formRef = React.createRef();
 
-  Store = () => {
-    return this.props.dictionarysStore;
+  state={
+    categorys:[],
+    data:{}
+  }
+  constructor(){
+    this.setDefaultModel(new DictionaryModel());
+    this.categoryModel = new CategoryModel();
+  }
+  StoreData = () => {
+    return this.state.data;
   }
   onFinish = values => {
     var that = this;
-
-    ;
     this.Store().add(values, function (value) {
       console.log('ok save!');
       that.props.onConfirm();
@@ -36,8 +42,8 @@ export default class AddPage extends React.Component {
 
   componentDidMount() {
     let that = this;
-    this.props.categorysStore.queryAll(function(values){
-      that.setState();
+    this.categorysModel.queryAll(function (values) {
+      that.setState({categorys:values.data.list});
     });
     console.log('DidMount');
   }
@@ -72,10 +78,10 @@ export default class AddPage extends React.Component {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="category" label="所属分类">
+        <Form.Item name="categoryId" label="所属分类">
 
           <Select >
-            {that.props.categorysStore.dataObject.list.map(function (item, i) {
+            {that.state.categorys.map(function (item, i) {
               return (<Select.Option value={item.id}>{item.description}</Select.Option>);
             })}
           </Select>

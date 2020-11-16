@@ -1,102 +1,49 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
+
 import {
     Collapse,
-    Modal,
+    Button,
     Form,
-    Input,
     Card,
-    Select,
+
 } from 'antd';
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
+
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import EditTable from '../common/components/EditableTable';
+import BasePage from '../common/pages/BasePage';
+import GroupModel from './models/DelpoymentGroupModel';
 
 
-
-
-@inject('applicationPointStore') @inject('applicationTypesStore')
-@observer
-export default class EditPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         editMode: false,
+        data: [],
     }
     constructor() {
         super();
-        this.projectName = "tempName";
+        this.setDefaultModel(new GroupModel())
     }
-    Store = () => {
-        return this.props.applicationPointStore;
-    }
+
     StoreData = () => {
-        return this.props.applicationPointStore.dataObject;
-    }
-    changeEditMode = (event) => {
-        event.stopPropagation();
-        console.log('click on edit model');
-        let nextMode = !this.state.editMode;
-        this.setState({ editMode: nextMode });
-    }
-
-    tableHeader() {
-        var that = this;
-
-        var fieldColumns = [];
-
-        fieldColumns.push({
-            title: "名称",
-            dataIndex: 'name',
-            key: 'name'
-        });
-
-        fieldColumns.push({
-            title: "版本",
-            dataIndex: 'releaseVersion',
-            key: 'releaseVersion'
-        });
-        fieldColumns.push({
-            title: "发布环境",
-            dataIndex: 'envType',
-            key: 'envType'
-        });
-        fieldColumns.push({
-            title: "Build Number",
-            dataIndex: 'buildOrder',
-            key: 'buildOrder'
-        });
-        return fieldColumns;
+        return this.state.data;
     }
 
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
+        let groupId = this.params().id;
+        if (groupId) {
+            this.Store().queryById(id).then(function (values) {
+                console.log(values);
+                that.setState({ data: values.data });
+            });
+        }
 
-        this.Store().queryById(id, function (values) {
-            console.log(values);
-            //that.props.applicationPointStore.queryById(values.applicationTypeId);
-           
-        });
     }
-
-    
 
     render() {
         let that = this;
-        let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
-        let itemData = that.Store().dataObject.currentItem;
-        if (!itemData.releaseStatus) {
-            itemData.releaseStatus = "DEV";
-        }
-        console.log('render at xrelease detail page');
-
+        let itemData = that.StoreData();
         return (
             < div >
                 <Card size="small" title="基本信息" style={{ width: 800 }}  >
@@ -107,19 +54,29 @@ export default class EditPage extends React.Component {
                         < Form.Item name="description" label="描述信息：">
                             {itemData.description}
                         </Form.Item>
-                        < Form.Item name="serverAddress" label="UAT发布系统端点地址与端口：">
-                            {itemData.serverAddress}
+                        <Form.Item name="topicName" label="可访问主题消息">
+                        {itemData.topicName}
                         </Form.Item>
-                        < Form.Item name="serverAddressProd" label="生产发布系统端点地址与端口：">
-                            {itemData.serverAddressProd}
+                        <Form.Item name="extraTopics" label="可访其它主题消息">
+                        {itemData.extraTopics}
                         </Form.Item>
-                       
-                      
+                        <Form.Item name="supportActions" label="支持功能">
+                        {itemData.supportActions}
+                        </Form.Item>
+
+                        <Form.Item name="serverAddress" label="服务侦听地址">
+                        {itemData.serverAddress}
+                        </Form.Item>
+                        <Form.Item name="serverPort" label="生产服务侦听端口">
+                        {itemData.serverPort}
+                        </Form.Item>
+
+
 
                     </Form>
 
                 </Card>
-               
+
             </div>
         );
     }

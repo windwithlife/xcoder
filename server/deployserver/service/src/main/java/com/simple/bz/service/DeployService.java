@@ -28,7 +28,8 @@ public class DeployService {
     private final ExampleDao exampleDao;
     private final ExecutePointDao executePointDao;
     private final ProjectDao projectDao;
-    private final ApplicationTypeDao applicationTypeDao;
+
+    private final BuiildRecordDao buiildRecordDao;
 
     private final AppProps appProps;
 
@@ -101,6 +102,10 @@ public class DeployService {
     }
 
 
+
+    public void createBuildRecord(BuildRecordRequest request){
+
+    }
     public void deployApplication(ReleaseRequest request){
         this.mqttService.executeRelease(request);
     }

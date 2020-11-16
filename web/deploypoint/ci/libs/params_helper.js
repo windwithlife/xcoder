@@ -102,8 +102,9 @@ class ParamsHelper {
             version: this.setting.version,
             gateway: this.gateway,
             webDomain: this.website,
+            domainName: this.domainName,
             path: this.path,
-            isCommonLib: this.isCommonLib,
+           
 
         }
         params.deploymentName = this.applicationName + "-"+ this.sideType + "-deployment";
@@ -159,7 +160,7 @@ class ParamsHelper {
         return name;
     }
     templatefile() {
-        if (this.releasePoint){
+        if (this.releasePointSupport){
             return this.sideType + "-" + this.releasePointSupport +".yaml";
         }else{
             return this.sideType + ".yaml";

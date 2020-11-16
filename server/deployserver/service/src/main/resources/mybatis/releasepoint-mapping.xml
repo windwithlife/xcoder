@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="com.simple.bz.dao.ExecutePointDao">
-    <resultMap id="BaseResultMap" type="com.simple.bz.model.ApplicationRelease">
+    <resultMap id="BaseResultMap" type="com.simple.bz.model.ApplicationReleaseModel">
         <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
         <result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
         <result property="description" column="description" javaType="String" jdbcType="VARCHAR"/>
@@ -23,7 +23,7 @@
     </resultMap>
 
     <!--根据名称查询-->
-    <select id="findById" parameterType="java.lang.Long"  resultType="com.simple.bz.model.ExcuteReleasePoint">
+    <select id="findById" parameterType="java.lang.Long"  resultType="com.simple.bz.model.DeploymentGroupModel">
           SELECT  *
                FROM  ApplicationPoint  where id=#{id}
     </select>

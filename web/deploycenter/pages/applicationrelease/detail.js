@@ -1,266 +1,99 @@
 import React from 'react';
-
-import DeploySteps from './steps'
-import {
-    Collapse,
-    Modal,
-    Form,
-    Input,
-    Card,
-    Select,
-    Button,
-    Steps,
-} from 'antd';
-const { Step } = Steps;
-const { Panel } = Collapse;
-const { TextArea } = Input;
+import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import Utils from '../../utils/utils';
-import MQTTClient from '../../store/mqtt-client';
-let mqttClient = new MQTTClient();
+import DeploymentModel from './models/DeploymentModel';
+import DocerkImageModel from './models/DockerImageModel';
+import DeploymentGroupModel from '../applicationpoint/models/DelpoymentGroupModel';
+import BasePage from '../common/pages/BasePage';
+const { Option } = Select;
 
-
-
-@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore') @inject('buildRecordStore')
-@observer
-export default class EditPage extends React.Component {
+export default class AddPage extends BasePage {
     formRef = React.createRef();
     state = {
-        editMode: false,
-       
-    }
-    constructor() {
-        super();
-        this.projectName = "tempName";
-        this.buildRecord = {};
-        this.currentId = 0;
-
-    }
-    Store = () => {
-        return this.props.applicationreleasesStore;
+        dataObject: {},
+        groups: [],
+        dockerImages: [],
     }
     StoreData = () => {
-        return this.props.applicationreleasesStore.dataObject;
+        return this.state.dataObject;
     }
-    changeEditMode = (event) => {
-        event.stopPropagation();
-        console.log('click on edit model');
-        let nextMode = !this.state.editMode;
-        this.setState({ editMode: nextMode });
+    constructor(props) {
+        super(props);
+        this.setDefaultModel(new DeploymentModel());
+        this.groupModel = new DeploymentGroupModel();
+        this.imageModel = new DocerkImageModel();
     }
-
 
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
-        this.currentId = id;
-        this.Store().queryById(id, function (values) {
-            console.log(values);
-            that.props.applicationTypesStore.queryById(values.applicationTypeId);
-            that.props.applicationPointStore.queryById(values.applicationPointId);
-            if (!values.releaseStatus) {
-                values.releaseStatus = "DEV";
+        this.applicationId = this.params().applicationId;
+        this.id = this.params().id;
+        this.evnType = this.params().envType;
+        this.Store().queryById(this.id).then(function (values) {
+            that.setState({dataObject:values.data});
+        })
+        this.groupModel.findAll().then(function (result) {
+            let groups = result.data.list;
+            console.log(groups);
+            that.setState({ groups: groups })
+        });
+        this.imageModel.findAll().then(function (result) {
+            const defaultImageList = [{ id: 0, name: "构建最新代码镜像" }];
+            console.log([].push(defaultImageList));
+            console.log("get imagedocker daata");
+            if (result.data) {
+                let images = result.data.list;
+                images.push.apply(images, defaultImageList);
+                that.setState({ dockerImages: images })
+            } else {
+
+                that.setState({ dockerImages: defaultImageList });
             }
         });
-        this.props.buildRecordStore.queryByApplicationReleaseId(id, function (result) {
-            console.log("Build Record of current release");
-            console.log(result);
-        });
-        mqttClient.setSubscribe('ci/simple/center/frontend/#', function (topic, data) {
-            console.log(data);
-            const action = topic.substring('ci/simple/center/frontend/'.length, topic.length - 1);
-            if (action.startsWith('status/')) {
-                let buildId = data.id;
-                let releaseStatus = data.status;
-                that.props.buildRecordStore.dataObject.list.forEach(function (item) {
-                    if (item.id == buildId) {
-                        item.releaseStatus = releaseStatus;
 
-                    }
-                });
-            }
-
-
-            that.props.buildRecordStore.dataObject.list = that.props.buildRecordStore.dataObject.list.slice();
-
-        });
     }
-
-    traceCurrentBuildRecord = (recordId) => {
-        this.props.buildRecordStore.queryById(recordId, function (result) {
-            console.log(result);
-        });
-    }
-    releaseTo = (envType) => {
-        let path = '/applicationrelease/deployment';
-        router.push({ pathname: path, query: { id: this.currentId } });
-        return ;
-
-        let that = this;
-        let appType = this.props.applicationTypesStore.dataObject.currentItem
-        let appPoint = this.props.applicationPointStore.dataObject.currentItem
-        let appPointAddress = "http://" + appPoint.serverAddress;
-
-
-        let itemData = Object.assign({}, this.StoreData().currentItem);
-        let applicationReleaseId = itemData.id;
-        itemData.projectName = this.projectName;
-        itemData.envType = envType;
-        itemData.sideType = appType.sideType;
-        itemData.language = appType.language;
-        itemData.framework = appType.framework;
-        itemData.isLib = appType.isLib;
-        itemData.applicationType = appType.nickname;
-        let finalParams = {};
-        finalParams.type = 'release';
-        finalParams.defines = itemData;
-       
-
-        if ("UAT" === envType) {
-            itemData.releaseType = 'uat';
-
-            let values = {
-                name: itemData.applicationName, applicationReleaseId: itemData.id, releaseVersion: itemData.releaseVersion, releaseType: envType,
-                releaseStatus: "pending", buildNumber: Utils.getNowDateString()
-            };
-            this.props.buildRecordStore.add(values, (result) => {
-                console.log('finished result:');
-                console.log(result);
-                //itemData.domainName = "uat." + itemData.domainName;
-                if (!itemData.domainNameUAT) {
-                    itemData.domainNameUAT = 'uat.' + itemData.domainName;
-                }
-                itemData.domainName = itemData.domainNameUAT;
-                itemData.buildId = result.id;
-                finalParams.buildRecord = result;
-                let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
-                mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-                //mqttClient.sendMsg("ci/simple/center/server/test",{command:"execute",params:finalParams});
-                //      appPointAddress = "http://" + appPoint.serverAddress;
-                //      NetworkHelper.switchService(appPointAddress);
-                //      NetworkHelper.webPost("releaseByParams/", finalParams);
-                //      var interval3=setInterval(function(){
-                //         that.traceCurrentBuildRecord(result.id);
-                //    },5000);
-
-
-
-            });
-        } else if ("PROD" === envType) {
-            itemData.releaseType = 'prod';
-            let values = {
-                name: itemData.applicationName, applicationReleaseId: itemData.id, releaseVersion: itemData.releaseVersion, releaseType: envType,
-                releaseStatus: "pending", buildNumber: Utils.getNowDateString()
-            };
-            this.props.buildRecordStore.add(values, (result) => {
-                console.log('finished result:');
-                console.log(result);
-                //itemData.domainName = itemData.domainName;
-                itemData.buildId = result.id;
-                finalParams.buildRecord = result;
-
-
-
-                //      appPointAddress = "http://" + appPoint.serverAddressProd;
-                //      NetworkHelper.switchService(appPointAddress);
-                //      NetworkHelper.webPost("releaseByParams/", finalParams);
-                //      var interval3=setInterval(function(){
-                //         that.traceCurrentBuildRecord(result.id);
-                //    },5000);
-                //MessageCenter.sendExecCommand(finalParams);
-                let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
-                mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-
-            });
-        } else if ("BACK" === envType) {
-            //appPointAddress = "http://" + appPoint.serverAddressProd;
-            let releaseParams = { releaseId: applicationReleaseId, buildId: result.id, envType: envType };
-            mqttClient.sendMsg("ci/simple/center/server/test", { command: "release", params: releaseParams });
-        }
-
-
-        //console.log(finalParams);
-    }
-
-    changeEditMode = (event) => {
-        event.stopPropagation();
-    }
+    
     render() {
-        let that = this;
-        let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
-        let appPointName = this.props.applicationPointStore.dataObject.currentItem.name;
-        let buildRecords = this.props.buildRecordStore.dataObject.list;
-        let itemData = that.Store().dataObject.currentItem;
-
-
-        let domainName = itemData.domainName + "[UAT:" + itemData.domainNameUAT + "]"
-
-        if (!itemData.releaseStatus) {
-            itemData.releaseStatus = "DEV";
-        }
-        console.log('render at xrelease detail page');
-        console.log(buildRecords.slice());
-
+        var that = this;
+        let itemData = that.state.dataObject;
         return (
-            < div >
-                
-                        <Card size="small" title="基本信息" style={{ width: 800 }}  >
-                            <Form ref={this.formRef}>
-                                < Form.Item label="发布单名称：">
-                                    {itemData.name}
-                                </Form.Item>
-                                < Form.Item label="应用名称：">
-                                    {itemData.applicationName}
-                                </Form.Item>
-                                < Form.Item label="应用类型：">
-                                    {appTypeName}
-                                </Form.Item>
-                                < Form.Item label="应用端点：">
-                                    {appPointName}
-                                </Form.Item>
-                                < Form.Item label="发布目标网关或网站域名：">
-                                    {domainName}
-                                </Form.Item>
-                                < Form.Item label="服务应用PATH：">
-                                    {itemData.path}
-                                </Form.Item>
+            <Card>
+                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                    <Form.Item
+                        name="id"
+                        noStyle='true'
+                    ></Form.Item>
+                    <Form.Item name="dockerImage" label="发布镜像" >
+                    {itemData.dockerImage}
+                    </Form.Item>
+                    <Form.Item name="applicationPointId" label="目标集群" >
+                    {itemData.applicationPointId}
+                    </Form.Item>
+                    <Form.Item name="serviceCount" label="实  例  数">
+                    {itemData.serviceCount}
+                    </Form.Item>
+                    <Form.Item name="cpuLimit" label="CPU使用">
+                    {itemData.cpuLimit}
+                    </Form.Item>
+                    <Form.Item name="memSize" label="内存(MB)">
+                    {itemData.memSize}GB
+                    </Form.Item>
+                    <Form.Item name="diskSize" label="磁盘(GB)">
+                    {itemData.diskSize}GB
+                    </Form.Item>
+                    <Form.Item name="releaseVersion" label="发布版本">
+                    {itemData.releaseVersion}
+                    </Form.Item>
 
-                                <Form.Item label="代码仓库地址">
-                                    {itemData.repository}
-                                </Form.Item>
-                                <Form.Item label="代码分支">
-                                    {itemData.repositoryBranch}
-                                </Form.Item>
-                                <Form.Item label="待发布代码路径">
-                                    {itemData.targetPath}
-                                </Form.Item>
-                                <Form.Item label="待发布版本">
-                                    {itemData.releaseVersion}
-                                </Form.Item>
-                                < Form.Item label="是否用自己的布署文件">
-                                    {itemData.useOwnDeploymentFile}
-                                </Form.Item>
-                                < Form.Item label="描述信息：">
-                                    {itemData.description}
-                                </Form.Item>
-                                <Card type="inner">
-
-                                    <Button type="primary" onClick={that.releaseTo.bind(that, "UAT")} size="large">创建新部署</Button>
-                                  
-                                </Card>
-
-                            </Form>
-
-                        </Card>
-                
-               
-
-            </div>
+                    <Card type="inner">
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" size="large">Save</Button>
+                        </Form.Item>
+                    </Card>
+                </Form>
+            </Card>
         );
     }
 }
 
-EditPage.getInitialProps = async function (context) {
-    return { query: context.query };
-}
+

@@ -2,9 +2,10 @@
  * Created by zhangyq on 2016/11/11.
  */
 import { Input,Select} from 'antd';
-import model from '../../../store/modelCommon.js';
+import BasePage from '../pages/BasePage.js';
+import DictionaryModel from '../../public/dictionary/models/DictionaryModel'
 
-export default class XList extends React.Component {
+export default class XList extends BasePage {
     constructor(props) {
         super(props);
         var options = this.props.options;
@@ -15,6 +16,7 @@ export default class XList extends React.Component {
         ;
         this.state = {value: selectedItem, options: options};
         this.handleChange = this.handleChange.bind(this);
+        this.setDefaultModel(new DictionaryModel());
 
     }
 
@@ -25,11 +27,11 @@ export default class XList extends React.Component {
         } else if (this.props.category) {
 
             var params = {};
-            params.category = this.props.category;
-            model.queryDictionaryByCategory(params, function (response) {
+            let categoryName = this.props.category;
+            that.Store().queryDictionaryByCategory(categoryName, function (response) {
                 if (response && response.status===200) {
                 console.log(response.data);
-                that.setState({value:that.props.value,options: response.data});
+                that.setState({value:that.props.value, options: response.data});
                 }
             });
         } 
@@ -37,12 +39,11 @@ export default class XList extends React.Component {
 
     handleChange(event) {
         console.log(JSON.stringify(event));
-        //var selectedValue = event.target.value;
         this.setState({value: event});
         if (this.props.onChange) {
             this.props.onChange(event);
         }
-        //alert("selected item is:" + selectedValue);
+       
     }
 
     render() {

@@ -1,42 +1,30 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
+
 import {
     Collapse,
-    Modal,
-    Form,
-    Input,
     Card,
-    Select,
 } from 'antd';
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
+
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
+import BasePage from '../common/pages/BasePage';
+import GroupModel from './models/DelpoymentGroupModel';
 
 
-
-@inject('applicationPointStore') 
-@observer
-export default class EditPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         editMode: false,
+        data:[],
     }
     constructor() {
         super();
-        this.projectName = "tempName";
+        this.setDefaultModel(new GroupModel())
     }
-    Store = () => {
-        return this.props.applicationPointStore;
-    }
+   
     StoreData=()=>{
-        return this.props.applicationPointStore.dataObject;
+        return this.state.data;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
@@ -67,10 +55,12 @@ export default class EditPage extends React.Component {
     
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
-
-        this.Store().queryAll(id, function (values) {
+       
+        this.Store().queryAll(function (values) {
             console.log(values);
+            if(values.data){
+                that.setState({data:values.data.list});
+            }
         });
     }
 
@@ -102,9 +92,9 @@ export default class EditPage extends React.Component {
 
     render() {
         let that = this;
-        //let editUrl = "/projectrelease/edit?id=" + this.props.query.id;
-        let items = that.StoreData().list;
-        //let isShowPage = itemData.sideType == 'server' ? false : true;
+        
+        let items = that.StoreData();
+       
 
         console.log('render module edit page');
         return (
@@ -124,6 +114,3 @@ export default class EditPage extends React.Component {
     }
 }
 
-EditPage.getInitialProps = async function (context) {
-    return { query: context.query };
-}

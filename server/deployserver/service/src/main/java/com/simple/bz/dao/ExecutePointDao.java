@@ -1,8 +1,7 @@
 package com.simple.bz.dao;
 
 
-import com.simple.bz.model.ApplicationRelease;
-import com.simple.bz.model.ExcuteReleasePoint;
+import com.simple.bz.model.DeploymentGroupModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,7 +21,7 @@ public interface ExecutePointDao {
      * @return
      * @throws Exception
      */
-    ExcuteReleasePoint findById(@Param("id") Long id) throws Exception;
+    DeploymentGroupModel findById(@Param("id") Long id) throws Exception;
 
 
 }

@@ -4,6 +4,11 @@
       "host": "soagateway.koudaibook.com",
       "path": "/xcoder",
       "serviceName": "xcoder-server"
+    },
+    {
+      "host": "soagateway.koudaibook.com",
+      "path": "/simple/deployment",
+      "serviceName": "deployment-server"
     }
   ]
 }

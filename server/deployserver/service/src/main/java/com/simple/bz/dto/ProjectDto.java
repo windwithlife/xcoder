@@ -12,11 +12,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @Builder
-
 public class ProjectDto implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
     //名称
     private String name;
@@ -25,6 +23,8 @@ public class ProjectDto implements Serializable {
 
     //站点
     private String domainName;
+    private String domainNameUAT;
     //SOA地址
     private String gateway;
+    private String gatewayUAT;
 }

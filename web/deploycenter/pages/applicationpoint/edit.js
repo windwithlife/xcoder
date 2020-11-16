@@ -4,45 +4,38 @@ import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
 import XSelect from '../common/components/select';
 const { TextArea } = Input;
-//const FormItem = Form.Item;
+import BasePage from '../common/pages/BasePage';
+import GroupModel from './models/DelpoymentGroupModel';
 
 
-@inject('applicationPointStore')  @inject('applicationTypesStore')
-@observer
-export default class AddPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
+    state = {
+        editMode: false,
+        data: [],
+    }
+    constructor() {
+        super();
+        this.setDefaultModel(new GroupModel())
+    }
 
-    Store = () => {
-        return this.props.applicationPointStore;
-    }
     StoreData = () => {
-        return this.props.applicationPointStore.dataObject;
-    }
-    constructor(props) {
-        super(props);
-        this.state = {};
+        return this.state.data;
     }
 
     componentDidMount() {
         let that = this;
-        //let appId = this.props.query.applicationId;
-        let id = this.props.query.id;
-
-        console.log('appid' + id);
-        if (id){
-            this.props.applicationPointStore.queryById(id, function(values){
+        let groupId = this.params().id;
+        if (groupId) {
+            this.Store().queryById(id).then(function (values) {
                 console.log(values);
                 that.formRef.current.setFieldsValue(values);
-                //that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
             });
         }
-        this.props.applicationTypesStore.queryAll();
-       
+
     }
     onFinish = values => {
         var that = this;
-        //let projectId = this.props.query.projectId;
-        //values.releaseStatus = "DEV";
         console.log(values);
         this.Store().update(values, () => { console.log('finished add row'); router.back(); });
     }
@@ -54,9 +47,9 @@ export default class AddPage extends React.Component {
             <Card>
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
                     <Form.Item
-                            name="id"
-                            noStyle='true'
-                        ></Form.Item>
+                        name="id"
+                        noStyle='true'
+                    ></Form.Item>
                     <Form.Item name="name" label="发布单名称"
                         rules={[{
                             required: true,
@@ -66,13 +59,20 @@ export default class AddPage extends React.Component {
                     <Form.Item name="description" label="描述">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="serverAddress" label="UAT服务侦听地址与端口">
+                    <Form.Item name="topicName" label="可访问主题消息">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="serverAddressProd" label="生产服务侦听地址与端口">
+                    <Form.Item name="extraTopics" label="可访其它主题消息">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="idString" label="应用端点识别字符串">
+                    <Form.Item name="supportActions" label="支持功能">
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item name="serverAddress" label="服务侦听地址">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="serverPort" label="生产服务侦听端口">
                         <Input />
                     </Form.Item>
 

@@ -1,200 +1,134 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
-import {
-    Collapse,
-    Modal,
-    Form,
-    Input,
-    Card,
-    Select,
-} from 'antd';
-const { TextArea } = Input;
-const { Panel } = Collapse;
-
-import { SettingOutlined } from '@ant-design/icons';
+import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import XSelect from '../common/components/select';
-import EditTable from '../common/components/EditableTable';
+import DeploymentModel from './models/DeploymentModel';
+import DocerkImageModel from './models/DockerImageModel';
+import DeploymentGroupModel from '../applicationpoint/models/DelpoymentGroupModel';
+import BasePage from '../common/pages/BasePage';
+const { Option } = Select;
 
-@inject('applicationreleasesStore') @inject('applicationTypesStore') @inject('applicationPointStore')
-@observer
-export default class EditPage extends React.Component {
+export default class AddPage extends BasePage {
     formRef = React.createRef();
-
-    constructor() {
-        super();
-    }
-
-    Store = () => {
-        return this.props.applicationreleasesStore;
+    state = {
+        dataObject: {},
+        groups: [],
+        dockerImages: [],
     }
     StoreData = () => {
-        return this.props.applicationreleasesStore.dataObject;
+        return this.state.dataObject;
     }
-    startHeader() {
-        var that = this;
-
-        var fieldColumns = [];
-
-        fieldColumns.push({
-            title: "名称",
-            dataIndex: 'name',
-            key: 'name'
-        });
-
-        fieldColumns.push({
-            title: "说明",
-            dataIndex: 'description',
-            key: 'description'
-        });
-        return fieldColumns;
+    constructor(props) {
+        super(props);
+        this.setDefaultModel(new DeploymentModel());
+        this.groupModel = new DeploymentGroupModel();
+        this.imageModel = new DocerkImageModel();
     }
-
-
-
 
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
-        this.props.applicationTypesStore.queryAll();
-        this.props.applicationPointStore.queryAll();
-        this.Store().queryById(id, function (values) {
-            console.log(values);
-            if(!values.domainNameUAT){values.domainNameUAT='uat.' + values.domainName}
+        this.applicationId = this.params().applicationId;
+        this.id = this.params().id;
+        this.evnType = this.params().envType;
+        this.Store().queryById(this.id).then(function (values) {
             that.formRef.current.setFieldsValue(values);
+        })
+        this.groupModel.findAll().then(function (result) {
+            let groups = result.data.list;
+            console.log(groups);
+            that.setState({ groups: groups })
         });
-    }
-    pagination() {
-        return {
-            //total: this.props.tablesStore.dataLength,
-            showSizeChanger: true
-        }
+        this.imageModel.findAll().then(function (result) {
+            const defaultImageList = [{ id: 0, name: "构建最新代码镜像" }];
+            console.log([].push(defaultImageList));
+            console.log("get imagedocker daata");
+            if (result.data) {
+                let images = result.data.list;
+                images.push.apply(images, defaultImageList);
+                that.setState({ dockerImages: images })
+            } else {
+
+                that.setState({ dockerImages: defaultImageList });
+            }
+        });
+
     }
     onFinish = values => {
         var that = this;
-        let projectId = this.props.query.projectId;
-        values.project = projectId;
-        this.Store().update(values, () => { console.log('finished update row'); router.back(); });
+        values.applicationId = this.params().applicationId;
+        values.envType = this.params().envType;
+        console.log(values);
+        this.Store().update(values, () => { console.log('finished add row'); router.back(); });
     }
-    handleLineUpdate(type, index, record) {
-        let that = this;
-        let path = '/' + type + '/edit';
-        router.push({ pathname: path, query: { id: record.id, moduleId: this.props.query.moduleId } });
-
-    }
-    handleLineDetail(type, record) {
-        let path = '/' + type + '/detail';
-        console.log(path);
-        router.push({ pathname: path, query: { id: record.id } });
-    }
-    handleLineAdd(type) {
-        let moduleId = this.props.query.moduleId;
-        let path = '/' + type + '/add';
-        router.push({ pathname: path, query: { moduleId: moduleId } });
-
-    }
-
-    handleLineDelete(type, index, record) {
-        if ('xpage' == type) {
-            //console.log('inde')
-            this.props.pagesStore.removeById(index, record.id, function (value) {
-                that.props.modulesStore.queryById(moduleId);
-            });
-        }
-
-    }
-
 
     render() {
-        let that = this;
-        let itemData = that.Store().dataObject.currentItem;
-        if(!itemData.domainNameUAT){
-            itemData.domainNameUAT = 'uat.' + itemData.domainName;
-        }
-        let isShowPage = itemData.sideType == 'server' ? false : true;
+        var that = this;
+
         return (
-            < div >
-
-                <Card size="small" title="模块基本信息" style={{ width: 500 }}  >
-
-
-
-                    <Form ref={this.formRef} onFinish={that.onFinish.bind(that)}>
-                        <Form.Item
-                            name="id"
-                            noStyle='true'
-                        ></Form.Item>
-                        <Form.Item
-                            name="projectId"
-                            noStyle='true'
-                        ></Form.Item>
-                        <Form.Item name="name" label="名称(请用英文)"
-                            rules={[{
-                                required: true,
-                            },]}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="applicationTypeId" label="应用类型" >
-                            <Select >
-                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
+            <Card>
+                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                    <Form.Item
+                        name="id"
+                        noStyle='true'
+                    ></Form.Item>
+                    <Form.Item name="dockerImage" label="发布镜像" >
+                        <Select >
+                            {that.state.dockerImages.map(function (item, i) {
                                 return (<Select.Option value={item.id}>{item.name}</Select.Option>);
                             })}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item name="applicationPointId" label="发布端点选择" >
+
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="applicationPointId" label="目标集群" >
                         <Select >
-                            {that.props.applicationPointStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            {that.state.groups.map(function (item, i) {
+                                return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
                             })}
                         </Select>
                     </Form.Item>
-                        <Form.Item name="domainName" label="发布目标网关或站点域名">
-                           <Input />
-                        </Form.Item>
-                        <Form.Item name="domainNameUAT" label="UAT网关或站点域名">
-                        <Input />
+                    <Form.Item name="serviceCount" label="实  例  数">
+                        <Select style={{ width: 200 }} >
+                            <Option value="1">1</Option>
+                            <Option value="2">2</Option>
+                            <Option value="3">3</Option>
+                        </Select>
                     </Form.Item>
-                        <Form.Item name="path" label="发布应用到目标PATH">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="applicationName" label="发布应用名称">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="repository" label="代码仓库地址">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="repositoryBranch" label="代码分支">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="targetPath" label="待发布代码路径">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item name="releaseVersion" label="发布版本">
-                            <Input />
-                        </Form.Item>
-                        < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
-                            < XSelect  category="yesno" />
-                        </Form.Item>
-                        <Form.Item name="description" label="描述">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item >
-                            <Button type="primary" htmlType="submit" size="large">保存修改基本信息</Button>
-                        </Form.Item>
-                    </Form>
-                </Card>
+                    <Form.Item name="cpuLimit" label="CPU使用">
+                        <Select style={{ width: 200 }} >
+                            <Option value="0.5">0.5</Option>
+                            <Option value="1">1</Option>
+                            <Option value="2">2</Option>
+                            <Option value="3">3</Option>
 
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="memSize" label="内存(MB)">
+                        <Select defaultValue="1G" style={{ width: 200 }} >
+                            <Option value="1">1G</Option>
+                            <Option value="2">2G</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="diskSize" label="磁盘(GB)">
+                        <Select style={{ width: 200 }} >
+                            <Option value="10">10G</Option>
+                            <Option value="20">12G</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="releaseVersion" label="发布版本">
+                        <Select style={{ width: 200 }} >
+                            <Option value="V1.0">V1.0</Option>
+                            <Option value="V2.0">V2.0</Option>
+                        </Select>
+                    </Form.Item>
 
-            </div >
+                    <Card type="inner">
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" size="large">Save</Button>
+                        </Form.Item>
+                    </Card>
+                </Form>
+            </Card>
         );
     }
 }
 
-EditPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
-}
+

@@ -7,6 +7,7 @@ console.log(" current SOA Gateway:========" + soaPrefix );
 
 console.log("soa server-------",soaPrefix);
 const checkStatus = response => {
+    console.log("check status");
     if (response.status >= 200 && response.status < 300) {
         return response
     } else if (response.status == 401 || response.status == 403) {
@@ -18,6 +19,7 @@ const checkStatus = response => {
     }
 }
 function dealToken(result) {
+    console.log("dealToken");
     console.log(result);
     
     let statusCode = result.status;
@@ -106,8 +108,10 @@ export class Network {
         return  finalUrl;
         
     }
-    switchWebServerHost(newHost){
-       this.host = newHost;
+    switchDevServerHost(newHost){
+       if(config.ENV_NAME === "DEV"){
+            this.host = newHost;
+       }
     }
     async fetch_post(url, params = {}) {
         try {
@@ -156,7 +160,7 @@ export class Network {
             //Loading.hide();
             return result;
         } catch (error) {
-            Loading.hide();
+            //Loading.hide();
             console.error('---invoke_post_error---: ', error);
             throw error;
         }

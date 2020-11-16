@@ -23,7 +23,7 @@ function pathIsReady(pathName) {
    
     constructor(){
         this.releaseType = 'prod';
-        this.srcRoot = '../autoRelease/'; 
+        this.srcRoot = '~/autoRelease/'; 
         this.dockerfilesRoot = './ci/k8s/dockerfiles/';
         this.templateRoot = './ci/k8s/templates/';
         this.currentRootPath = process.cwd();

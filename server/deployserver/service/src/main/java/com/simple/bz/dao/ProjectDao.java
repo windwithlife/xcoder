@@ -1,8 +1,6 @@
 package com.simple.bz.dao;
 
 
-import com.simple.bz.dto.ReleaseDetail;
-import com.simple.bz.model.ApplicationRelease;
 import com.simple.bz.model.ProjectModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

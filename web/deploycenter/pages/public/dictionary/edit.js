@@ -1,109 +1,76 @@
+import React from 'react';
+import { Form, Card, Input, Button, Select } from 'antd';
+import router from 'next/router';
+
+import BasePage from '../../common/pages/BasePage';
+import DictionaryModel from './models/DictionaryModel'
+import CategoryModel from '../category/models/CategoryModel'
 
 
-import { Form, Input, Button, Select } from 'antd';
-import { inject, observer } from 'mobx-react';
-import { Router } from 'next/router';
-import XSelect from '../../common/components/select';
+export default class AddPage extends BasePage {
+    formRef = React.createRef();
+    state = {
+        categorys: [],
+        data: {}
+    }
+    StoreData = () => {
+        return this.state.data;
+    }
+    constructor(props) {
+        super(props);
+        this.setDefaultModel(new DictionaryModel());
+    }
+    componentDidMount() {
+        let that = this;
+    }
+    onFinish = values => {
+        var that = this;
+        this.Store().add(values, () => { console.log('finished add row'); router.back(); });
+    }
 
-const { Option } = Select;
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
+    render = () => {
+        var that = this;
+        return (
+            <Card>
+                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
+                    <Form.Item
+                        name="id"
+                        noStyle='true'
+                    ></Form.Item>
+                    <Form.Item
+                        name="categoryId"
+                        noStyle='true'
+                    ></Form.Item>
+                    <Form.Item name="name" label="名称">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="description" label="描述">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="value"
+                        label="字典项真实存贮值"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    
 
-
-
-@inject('dictionarysStore') 
-@observer 
-export default class EditPage extends React.Component {
-  formRef = React.createRef();
-  Store=()=>{
-    return this.props.dictionarysStore;
-  }
-  onFinish = values => {
-    var that = this;
-  
-   ;
-    this.Store().update(values,function(value) { 
-      console.log('ok save!');
-      router.back();
-    });
-    
-  };
-
-  componentDidMount() {
-    let that = this;
-    this.Store().queryById(this.props.query.id,function(values){
-      that.formRef.current.setFieldsValue(values);
-    });
-   
+                    <Card type="inner">
+                        <FormItem className="form-item-clear" >
+                            <Button type="primary" htmlType="submit" size="large">Save</Button>
+                        </FormItem>
+                    </Card>
+                </Form>
+            </Card>
+        );
+    }
 }
-
-  render() {
-    var that = this;
-    let itemData = this.Store().dataObject.currentItem;
-    
-  
-    return (
-
-      
-      
-      <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
-        <Form.Item
-          name="id"
-          noStyle='true'
-        ></Form.Item>
-        <Form.Item
-          name="name"
-          label="项名称"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        
-        <Form.Item
-          name="value"
-          label="项名称对应存贮值"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item name="category" label="所属分类">
-        < XSelect  category="" refer ="category" display='yes' />
-        </Form.Item>
-
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-         
-        </Form.Item>
-      </Form>
-    
-    );
-  }
-}
-
-
-EditPage.getInitialProps = async function (context) {
-  return { query: context.query};
+AddPage.getInitialProps = async function (context) {
+    return { query: context.query };
 }
 

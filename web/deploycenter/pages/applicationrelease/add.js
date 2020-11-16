@@ -1,46 +1,65 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/select';
-const { TextArea } = Input;
-//const FormItem = Form.Item;
+import DeploymentModel from './models/DeploymentModel';
+import DocerkImageModel from './models/DockerImageModel';
+import DeploymentGroupModel from '../applicationpoint/models/DelpoymentGroupModel';
+import BasePage from '../common/pages/BasePage';
+const {Option} =Select;
 
-
-@inject('applicationreleasesStore')  @inject('applicationTypesStore')  @inject('applicationPointStore') 
-@observer
-export default class AddPage extends React.Component {
+export default class AddPage extends BasePage {
     formRef = React.createRef();
-
-    Store = () => {
-        return this.props.applicationreleasesStore;
+    state={
+        dataObject:{},
+        groups:[],
+        dockerImages:[],
     }
     StoreData = () => {
-        return this.props.applicationreleasesStore.dataObject;
+        return this.state.dataObject;
     }
     constructor(props) {
         super(props);
-        this.state = {};
+        this.setDefaultModel(new DeploymentModel());
+        this.groupModel = new DeploymentGroupModel();
+        this.imageModel = new DocerkImageModel();
     }
 
     componentDidMount() {
         let that = this;
-        let appId = this.props.query.applicationId;
-        console.log('appid' + appId);
-        if (appId){
-            this.props.applicationreleasesStore.queryById(appId, function(values){
-                console.log(values);
-                that.formRef.current.setFieldsValue({ applicationName:values.name,name: values.name,description:values.name, sideType:values.sideType,language: values.language,framework:values.framework,path:values.path });
-            });
+        this.applicationId = this.params().applicationId;
+        if(!this.applicationId){
+            this.applicationId = this.Store().getCurrentApplicationId();
         }
-        this.props.applicationTypesStore.queryAll();
-        this.props.applicationPointStore.queryAll();
-       
+        this.evnType = this.params().envType;
+        this.groupModel.findAll().then(function(result){
+            let groups = result.data.list;
+            console.log(groups);
+            that.setState({groups:groups})
+        });
+        this.imageModel.findAll().then(function(result){
+            const defaultImageList = [{id:0, name:"构建最新代码镜像"}];
+            console.log([].push(defaultImageList));
+            console.log("get imagedocker daata");
+            if(result.data){
+                let images = result.data.list;
+                images.push.apply(images,defaultImageList);
+                that.setState({dockerImages:images})
+            }else{
+                
+                that.setState({dockerImages:defaultImageList});
+            }    
+        });
+        
     }
     onFinish = values => {
         var that = this;
-        //let projectId = this.props.query.projectId;
-        values.releaseStatus = "DEV";
+        if(!this.applicationId){
+           console.log("缺省当前应用信息参数，执行失败");
+           return;
+        }
+        values.applicationId = this.applicationId;
+        values.envType = this.params().envType;
+        console.log("*********************#############release params");
         console.log(values);
         this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
@@ -50,58 +69,63 @@ export default class AddPage extends React.Component {
 
         return (
             <Card>
-                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}>
-                    <Form.Item name="name" label="发布单名称"
-                        rules={[{
-                            required: true,
-                        },]}>
-                        <Input />
+                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish.bind(that)}
+                initialValues={{
+                    serviceCount: 1,
+                    cpuLimit:1,
+                    memSize:'1',
+                    diskSize: '1',
+                    releaseVersion: 'V1.0',
+                   }}
+                >
+                   <Form.Item name="dockerImage" label="发布镜像" >
+                        <Select defaultValue={0}>
+                            {that.state.dockerImages.map(function (item, i) {
+                                return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
+                            })}
+                           
+                        </Select>
                     </Form.Item>
-                    <Form.Item name="description" label="描述">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="applicationTypeId" label="应用类型" >
+                    <Form.Item name="applicationPointId" label="目标集群" >
                         <Select >
-                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                            {that.state.groups.map(function (item, i) {
+                                return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
                             })}
                         </Select>
                     </Form.Item>
-                    <Form.Item name="applicationPointId" label="发布端点选择" >
-                        <Select >
-                            {that.props.applicationPointStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
-                            })}
+                    <Form.Item name="serviceCount" label="实  例  数">
+                        <Select defaultValue="1" style={{ width: 200 }} >
+                            <Option key="service1" value="1">1</Option>
+                            <Option key="service2" value="2">2</Option>
+                            <Option key="service3" value="3">3</Option>
                         </Select>
                     </Form.Item>
-                    
-                    <Form.Item name="applicationName" label="发布应用名称">
-                        <Input />
+                    <Form.Item name="cpuLimit" label="CPU使用">
+                        <Select defaultValue="1" style={{ width: 200 }} >
+                            <Option value="0.5">0.5</Option>
+                            <Option value="1">1</Option>
+                            <Option value="2">2</Option>
+                            <Option value="3">3</Option>
+
+                        </Select>
                     </Form.Item>
-                    <Form.Item name="domainName" label="发布目标网关或站点域名">
-                        <Input />
+                    <Form.Item name="memSize" label="内存(MB)">
+                        <Select defaultValue="1" style={{ width: 200 }} >
+                            <Option value="1">1G</Option>
+                            <Option value="2">2G</Option>
+                        </Select>
                     </Form.Item>
-                    <Form.Item name="domainNameUAT" label="UAT网关或站点域名">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="path" label="发布应用PATH">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="repository" label="代码仓库地址">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="repositoryBranch" label="代码分支">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="targetPath" label="待发布代码路径">
-                        <Input />
+                    <Form.Item name="diskSize" label="磁盘(GB)">
+                        <Select defaultValue="2" style={{ width: 200 }} >
+                            <Option value="10">10G</Option>
+                            <Option value="20">12G</Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item name="releaseVersion" label="发布版本">
-                        <Input />
-                    </Form.Item>
-                    
-                    < Form.Item name="useOwnDeploymentFile" label="是否用自己的布署文件">
-                    < XSelect  category="yesno" />
+                        <Select defaultValue="V1.0" style={{ width: 200 }} >
+                            <Option value="V1.0">V1.0</Option>
+                            <Option value="V2.0">V2.0</Option>
+                        </Select>
                     </Form.Item>
 
                     <Card type="inner">
@@ -114,7 +138,5 @@ export default class AddPage extends React.Component {
         );
     }
 }
-AddPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
-}
+
 

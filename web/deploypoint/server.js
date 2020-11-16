@@ -141,27 +141,33 @@ const dev = process.env.NODE_ENV !== 'production'
   function deployApplication(msg){
       let request = msg.params;
       console.log("begin deploy project-------------")
+      console.log(request);
       //console.log("release request params is *****************8:", request);
       messageClient.updateReleaseStatus(33, "starting phase2....");
-      let params = {releaseType:'PROD'};
-      params.gitUrl = request.repository;
+      let params = {releaseType:'UAT'};
       params.releaseType = request.envType;
-      console.log("Current repo url:" + params.gitUrl);
-
-      params.name = request.name;
-      params.applicationType = request.applicationTypeInfo;
-      params.projectInfo = request.projectInfo;
-      params.useOwnDeploymentFile = request.useOwnDeploymentFile;
-      params.applicationName = request.applicationName;
-      params.path = request.path;
-      params.version = request.releaseVersion;
-      
-      params.targetPath = request.targetPath ;
-    
-      params.serviceName = request.name;
-      params.targetPath = request.targetPath;
+      params.version = request.releaseVersion? request.releaseVersion:'V1.0';
       params.label = params.version;
+      params.useOwnDeploymentFile = request.useOwnDeploymentFile;
       params.buildId = request.buildId;
+
+       //应用相关信息
+       params.name = request.projectInfo.name;
+       params.applicationName = request.applicationInfo.applicationName;
+       params.serviceName = params.applicationName;
+       params.domainName =  request.domainName;
+       params.path = request.applicationInfo.path;
+       params.applicationType = request.applicationTypeInfo;
+      params.projectInfo = request.projectInfo;
+
+
+      //source code info
+      params.gitUrl = request.deploymentConfig.repository;
+      params.targetPath = request.deploymentConfig.targetPath;
+      params.repositoryBranch = request.deploymentConfig.repositoryBranch;
+      
+
+     
 
       messageClient.updateReleaseStatus(request.buildId, "starting....");
       if (releaseServer.autoRelease(params)) {

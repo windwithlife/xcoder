@@ -1,48 +1,36 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
 import {
+    Button,
     Collapse,
-    Modal,
     Form,
-    Input,
     Card,
     Select,
 } from 'antd';
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import EditTable from '../common/components/EditableTable';
+import BasePage from '../common/pages/BasePage';
+import ApplicationModel from './models/ApplicationModel';
 
 
 
 
-@inject('modulesStore') @inject('applicationsStore') @inject('pagesStore') @inject('projectsStore')  @inject('applicationTypesStore')
-@observer
-export default class EditPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
-        editMode: false,
+        dataObject: {},
     }
-    constructor() {
-        super();
-        this.projectName = "tempName";
+    constructor(props) {
+        super(props);
+        this.setDefaultModel(new ApplicationModel());
     }
-    Store = () => {
-        return this.props.applicationsStore;
+
+    StoreData = () => {
+        return this.state.dataObject;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
-        console.log('click on edit model');
-        let nextMode = !this.state.editMode;
-        this.setState({ editMode: nextMode });
     }
-   
+
 
     buildPageColumns() {
         let fieldColumns = [];
@@ -63,46 +51,30 @@ export default class EditPage extends React.Component {
     }
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
+        let applicationId = this.params().applicationId;
+        this.Store().queryById(applicationId, function (values) {
+            let applictionObject = values.data;
+            console.log(applictionObject);
+            that.setState({ dataObject: applictionObject });
 
-        this.Store().queryById(id, function (values) {
-            console.log(values);
-            that.props.applicationTypesStore.queryById(values.applicationTypeId);
-            that.props.projectsStore.queryById(values.projectId, function (value) {
-                that.projectName = value.name;
-            });
-            that.props.modulesStore.queryById(values.moduleId, function (value) {
-                //that.projectName = value.name;
-            });
-            that.formRef.current.setFieldsValue(values);
         });
     }
 
-    generateCode = () => {
-        //console.log(type);
-        let itemData = this.Store().dataObject.currentItem;
-        itemData.projectName = this.projectName;
-        itemData.module = this.props.modulesStore.dataObject.currentItem;
-        
-        let appType = this.props.applicationTypesStore.dataObject.currentItem;
 
-        itemData.sideType = appType.sideType;
-        itemData.language = appType.language;
-        itemData.framework = appType.framework;
-        itemData.typeNickname = appType.nickname;
-        let finalParams = {};
-        finalParams.type = 'release';
-        finalParams.defines = itemData;
+    deployTo = () => {
+        let applicationId = this.params().applicationId;
+        this.Store().setCurrentApplicationId(applicationId);
+        router.push({ pathname: '/applicationrelease/deployment-home', query: { applicationId: applicationId } });
+    }
+    setDeployConfig = () => {
+        let applicationId = this.params().applicationId;
+        let configId = this.StoreData().deploymentConfigId;
+        if (configId) {
+            router.push({ pathname: '/deploymentconfig/detail', query: { applicationId: applicationId, deploymentConfigId: configId } });
+        } else {
+            router.push({ pathname: '/deploymentconfig/add', query: { applicationId: applicationId } });
+        }
 
-        //NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
-        console.log(finalParams);
-    }
-    createDeployment=()=>{
-        let applicationId = this.props.query.id;
-        router.push({ pathname:'/applicationrelease/add', query: {applicationId: applicationId} });
-    }
-    downloadCode = () => {
-        //console.log(type);
     }
 
     handleLineUpdate(type, index, record) {
@@ -124,74 +96,54 @@ export default class EditPage extends React.Component {
     }
 
     handleLineDelete(type, index, record) {
-        let that = this;
-        let releaseId = this.props.query.id;
-        if ('xpage' == type) {
-            this.props.pagesStore.removeById(index, record.id, function (value) {
-                that.Store().queryById(moduleId);
-            });
-        }
-        if ('xmodule' == type) {
-            let moduleId = record.id;
-            this.Store().deleteModule(releaseId, moduleId, function (value) {
-                console.log('remove module from release ID is:' + value);
-            });
-        }
+
 
     }
-
+    onEdit = () => {
+        let applicationId = this.params().applicationId;
+        router.push({ pathname: '/application/edit', query: { applicationId: applicationId } });
+    }
     render() {
         let that = this;
-        let editUrl = "/application/edit?id=" + this.props.query.id;
-        let itemData = that.Store().dataObject.currentItem;
-        let appTypeName = this.props.applicationTypesStore.dataObject.currentItem.name;
-        let moduleName = this.props.modulesStore.dataObject.currentItem.name;
-        let isShowPage = itemData.sideType == 'server' ? false : true;
-
-        console.log('render module edit page');
+        let editUrl = "/application/edit?id=" + this.params().id;
+        let itemData = that.StoreData();
+        console.log('render edit page');
         return (
             < div >
-                <Card size="small" title="基本信息" style={{ width: 500 }}  >
+                <Card size="small" title="基本信息" style={{ width: 500 }} extra={<a onClick={that.onEdit} >修改应用信息</a>} >
                     <Form ref={this.formRef}>
-                        < Form.Item  label="可发布项目名：">
+                        < Form.Item label="名称:">
                             {itemData.name}
                         </Form.Item>
-                        < Form.Item  label="应用类型：">
-                            {appTypeName}
-                        </Form.Item>
-                        < Form.Item  label="所属项目：">
-                            {itemData.projectId}
-                        </Form.Item>
-                        <Form.Item  label="应用代码位置">
-                        {itemData.codePath}
-                    </Form.Item>
-                        <Form.Item  label="服务，站点应用访问PATH(可根据引用模块名称）">
-                            {itemData.path}
-                        </Form.Item>
-                        < Form.Item  label="关联模块名">
-                            {moduleName}
-                        </Form.Item>
-
-                        < Form.Item  label="描述信息：">
+                        < Form.Item label="描述信息：">
                             {itemData.description}
                         </Form.Item>
+                        <Form.Item label="应用识别名（英文及数字）">
+                            {itemData.applicationName}
+                        </Form.Item>
+                        <Form.Item label="服务，站点类应用访问PATH">
+                            {itemData.path}
+                        </Form.Item>
+                        < Form.Item label="所属站点域名">
+                            {itemData.domainName}
+                        </Form.Item>
+                        < Form.Item label="应用类型：">
+                            {itemData.applicationTypeId}
+                        </Form.Item>
+                        < Form.Item label="所属项目：">
+                            {itemData.projectId}
+                        </Form.Item>
+
                         <Card type="inner">
                             <Form.Item>
-                                <Button type="primary" onClick={that.generateCode} size="large">生成项目代码</Button>
-                                <Button type="primary" onClick={that.downloadCode} size="large">下载项目代码</Button>
-                                <Button type="primary" onClick={that.createDeployment} size="large">创建发布单</Button>
+                                <Button type="primary" onClick={that.setDeployConfig} size="large">源代码发布设置</Button>
+                                <Button type="primary" onClick={that.deployTo} size="large">进行发布</Button>
                             </Form.Item>
                         </Card>
 
                     </Form>
                 </Card>
 
-                {isShowPage ? <EditTable title="页面：" columns={that.buildPageColumns()} data={itemData.pages}
-                    onAdd={that.handleLineAdd.bind(that, 'xpage')}
-                    onDelete={that.handleLineDelete.bind(that, 'xpage')}
-                    onUpdate={that.handleLineUpdate.bind(that, 'xpage')}
-                    onDetail={that.handleLineDetail.bind(that, 'xpage')}
-                ></EditTable> : <div></div>}
 
             </div>
         );

@@ -3,18 +3,13 @@ import React from 'react';
 
 import {
     Collapse,
-    Modal,
     Form,
-    Card,
-    Select,
-    Input,
     Table,
     Popconfirm,
     Button,
 } from 'antd';
 const { Panel } = Collapse;
 import { SettingOutlined } from '@ant-design/icons';
-import router from 'next/router';
 export default class EditableTable extends React.Component {
     state = {
         editMode: false,

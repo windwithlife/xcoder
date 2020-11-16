@@ -1,48 +1,37 @@
 import React from 'react';
-//import model from './models/model.js';
-import Table from 'antd/lib/table';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Popconfirm from 'antd/lib/popconfirm';
 import {
     Collapse,
-    Modal,
-    Form,
-    Input,
+    
     Card,
-    Select,
+    
 } from 'antd';
 const { Panel } = Collapse;
-import { SettingOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
+
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
 import EditTable from '../common/components/EditableTable';
-//import AddorEditPage from './AddorEditColumn';
+import  ApplicationModel from './models/ApplicationModel';
+import BasePage from '../common/pages/BasePage';
 
-
-@inject('applicationsStore') 
-@observer
-export default class EditPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         editMode: false,
+        data:[],
+        refresh:false,
     }
-    constructor() {
-        super();
-        this.projectName = "tempName";
+    constructor(props) {
+        super(props);
+        
+        this.setDefaultModel(new ApplicationModel());
+       
     }
-    Store = () => {
-        return this.props.applicationsStore;
-    }
+  
     StoreData=()=>{
-        return this.props.applicationsStore.dataObject;
+        return this.state.data;
     }
     changeEditMode = (event) => {
         event.stopPropagation();
-        console.log('click on edit model');
-        let nextMode = !this.state.editMode;
-        this.setState({ editMode: nextMode });
+       
     }
     tableHeader() {
         var that = this;
@@ -75,37 +64,34 @@ export default class EditPage extends React.Component {
     }
 
     
-    componentDidMount() {
-        let that = this;
-        let id = this.props.query.id;
-        this.Store().queryAll(id, function (values) {
-            console.log(values);
-        });
+    componentDidMount =() =>{
+       let that = this;
+       this.projectId  = this.props.router.query.projectId;
+        if(this.projectId){
+            this.Store().queryByProjectId(this.projectId, function (values){
+                let applications =  values.data.list;
+                console.log(values);
+                that.setState({data:applications});
+            });
+        }else{
+            this.Store().queryAll(function (values){
+                let applications =  values.data.list;
+                console.log(applications);
+                that.setState({data:applications});
+            });
+        }
     }
 
-    generateCode = () => {
-        //console.log(type);
-        let itemData = this.Store().dataObject.currentItem;
-        itemData.projectName = this.projectName;
-        let finalParams = {};
-        finalParams.type = 'release';
-        finalParams.defines = itemData;
-
-        //NetworkHelper.webPost("generateCodeByProjectId/", finalParams);
-        console.log(finalParams);
-    }
    
-
     handleLineUpdate(index, record) {
-        
         let path = '/application/edit';
-        router.push({ pathname: path, query: { id: record.id } });
+        router.push({ pathname: path, query: { applicationId: record.id } });
 
     }
     handleLineDetail(record) {
         let path = '/application/detail';
         console.log(path);
-        router.push({ pathname: path, query: { id: record.id } });
+        router.push({ pathname: path, query: { applicationId: record.id } });
     }
     handleLineAdd() {
         let path = '/application/add';
@@ -114,19 +100,21 @@ export default class EditPage extends React.Component {
     }
 
     handleLineDelete(index, record) {
-        let id = record.id;
-        this.Store().removeById(index, record.id, function (value) {
-           console.log('sucessful to detele one xrlease');
+        let that = this;
+        console.log(record.id);
+        this.Store().removeById(record.id).then(function(result){
+            that.state.data.splice(index,1);
+            that.setState({refresh:true})
         });
     }
 
     render() {
         let that = this;
-        let items = that.StoreData().list;
+        let items = that.StoreData();
         console.log('render module edit page');
         return (
             < div >
-                <Card size="small" title="基本信息" style={{ width: 800 }}  >
+                <Card size="small" title="基本信息"  >
                  应用管理首页   
                 </Card>
                 <EditTable title="当前项目所有可发布应用：" columns={that.tableHeader()} data={items}
@@ -139,8 +127,4 @@ export default class EditPage extends React.Component {
             </div>
         );
     }
-}
-
-EditPage.getInitialProps = async function (context) {
-    return { query: context.query };
 }

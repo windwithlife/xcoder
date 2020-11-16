@@ -29,7 +29,9 @@ public class MqttService {
     private final ExampleDao exampleDao;
     private final ExecutePointDao executePointDao;
     private final ProjectDao projectDao;
-    private final ApplicationTypeDao applicationTypeDao;
+    private final ApplicationTypeRepository applicationTypeDao;
+    private final ApplicationRepository applicationDao;
+    private final DeploymentConfigRepository deploymentConfigDao;
 
     private final AppProps appProps;
 
@@ -129,7 +131,7 @@ public class MqttService {
         try{
 
             System.out.println("start to execute release  " + request.toString());
-            ApplicationRelease releaseModel = releaseDao.findById(request.getReleaseId());
+            ApplicationReleaseModel releaseModel = releaseDao.findById(request.getReleaseId());
 
 
 
@@ -141,20 +143,41 @@ public class MqttService {
                 dto.setEnvType(request.getEnvType());
 
 
+                ApplicationModel application = applicationDao.findById(releaseModel.getApplicationId()).get();
                 //get project information
-                ProjectModel project = projectDao.findById(releaseModel.getProjectId());
+                ProjectModel project = projectDao.findById(application.getProjectId());
                 dto.setProjectInfo(project);
+                dto.setApplicationInfo(application);
 
+                DeploymentConfigModel config = deploymentConfigDao.findById(application.getDeploymentConfigId()).get();
+                dto.setDeploymentConfig(config);
                 //get application type info
-                ApplicationType appType = applicationTypeDao.findById(releaseModel.getApplicationTypeId());
+                ApplicationTypeModel appType = applicationTypeDao.findById(application.getApplicationTypeId()).get();
                 dto.setApplicationTypeInfo(appType);
 
                 //get the target execute point.
-                ExcuteReleasePoint point = executePointDao.findById(releaseModel.getApplicationPointId());
+                DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 System.out.println("excute point data " + point.toString());
                 String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
 
 
+                //do with domainName
+                String domainName ="no.domain.com";
+                if(request.getEnvType().toLowerCase().equals("uat")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainNameUAT();
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGatewayUAT();
+                    }
+                }else if(request.getEnvType().toLowerCase().equals("prod")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainName();
+
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGateway();
+                    }
+                }
+                dto.setDomainName(domainName);
 
                 MqttDto mqttDto = MqttDto.builder().command("execute").build();
                 mqttDto.setCommand("execute");

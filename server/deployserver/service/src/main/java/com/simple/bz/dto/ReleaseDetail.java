@@ -1,6 +1,8 @@
 package com.simple.bz.dto;
 
-import com.simple.bz.model.ApplicationType;
+import com.simple.bz.model.ApplicationModel;
+import com.simple.bz.model.ApplicationTypeModel;
+import com.simple.bz.model.DeploymentConfigModel;
 import com.simple.bz.model.ProjectModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,18 +16,18 @@ import lombok.NoArgsConstructor;
 public class ReleaseDetail {
     private Long   id;
     private String name;
-    private String description;
-    private String path;
-    private String repository;
-    private String repositoryBranch;
-    private String targetPath;
-    private boolean useOwnDeploymentFile;
     private String releaseVersion;
     private String applicationName;
     private String domainName;
-    private String domainNameUAT;
     private Long   buildId;
     private String envType;
+    private boolean autoDeploy;
+    private int     cpu;
+    private int     diskSize;
+    private int     memSize;
+    private int     instanceCount;
     private ProjectModel projectInfo;
-    private ApplicationType applicationTypeInfo;
+    private ApplicationModel applicationInfo;
+    private DeploymentConfigModel deploymentConfig;
+    private ApplicationTypeModel applicationTypeInfo;
 }

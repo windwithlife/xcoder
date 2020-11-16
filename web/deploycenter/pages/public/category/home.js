@@ -1,168 +1,118 @@
 import React from 'react';
 import {
-    Modal,
-    Form,
+    Collapse,
+ 
+ 
+    Input,
     Card,
-    Table,
-    Icon,
-    Button,
-    Popconfirm
+ 
 } from 'antd';
+const { Panel } = Collapse;
 
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import AddPage from './AddDialog.js';
 
-const rowSelection = {
-};
-@inject('categorysStore') 
-@observer
-export default class DetailPage extends React.Component {
+import EditTable from '../common/components/EditableTable';
+import BasePage from '../common/pages/BasePage';
+import CategoryModel from './models/CategoryModel';
+
+
+export default class EditPage extends BasePage {
+    formRef = React.createRef();
     state = {
-        visible: false,
-        operationTitle: "新增",
-        operationType: "add",
-        currentId:-1,
+        editMode: false,
+        data:[],
     }
     constructor() {
         super();
-        //var that = this;
-        this.startHeader();
-
+        this.setDefaultModel(new CategoryModel());
     }
-    Store(){
-        return this.props.categorysStore;
+  
+    StoreData=()=>{
+        return this.state.data;
     }
-    startHeader() {
+    componentDidMount() {
+        let that = this;
+        this.Store().queryAll(function (values) {
+            console.log(values);
+            that.setState({data:values.data.list});
+        });
+    }
+    changeEditMode = (event) => {
+        event.stopPropagation();
+        let nextMode = !this.state.editMode;
+        this.setState({ editMode: nextMode });
+    }
+    tableHeader() {
         var that = this;
 
         var fieldColumns = [];
 
         fieldColumns.push({
-            title: "字典类型识别码：",
+            title: "名称",
             dataIndex: 'name',
             key: 'name'
         });
+
         fieldColumns.push({
             title: "说明",
             dataIndex: 'description',
             key: 'description'
         });
 
-       
-
-        this.columns = [...fieldColumns, {
-            title: 'Action',
-            key: 'action',
-            render: (text, record, index) => (
-                <span >
-                   
-                <span className = "ant-divider" />
-                <Popconfirm title = "Sure to delete?" onConfirm = {that.handleLineDelete.bind(that,index, record)} >
-                    < a href = "#" > Delete </a>
-                </Popconfirm>
-                <span className = "ant-divider" />
-                <a href = "#" onClick = {that.handleLineUpdate.bind(that,index, record)} > Edit </a>
-                <span className = "ant-divider" />
-                <a href = "#" onClick = {that.handleLineDetail.bind(that,record)} > Detail </a>
-            </span>
-            )
-        }];
-
-
+        return fieldColumns;
     }
 
-    onFooterBack() {
-        router.back();
-    }
-    componentDidMount() {
-       
-        console.log('DidMount');
-       
-        this.Store().queryAll();
-    }
+    
+   
 
-    pagination() {
-        return {
-         
-            showSizeChanger: true
-        }
-    }
+  
+
     handleLineUpdate(index, record) {
+        
+        let path = '/category/edit';
+        router.push({ pathname: path, query: { id: record.id } });
 
-       
-        router.push({pathname:'/public/category/edit',query:{id:record.id}});
-      
-       
     }
     handleLineDetail(record) {
-        //router.push({ pathname: '/zxtable/detail', query: { ...that.props.query, pxtableId: record.id } });
+        let path = '/category/detail';
+        console.log(path);
+        router.push({ pathname: path, query: { id: record.id } });
     }
     handleLineAdd() {
-        this.setState({ visible: true ,operationType: "add"});
+        let path = '/category/add';
+        console.log(path);
+        router.push({ pathname: path });
     }
-    onModalConfirm() {
-        this.setState({ visible: false });
-    }
+
     handleLineDelete(index, record) {
-        console.log(record.id);
-        this.Store().removeById(index,record.id);
+        let id = record.id;
+        this.Store().removeById(index, record.id, function (value) {
+           console.log('sucessful to detele one xrlease');
+        });
     }
 
-    handleSearchChange(e) {
-        this.setState({ searchText: e.target.value, name: e.target.value });
-    }
-    handleSearch(e) {
-        e.preventDefault();
-        let keywork = this.state.searchText
-        //this.props.tablesStore.fetchByNameLike(param.keyword);
-
-    }
     render() {
         let that = this;
-        //let itemData = that.props.projectsStore.dataObject.currentItem;
-        ///let editUrl = "/xproject/edit?id=" + this.props.query.id;
-        return ( 
+        let editUrl = "/category/edit?id=" + this.props.query.id;
+        let items = that.StoreData();
+    
+        return (
             < div >
-                <Modal visible={that.state.visible} title={that.state.operationTitle}
-                    onCancel={this.onModalConfirm.bind(that)}
-                    footer={[]}>
-                    <AddPage itemData ={this.state.itemData} operationType={this.state.operationType} onConfirm={this.onModalConfirm.bind(that)}></AddPage>
-                </Modal>
-
-                <div>
-                <Card size="small" title="功能信息" style={{ width: 500 }} >
-                               
-               </Card>
-                </div>
-
-                < Table rowSelection={
-                    rowSelection
-                }
-                    columns={
-                        this.columns
-                    }
-                    dataSource={
-                        //that.props.tablesStore.items.slice()
-                        that.Store().dataObject.list.slice()
-                    }
-                    pagination={
-                        this.pagination()
-                    }
-                    bordered title={() => (<Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
-
-                        < Form.Item label="分类信息：">
-                            <Button onClick={this.handleLineAdd.bind(this)} > 添加 </Button>
-                        </Form.Item>
-                    </Form>)}
-                    
-                />
+                <Card size="small" title="基本信息" style={{ width: 500 }}  >
+                 发布系统首页   
+                </Card>
+                <EditTable title="应用类型：" columns={that.tableHeader()} data={items}
+                    onAdd={that.handleLineAdd.bind(that)}
+                    onDelete={that.handleLineDelete.bind(that)}
+                    onUpdate={that.handleLineUpdate.bind(that)}
+                    onDetail={that.handleLineDetail.bind(that)}
+                ></EditTable>
 
             </div>
         );
     }
 }
 
-DetailPage.getInitialProps = async function (context) {
-    return { query: context.query};
+EditPage.getInitialProps = async function (context) {
+    return { query: context.query };
 }

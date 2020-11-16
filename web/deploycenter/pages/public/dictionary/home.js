@@ -5,33 +5,33 @@ import {
     Form,
     Card,
     Table,
-    Icon,
     Button,
     Popconfirm
 } from 'antd';
 
 import router from 'next/router';
-import { inject, observer } from 'mobx-react';
-import AddPage from './AddDialog.js';
+import BasePage from '../../common/pages/BasePage';
+import DictionaryModel from './models/DictionaryModel';
 
-const rowSelection = {
-};
-@inject('dictionarysStore') 
-@observer
-export default class DetailPage extends React.Component {
+
+export default class EditPage extends BasePage {
+    formRef = React.createRef();
+ 
     state = {
         visible: false,
         operationTitle: "新增",
         operationType: "add",
-        currentId:-1,
+        editMode: false,
+        data:[],
     }
     constructor() {
         super();
         this.startHeader();
+        this.setDefaultModel(new DictionaryModel())
 
     }
-    Store(){
-        return this.props.dictionarysStore;
+    StoreData=()=>{
+        return this.state.data;
     }
     startHeader() {
         var that = this;
@@ -83,10 +83,12 @@ export default class DetailPage extends React.Component {
         router.back();
     }
     componentDidMount() {
-       
-        console.log('DidMount');
-       
-        this.Store().queryAll();
+        let that = this;
+        this.Store().queryAll().then(function(result){
+            if(result.data){
+                that.setState({data:result.data.list})
+            }
+        });
     }
 
     pagination() {
@@ -112,23 +114,16 @@ export default class DetailPage extends React.Component {
         this.setState({ visible: false });
     }
     handleLineDelete(index, record) {
+        let that = this;
         console.log(record.id);
-        this.Store().removeById(index,record.id);
+        this.Store().removeById(record.id).then(function(result){
+            that.state.data.splice(index,1);
+        });
     }
 
-    handleSearchChange(e) {
-        this.setState({ searchText: e.target.value, name: e.target.value });
-    }
-    handleSearch(e) {
-        e.preventDefault();
-        let keywork = this.state.searchText
-        //this.props.tablesStore.fetchByNameLike(param.keyword);
-
-    }
     render() {
         let that = this;
-        //let itemData = that.props.projectsStore.dataObject.currentItem;
-        ///let editUrl = "/xproject/edit?id=" + this.props.query.id;
+        let Items = this.StoreData();
         return ( 
             < div >
                 <Modal visible={that.state.visible} title={that.state.operationTitle}
@@ -150,8 +145,7 @@ export default class DetailPage extends React.Component {
                         this.columns
                     }
                     dataSource={
-                        //that.props.tablesStore.items.slice()
-                        that.Store().dataObject.list.slice()
+                        Items
                     }
                     pagination={
                         this.pagination()
@@ -168,8 +162,4 @@ export default class DetailPage extends React.Component {
             </div>
         );
     }
-}
-
-DetailPage.getInitialProps = async function (context) {
-    return { query: context.query};
 }

@@ -1,87 +1,85 @@
-
-
-import { Form, Input, Button, Select } from 'antd';
-import { inject, observer } from 'mobx-react';
-//import { Router } from 'next/router';
+import React from 'react';
+import {
+    Button,
+  
+    Collapse,
+    Modal,
+    Form,
+    Input,
+    Card,
+    Select,
+} from 'antd';
+const { Panel } = Collapse;
 import router from 'next/router';
+import BasePage from '../common/pages/BasePage';
+import ApplicationModel from './models/CategoryModel';
 
-const { Option } = Select;
+export default class EditPage extends BasePage {
+    formRef = React.createRef();
+    state = {
+        dataObject: {},
+    }
+    constructor(props) {
+        super(props);
+        this.setDefaultModel(new ApplicationModel());
+    }
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
+    StoreData = () => {
+        return this.state.dataObject;
+    }
 
+    componentDidMount() {
+        let that = this;
+        let id = this.params().id;
+        this.Store().queryById(id, function (values) {
+            let dataObject = values.data;
+            console.log(dataObject);
+            that.setState({ dataObject: dataObject });
 
+        });
+    }
 
-
-@inject('categorysStore') 
-@observer 
-export default class EditPage extends React.Component {
-  formRef = React.createRef();
-
-  Store=()=>{
-    return this.props.categorysStore;
-  }
-  onFinish = values => {
-   router.back();
-    
-  };
-
-  componentDidMount() {
-
-    this.Store().queryById(this.props.query.id);
+    onEdit =()=>{
+        const editUrl = "/category/edit";
+        const categoryId= this.params().id;
+        router.push({pathname:editUrl, query:{id: categoryId}});
+    }
    
-}
-
-  render() {
-    var that = this;
-    let itemData = this.Store().dataObject.currentItem;
     
-  
-    return (
+    handleLineDelete(type, index, record) {
+    }
 
-      <Card size="small" title="项目信息" style={{ width: 500 }} extra={<a href={editUrl}>Edit</a>} >
-                               
-                           
-      <Form  >
-          < Form.Item name="name" label="字典类别名称">
-              {itemData.name}
-          </Form.Item>
-          < Form.Item name="description" label="描述信息：">
-              {itemData.description}
-          </Form.Item>
-          < Form.Item name="website" label="站点：">
-              {itemData.description}
-          </Form.Item>
-          < Form.Item name="soaIp" label="服务地址：">
-              {itemData.description}
-          </Form.Item>
-          < Form.Item name="status" label="状态">
-              {itemData.status}
-          </Form.Item>
-          <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-         
-        </Form.Item>
-      
+    render() {
+        let that = this;
+        
+        let itemData = that.StoreData();
+        console.log('render detail page');
+        return (
+            < div >
+                <Card size="small" title="基本信息" style={{ width: 500 }} extra={<a onClick={that.onEdit}>修改</a>} >
+                    <Form ref={this.formRef}>
+                    <Form.Item name="name" label="名称">
+                        {itemData.name}
+                    </Form.Item>
+                    <Form.Item name="idName" label="识别串">
+                    {itemData.idName}
+                    </Form.Item>
+                    <Form.Item name="description" label="描述">
+                    {itemData.description}
+                    </Form.Item>
 
-      </Form>
-      </Card>
-  
-    
-    );
-  }
-}
+                       
 
+                    </Form>
+                </Card>
+                <Card type="inner">
+                        <Form.Item>
+                        <Button type="primary" onClick={that.backToApplication} size="large">返回应用</Button>
+                        </Form.Item>
+                    </Card>
 
-EditPage.getInitialProps = async function (context) {
-  return { query: context.query};
+            </div>
+        );
+    }
 }
 

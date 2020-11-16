@@ -1,0 +1,32 @@
+
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: <%=data.certConfigName%> 
+spec:
+  dnsNames:
+    - <%=data.domainName%>
+  secretName: <%=data.certConfigName%> 
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: <%=data.ingressName%>
+spec:
+  ingressClassName: nginx
+  tls:
+  - secretName: <%=data.certConfigName%>
+    hosts:
+    - <%=data.domainName%>
+  rules:
+  - host: <%=data.domainName%>
+    http:
+      paths: <%data.routes.forEach(function(route){%>
+      - path: <%=route.path%>
+        pathType: Prefix
+        backend:
+          serviceName: <%=route.serviceName%>
+          servicePort: 80<%});%>

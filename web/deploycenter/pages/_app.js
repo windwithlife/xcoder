@@ -43,13 +43,13 @@ class MyMobxApp extends App {
         // }
         //console.log(layoutName + Component.name)
         //console.log(this.props.router.pathname);
-        //console.log(this.props);
+        console.log(pageProps);
 
 
         return (
             <Provider {...this.mobxStore}>
                 <Layout path={pathName}>
-                    <Component {...pageProps} />
+                    <Component {...this.props} {...pageProps} />
                 </Layout>
             </Provider>
         )

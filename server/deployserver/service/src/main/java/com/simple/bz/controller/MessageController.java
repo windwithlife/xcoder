@@ -3,6 +3,7 @@ package com.simple.bz.controller;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.simple.bz.dto.BuildRecordRequest;
 import com.simple.bz.dto.ExampleDto;
 import com.simple.bz.dto.ExampleVO;
 import com.simple.bz.dto.ReleaseRequest;
@@ -33,14 +34,14 @@ public class MessageController {
     @Autowired
     private DeployService deployService;
 
-
-
-
     @GetMapping(path = "/test")
     GenericResponse test5(@RequestParam(value = "request") String request){
         System.out.println("received  params is" +  request);
+
         return GenericResponse.build().addKey$Value("result",request);
     }
+
+
 
     @PostMapping(path = "/test6")
     GenericResponse test6(@RequestBody GenericRequest req){
@@ -50,6 +51,17 @@ public class MessageController {
     }
 
 
+    @PostMapping(path = "/createDeployment")
+    GenericResponse createDeployment (@RequestBody GenericRequest req){
+
+        BuildRecordRequest createRecordRequest = req.getObject(BuildRecordRequest.class);
+        System.out.println(createRecordRequest.toString());
+        //ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
+        deployService.createBuildRecord(createRecordRequest);
+        GenericResponse result = new GenericResponse();
+        return result;
+    }
+
     @PostMapping(path = "/deploy")
     GenericResponse deployment (@RequestBody GenericRequest req){
         System.out.println(req.toString());
@@ -58,6 +70,7 @@ public class MessageController {
         GenericResponse result = new GenericResponse(releaseDto);
         return result;
     }
+
 
     @PostMapping(path = "/addnew")
     BaseResponse createExample(@RequestBody GenericRequest req){

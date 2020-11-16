@@ -1,66 +1,78 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import XSelect from '../common/components/select';
-const { TextArea } = Input;
-//const FormItem = Form.Item;
+import BasePage from '../common/pages/BasePage';
+import ApplicationModel from './models/ApplicationModel';
+import ProjectModel from '../project/models/ProjectModel';
+import ApplicationTypeModel from '../applicationtype/models/ApplicationTypeModel';
 
 
-@inject('applicationsStore') @inject('modulesStore')  @inject('applicationTypesStore')
-@observer
-export default class AddPage extends React.Component {
+export default class EditPage extends BasePage {
     formRef = React.createRef();
-
-    Store = () => {
-        return this.props.applicationsStore;
-    }
-    StoreData = () => {
-        return this.props.applicationsStore.dataObject;
+    state = {
+        data: {},
+        appTypes: [],
+        projects: [],
+        showWebDomainName: false,
     }
     constructor(props) {
         super(props);
-        this.state = {};
-        this.hasModuleInfo = false;
+        this.setDefaultModel(new ApplicationModel());
+        this.applicationTypeModel = new ApplicationTypeModel();
+        this.projectModel = new ProjectModel();
+    }
+
+    StoreData = () => {
+        return this.state.data;
     }
     componentDidMount() {
         let that = this;
-        console.log('DidMount');
-        let projectId = this.props.query.projectId;
-        let moduleId = this.props.query.moduleId;
+        this.projectId = this.params().projectId;
+        console.log("Test BasePage and params!!!!!!");
+        console.log(this.params());
+        this.applicationTypeModel.queryAll().then(function (result) {
+            if (result.data) {
+                let applicationTypes = result.data.list;
+                that.setState({ appTypes: applicationTypes });
+            }
+        });
+        this.projectModel.queryAll().then(function (result) {
+            if (result.data) {
+                let projects = result.data.list;
+                that.setState({ projects: projects });
+            }
+        });
 
-        this.props.applicationTypesStore.queryAll();
-        if (moduleId){
-            this.hasModuleInfo = true;
-            this.props.modulesStore.queryById(moduleId,function(values){
-                that.formRef.current.setFieldsValue({ moduleId: moduleId, name: values.name,selectModule:values.name,path:"/"+values.name });
-            });
-        }else{
-            this.props.modulesStore.queryByProjectId(projectId);
-        }
-       
-        
     }
-
-  
     onFinish = values => {
         var that = this;
-        let projectId = this.props.query.projectId;
+        let projectId = this.params().projectId;
         values.projectId = projectId;
         console.log(values);
         this.Store().add(values, () => { console.log('finished add row'); router.back(); });
     }
-    onChangeModule = (value) => {
+    
+    onChangeType = (value) => {
         let that = this;
-        console.log('Index:' + value);
-        let item = this.props.modulesStore.dataObject.list[value];
-        //let domainName = item.name;
-        let moduleId = item.id;
-        let moduleName = item.name;
-
-       console.log(moduleName);
-        this.formRef.current.setFieldsValue({ moduleId: moduleId, name: moduleName,path:"/"+moduleName });
-
+        this.state.appTypes.map(function (item, index) {
+            if (item.id == value) {
+                if ((item.sideType === 'web') || (item.sideType === 'website')) {
+                    that.setState({ showWebDomainName: true })
+                }else{
+                    that.setState({ showWebDomainName: false})
+                }
+            }
+        })
+    }
+    onChangeProject = (value) => {
+        let that = this;
+        this.state.projects.map(function (item, index) {
+            if (item.id == value) {         
+                //that.setState({ showWebDomainName: true })
+                that.formRef.current.setFieldsValue({domainName:item.domainName});
+            }
+        })
     }
     render() {
         var that = this;
@@ -74,47 +86,40 @@ export default class AddPage extends React.Component {
                         },]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item
-                        name="moduleId"
-                        noStyle='true'
-                    ></Form.Item>
-                    < Form.Item name="selectModule" label="关联模块">
-                       <Select onChange={that.onChangeModule}>
-                            {that.props.modulesStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={i}>{item.name}</Select.Option>);
+
+                    <Form.Item name="description" label="描述">
+                        <Input />
+                    </Form.Item>
+                    {!this.projectId && (<Form.Item name="projectId" label="所属项目">
+                        <Select onChange={that.onChangeProject}>
+                            {that.state.projects.map(function (item, i) {
+                                return (<Select.Option value={item.id} key={item.id} >{item.name}</Select.Option>);
                             })}
                         </Select>
-                    </Form.Item>
-                   
-                 
+                    </Form.Item>)
+
+                    }
                     <Form.Item name="applicationTypeId" label="应用类型" >
-                        <Select >
-                            {that.props.applicationTypesStore.dataObject.list.map(function (item, i) {
-                                return (<Select.Option value={item.id}>{item.name}</Select.Option>);
+                        <Select onChange={that.onChangeType}>
+                            {that.state.appTypes.map(function (item, i) {
+                                return (<Select.Option value={item.id} key={item.id} >{item.name}</Select.Option>);
                             })}
                         </Select>
                     </Form.Item>
-                    {/* < Form.Item name="language" label="编程语言选择：">
-                        < XSelect category="language" />
-                    </Form.Item>
-                    < Form.Item name="framework" label="技术框架：">
-                        < XSelect category="framework" />
-                    </Form.Item>
-                    < Form.Item name="platform" label="目标操作系统">
-                        < XSelect category="os" />
-                    </Form.Item> */}
-                     <Form.Item name="codePath" label="应用代码位置">
+                    <Form.Item name="applicationName" label="应用识别名（英文及数字）">
                         <Input />
                     </Form.Item>
                     <Form.Item name="path" label="服务，站点类应用访问PATH">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="description" label="描述">
-                        <Input />
-                    </Form.Item>
+                    {that.state.showWebDomainName && (
+                        < Form.Item name="domainName" label="所属站点域名">
+                            <Input />
+                        </Form.Item>)}
+
                     <Card type="inner">
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" size="large">Save</Button>
+                            <Button type="primary" htmlType="submit" size="large">保存</Button>
                         </Form.Item>
                     </Card>
                 </Form>
@@ -122,7 +127,5 @@ export default class AddPage extends React.Component {
         );
     }
 }
-AddPage.getInitialProps = async function (context) {
-    return { query: context.query, path: context.pathname };
-}
+
 
