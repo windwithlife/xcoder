@@ -1,17 +1,14 @@
 package com.simple.bz.service;
 
-
-
 import com.simple.bz.dao.ApplicationRepository;
 import com.simple.bz.dao.DeploymentConfigRepository;
-import com.simple.bz.dto.ApplicationDto;
+
 import com.simple.bz.dto.DeploymentConfigDto;
 import com.simple.bz.model.ApplicationModel;
 import com.simple.bz.model.DeploymentConfigModel;
-import javafx.application.Application;
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
