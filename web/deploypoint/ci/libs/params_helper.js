@@ -36,21 +36,23 @@ class ParamsHelper {
         this.applicationType = setting.applicationType;
         this.sideType = this.applicationType.sideType;
         this.typeId = this.applicationType.idName;
-        if(this.sideType === "web"){
-            if(setting.envType ==="UAT"){
-              this.domainName = this.website = setting.projectInfo.domainNameUAT;
-            }else{
-              this.domainName = this.website = setting.projectInfo.domainName;
-            }
+        this.website = this.gateway = this.domainName = setting.domainName;
+        // if(this.sideType === "web"){
             
-          }else if(this.sideType==="server"){
-            if(setting.envType ==="UAT"){
-              this.domainName = this.gateway = setting.projectInfo.gatewayUAT;
-            }else{
-              this.domainName = this.gateway = setting.projectInfo.gateway;
-            }
+            // if(setting.envType ==="UAT"){
+            //   this.domainName = this.website = setting.projectInfo.domainNameUAT;
+            // }else{
+            //   this.domainName = this.website = setting.projectInfo.domainName;
+            // }
             
-          }
+        //   }else if(this.sideType==="server"){
+            // if(setting.envType ==="UAT"){
+            //   this.domainName = this.gateway = setting.projectInfo.gatewayUAT;
+            // }else{
+            //   this.domainName = this.gateway = setting.projectInfo.gateway;
+            // }
+            
+        //   }
 
         this.name = setting.name;
         this.path = setting.path;

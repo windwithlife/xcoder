@@ -23,7 +23,7 @@ function pathIsReady(pathName) {
    
     constructor(){
         this.releaseType = 'prod';
-        this.srcRoot = '~/autoRelease/'; 
+        this.srcRoot = '/autoRelease/'; 
         this.dockerfilesRoot = './ci/k8s/dockerfiles/';
         this.templateRoot = './ci/k8s/templates/';
         this.currentRootPath = process.cwd();
@@ -44,7 +44,8 @@ function pathIsReady(pathName) {
         //console.log(this.appConfig);
     }
     rootPath(){
-        let pathName  = path.join(this.currentRootPath, this.srcRoot);
+        //let pathName  = path.join(this.currentRootPath, this.srcRoot);
+        let pathName  = path.join('~', this.srcRoot);
         checkPath(pathName);
         return pathName;
        

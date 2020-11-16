@@ -42,7 +42,7 @@ metadata:
   name: <%=data.certConfigName%> 
 spec:
   dnsNames:
-    - <%=data.webDomain%>
+    - <%=data.domainName%>
   secretName: <%=data.certConfigName%> 
   issuerRef:
     name: letsencrypt
@@ -59,9 +59,9 @@ spec:
   tls:
   - secretName: <%=data.certConfigName%>
     hosts:
-    - <%=data.webDomain%>
+    - <%=data.domainName%>
   rules:
-  - host: <%=data.webDomain%>
+  - host: <%=data.domainName%>
     http:
       paths: <%data.routes.forEach(function(route){%>
       - path: <%=route.path%>

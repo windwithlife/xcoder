@@ -51,7 +51,7 @@ metadata:
   namespace: istio-system
 spec:
   dnsNames:
-    - <%=data.gateway%>
+    - <%=data.domainName%>
   secretName: <%=data.certConfigName%> 
   issuerRef:
     name: letsencrypt
@@ -75,13 +75,13 @@ spec:
       #privateKey: /etc/istio/ingressgateway-certs/tls.key
       credentialName: <%=data.certConfigName%> 
     hosts:
-    - "<%=data.gateway%>"
+    - "<%=data.domainName%>"
   - port:
       number: 80
       name: http-service
       protocol: HTTP
     hosts:
-    - "<%=data.gateway%>"
+    - "<%=data.domainName%>"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -89,7 +89,7 @@ metadata:
   name: <%=data.vServiceConfigName%> 
 spec:
   hosts:
-  - "<%=data.gateway%>"
+  - "<%=data.domainName%>"
   gateways:
   - <%=data.gatewayConfigName%> 
   http: <%data.routes.forEach(function(route){%>
