@@ -2,7 +2,6 @@
 let logInfo = require('../../utils/globalUtils').logInfo;
 var gitTools = require('./git-tool');
 var dockerTools = require('./docker-tool');
-//var shellTools = require('./shell-tool');
 var shellTools = require('./execute-tool');
 var builderTools = require('./building_tool');
 
