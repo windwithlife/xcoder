@@ -62,7 +62,12 @@ export default class EditPage extends BasePage {
                     <Form.Item name="targetPath" label="待发布代码路径">
                         <Input />
                     </Form.Item>
-
+                    <Form.Item name="version" label="当前版本">
+                        <Select style={{ width: 200 }} >
+                            <Option value="V1.0">V1.0</Option>
+                            <Option value="V2.0">V2.0</Option>
+                        </Select>
+                    </Form.Item>
                     <Card type="inner">
                         <Form.Item>
                             <Button type="primary" htmlType="submit" size="large">保存修改</Button>

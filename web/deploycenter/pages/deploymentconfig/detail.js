@@ -58,17 +58,17 @@ export default class EditPage extends BasePage {
         });
     }
 
-    onEdit =()=>{
+    onEdit = () => {
         const editUrl = "/deploymentconfig/edit";
         const configId = this.params().deploymentConfigId;
-        router.push({pathname:editUrl, query:{deploymentConfigId: configId}});
+        router.push({ pathname: editUrl, query: { deploymentConfigId: configId } });
     }
-    backToApplication =()=>{
+    backToApplication = () => {
         const applicationPath = "/application/detail";
         const applicationId = this.state.dataObject.applicationId;
-        router.push({pathname:applicationPath, query:{applicationId: applicationId}});
+        router.push({ pathname: applicationPath, query: { applicationId: applicationId } });
     }
-    
+
     handleLineUpdate(type, index, record) {
         let that = this;
         let path = '/' + type + '/edit';
@@ -83,15 +83,15 @@ export default class EditPage extends BasePage {
 
     render() {
         let that = this;
-        
+
         let itemData = that.StoreData();
         console.log('render detail page');
         return (
             < div >
                 <Card size="small" title="基本信息" style={{ width: 500 }} extra={<a onClick={that.onEdit}>修改</a>} >
                     <Form ref={this.formRef}>
-                       
-                    
+
+
                         <Form.Item label="代码仓库地址">
                             {itemData.repository}
                         </Form.Item>
@@ -101,15 +101,17 @@ export default class EditPage extends BasePage {
                         <Form.Item label="待发布代码路径">
                             {itemData.targetPath}
                         </Form.Item>
-                       
 
+                        <Form.Item name="version" label="当前版本">
+                        {itemData.version}
+                        </Form.Item>
                     </Form>
                 </Card>
                 <Card type="inner">
-                        <Form.Item>
+                    <Form.Item>
                         <Button type="primary" onClick={that.backToApplication} size="large">返回应用</Button>
-                        </Form.Item>
-                    </Card>
+                    </Form.Item>
+                </Card>
 
             </div>
         );

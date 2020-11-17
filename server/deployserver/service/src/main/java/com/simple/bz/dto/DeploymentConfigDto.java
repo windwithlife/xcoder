@@ -25,6 +25,7 @@ public class DeploymentConfigDto implements Serializable {
     private String targetPath;
     private String domainName;
     private String applicationName;
+    private String version;
 
 
 }

@@ -11,6 +11,7 @@ export default class DockerImageModel extends BaseModel{
 
     getCurrentApplicationId(){
         const appId = this.applcation.getCurrentApplicationId();
+        return appId;
     }
     findImagesByApplicaionId(applicationId,callback){
         let params = {id:applicationId};

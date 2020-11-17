@@ -20,15 +20,14 @@ public class DeploymentConfigModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    //名称
+    private Long   id;
     private Long   applicationId;
     private String path;
     private String repository;
     private String repositoryBranch;
     private String targetPath;
     private String applicationName;
-    private String domainName;
+    private String version;
 
 
 }

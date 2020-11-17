@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DockerBuildRequest {
     private Long   applicationId;
+    private String applicationName;
     private String version;
 }

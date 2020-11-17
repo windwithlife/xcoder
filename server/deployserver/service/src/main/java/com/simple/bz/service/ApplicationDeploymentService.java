@@ -112,10 +112,9 @@ public class ApplicationDeploymentService {
     }
 
     public void buildImage(DockerBuildRequest request) {
+        System.out.println("start to build image  " + request.toString());
         try {
 
-            System.out.println("start to build image  " + request.toString());
-            //ApplicationDeploymentModel releaseModel = releaseDao.findById(request.getReleaseId());
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
             String buildNumber = sdf.format(new Date());
@@ -128,7 +127,15 @@ public class ApplicationDeploymentService {
                 //bring build id info
                 dto.setBuildNumber(buildNumber);
 
-                ApplicationModel application = applicationDao.findById(request.getApplicationId()).get();
+                Long applicationId = request.getApplicationId();
+                ApplicationModel application  = null;
+                if(applicationId <= 0){
+                     application = applicationDao.findOneByApplicationName(request.getApplicationName());
+                }else{
+                    application = applicationDao.findById(request.getApplicationId()).get();
+                }
+                request.setApplicationId(application.getId());
+
                 //get project information
                 ProjectModel project = projectDao.findById(application.getProjectId());
                 dto.setProjectInfo(project);
@@ -147,7 +154,14 @@ public class ApplicationDeploymentService {
                 String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
 
                 //register docker image
-                String buildName = request.getVersion() + "-" + buildNumber;
+                String buildName = this.getBuildName(request.getApplicationId(),request.getVersion());
+
+//                if(StringUtils.isNotBlank(request.getVersion())){
+//                    buildName = request.getVersion() + "-" + buildNumber;
+//                }else if(StringUtils.isNotBlank(config.getVersion())){
+//                    buildName = config.getVersion() + "-" + buildNumber;
+//                }
+
                 DockerImageModel dockerImage = DockerImageModel.builder().buildName(buildName).name(application.getName()).applicationId(application.getId())
                         .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
@@ -160,6 +174,28 @@ public class ApplicationDeploymentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private  String getBuildName(Long applicationId,String inputVersion){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String buildNumber = sdf.format(new Date());
+        System.out.println("current build number=====>  " + buildNumber);
+        String buildName = buildNumber;
+        if(StringUtils.isNotBlank(inputVersion)){
+            buildName = inputVersion + "-" + buildNumber;
+            return buildName;
+        }
+        try{
+            DeploymentConfigModel config = deploymentConfigDao.findById(applicationId).get();
+            if(StringUtils.isNotBlank(config.getVersion())){
+                buildName = config.getVersion() + "-" + buildNumber;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return buildName;
     }
     public void deployApplication(ReleaseRequest request){
         try{

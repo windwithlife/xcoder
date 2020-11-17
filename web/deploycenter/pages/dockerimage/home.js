@@ -36,9 +36,10 @@ export default class EditPage extends BasePage {
         if (!this.applicationId) {
             this.applicationId = this.Store().getCurrentApplicationId();
         }
+        console.log("application Id is =======>" + this.applicationId);
         this.Store().findImagesByApplicaionId(this.applicationId).then(function(result){
             if(result.data){
-                this.setState({dataObject : result.data.list});
+                that.setState({dataObject : result.data.list});
             }
         })
         
@@ -108,7 +109,7 @@ export default class EditPage extends BasePage {
                 <Collapse accordion defaultActiveKey={['0']}>
                     {items.map(function (record, index) {
                         let supportAutoDeploy = record.autoDeploy >0 ? "YES" : "NO";
-                        let headerText = "镜像编号=>" + record.id + "][版本=>" + record.releaseVersion +  "][构建号=>" +record.buildNumber+ "]";
+                        let headerText = "镜像编号=>" + record.id + "][版本=>" + record.releaseVersion +  "][构建号=>" +record.buildName+ "]";
                         console.log(record);
                          
                         if ((!record.releaseStatus) || (record.releaseStatus == "progress")){

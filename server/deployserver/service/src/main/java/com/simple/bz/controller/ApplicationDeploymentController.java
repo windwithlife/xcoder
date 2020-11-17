@@ -2,8 +2,10 @@ package com.simple.bz.controller;
 
 import com.simple.bz.dto.ApplicationReleaseDto;
 import com.simple.bz.dto.ApplicationReleaseListRequest;
+import com.simple.bz.dto.DockerBuildRequest;
 import com.simple.bz.dto.ReleaseRequest;
 import com.simple.bz.service.ApplicationDeploymentService;
+import com.simple.bz.service.DockerImageService;
 import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ApplicationDeploymentController extends BaseController {
 
     private final ApplicationDeploymentService service;
+
 
 
 
@@ -73,7 +76,13 @@ public class ApplicationDeploymentController extends BaseController {
         return result;
     }
 
-
+    @GetMapping(path = "/autoDeployment")
+    GenericResponse buildDockerImage (DockerBuildRequest request){
+        System.out.println(request.toString());
+        service.buildImage(request);
+        GenericResponse result = new GenericResponse(request);
+        return result;
+    }
 
     @PostMapping(path = "/update/{id}")
     public GenericResponse updateSave(@RequestBody GenericRequest req , @PathVariable Long id) {

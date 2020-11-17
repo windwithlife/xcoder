@@ -9,6 +9,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationModel, L
     public  List<ApplicationModel> findByNameLike(String name);
     public ApplicationModel findOneByName(String name);
     public  List<ApplicationModel> findByProjectId(Long id);
+    public ApplicationModel findOneByApplicationName(String applicationName);
 
 
 }

@@ -18,7 +18,7 @@ export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         dataObject: [],
-        envType: 'ALL',
+        envType: 'FAT',
     }
     constructor(props) {
         super(props);
@@ -102,7 +102,7 @@ export default class EditPage extends BasePage {
         let applicationId = this.applicationId; // this.params().applicationId;
         if (applicationId <= 0) { console.log("无法获取当前所属应用信息"); return; }
         let params = { applicationId: applicationId, envType: envType };
-        if (envType == "ALL") {
+        if (envType == "FAT") {
             this.Store().findAll().then(function (values) {
                 if (values.data) {
                     let applications = values.data.list;
@@ -140,7 +140,7 @@ export default class EditPage extends BasePage {
         return (
             < div >
                 <Radio.Group value={envType} onChange={that.onChange} style={{ marginBottom: 16 }}>
-                    <Radio.Button value="ALL">镜像定制发布</Radio.Button>
+                   
                     <Radio.Button value="FAT">FAT</Radio.Button>
                     <Radio.Button value="UAT">UAT</Radio.Button>
                     <Radio.Button value="PROD">PROD</Radio.Button>

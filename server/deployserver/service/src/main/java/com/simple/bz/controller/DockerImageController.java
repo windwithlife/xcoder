@@ -60,6 +60,14 @@ public class DockerImageController extends BaseController {
         return result;
     }
 
+    @GetMapping(path = "/autoDeployment")
+    GenericResponse buildDockerImage (DockerBuildRequest request){
+        System.out.println(request.toString());
+        service.buildDockerImage(request);
+        GenericResponse result = new GenericResponse(request);
+        return result;
+    }
+
     @GetMapping(path = "/findByApplicationId")
         GenericResponse getByApplicationId (@RequestParam("id") Long applicationId){
 
