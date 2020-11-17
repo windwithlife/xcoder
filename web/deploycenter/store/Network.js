@@ -90,7 +90,8 @@ export async function uploadFile(file) {
 export class Network {
     constructor(applicationName){
         if(applicationName){this.applicationName = applicationName;}
-        if(config.SOA_GATE.port){
+        const port = config.SOA_GATE.port;
+        if(port && (port !== 80) && (port !==443)){
             this.host = config.SOA_GATE.host + ':' + config.SOA_GATE.port;
         }else{
             this.host = config.SOA_GATE.host;
