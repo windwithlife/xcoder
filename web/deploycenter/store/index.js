@@ -1,11 +1,11 @@
-import { useStaticRendering } from 'mobx-react';
+//import { useStaticRendering } from 'mobx-react';
 
-import AuthStore from "./AuthStore";
+
 import MenuStore from "./MenuStore";
 
 
 const isServer = typeof window === 'undefined'
-useStaticRendering(isServer)
+//useStaticRendering(isServer)
 
 let stores = {
     menusStore: new MenuStore(),

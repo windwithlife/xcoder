@@ -16,7 +16,7 @@ class MyMobxApp extends App {
 
         return {
             ...appProps,
-            //initialMobxState: appProps
+            
         };
     }
 
@@ -27,8 +27,7 @@ class MyMobxApp extends App {
         }else{
             this.mobxStore = initializeStore();
         }
-        //this.mobxStore = initializeStore(props.initialMobxState)
-        //this.context = this.props.con
+     
     }
 
     render() {
@@ -37,12 +36,7 @@ class MyMobxApp extends App {
         
         let pathName = this.props.router.pathname;
 
-        // let  layoutName = "originNamePage";
-        // if (Component.getLayoutName){
-        //     layoutName = Component.getLayoutName();
-        // }
-        //console.log(layoutName + Component.name)
-        //console.log(this.props.router.pathname);
+       
         console.log(pageProps);
 
 

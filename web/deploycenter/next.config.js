@@ -20,10 +20,10 @@ module.exports = withLess({
   basePath: resourcePath, //process.env.NODE_ENV === "production" ? resourcePath: "" ,
   async rewrites() {
     return [
-      {
-        source: '/',
-        destination: '/applicationrelease/home',
-      },
+      // {
+      //   source: '/',
+      //   destination: '/applicationrelease/home',
+      // },
       // {
       //   source: resourcePath + '/:slug*',
       //   destination: '/:slug*',
