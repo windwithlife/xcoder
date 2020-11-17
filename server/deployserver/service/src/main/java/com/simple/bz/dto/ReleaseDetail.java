@@ -20,6 +20,7 @@ public class ReleaseDetail {
     private String applicationName;
     private String domainName;
     private Long   buildId;
+    private String buildNumber;
     private String envType;
     private boolean autoDeploy;
     private int     cpu;

@@ -58,7 +58,7 @@ class ParamsHelper {
         this.path = setting.path;
         this.applicationName = setting.applicationName;
         this.version = setting.version;
-        this.label = setting.version;
+        this.label = setting.version + '-' +setting.buildNumber;
         this.setting = setting;
         this.takeOwnDeploymentFile = setting.useOwnDeploymentFile;
         this.takeOwnDockerFile = setting.useOwnDockerFile;
@@ -100,8 +100,8 @@ class ParamsHelper {
             projectName: this.projectName,
             name: this.name,
             sideType: this.sideType,
-            label: this.setting.version,
-            version: this.setting.version,
+            label: this.label,
+            version: this.version,
             gateway: this.gateway,
             webDomain: this.website,
             domainName: this.domainName,
@@ -109,8 +109,8 @@ class ParamsHelper {
            
 
         }
-        params.deploymentName = this.applicationName + "-"+ this.sideType + "-deployment";
-        params.applicationName = this.applicationName + "-"+ this.sideType + "-app";
+        params.deploymentName = this.applicationName  + "-deployment";
+        params.applicationName = this.applicationName  + "-app";
         let gatewayName = this.hostName + "-gateway";
         let certName =this.hostName + "-cert";
         let vServiceName = this.hostName + "-vservice";
@@ -149,7 +149,7 @@ class ParamsHelper {
 
     imageName() {
         let imageName = 'a/b:1.0.1';
-        imageName = this.applicationName + "-" + this.sideType + ":" + this.label;
+        imageName = this.applicationName + ":" + this.label;
         console.log('imageName is ....................' + imageName);
 
         return imageName;

@@ -19,6 +19,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class MqttService {
@@ -134,12 +137,18 @@ public class MqttService {
             System.out.println("start to execute release  " + request.toString());
             ApplicationReleaseModel releaseModel = releaseDao.findById(request.getReleaseId());
 
+            SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd-HH-mm-ss" );
+            String buildNumber = sdf.format(new Date());
+            System.out.println("current build number=====>  " + buildNumber);
+
+
 
 
             if(null != releaseModel){
                 ReleaseDetail dto = modelMapper.map(releaseModel, ReleaseDetail.class);//ReleaseDetail.builder().build();
                 System.out.println("release data " + releaseModel.toString());
                 //bring build id info
+                dto.setBuildNumber(buildNumber);
                 dto.setBuildId(request.getBuildId());
                 dto.setEnvType(request.getEnvType());
 

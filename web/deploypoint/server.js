@@ -147,9 +147,13 @@ const dev = process.env.NODE_ENV !== 'production'
       let params = {releaseType:'UAT'};
       params.releaseType = request.envType;
       params.version = request.releaseVersion? request.releaseVersion:'V1.0';
-      params.label = params.version;
       params.useOwnDeploymentFile = request.useOwnDeploymentFile;
       params.buildId = request.buildId;
+      params.buildNumber - request.buildNumber;
+      if(!params.buildNumber){
+        let timestamp = Date.parse(new Date());
+        params.buildNumber = timestamp;
+      }
 
        //应用相关信息
        params.name = request.projectInfo.name;
@@ -166,8 +170,6 @@ const dev = process.env.NODE_ENV !== 'production'
       params.targetPath = request.deploymentConfig.targetPath;
       params.repositoryBranch = request.deploymentConfig.repositoryBranch;
       
-
-     
 
       messageClient.updateReleaseStatus(request.buildId, "starting....");
       if (releaseServer.autoRelease(params)) {

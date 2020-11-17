@@ -28,6 +28,7 @@ public class ApplicationReleaseModel implements Serializable {
     private Long    applicationId;
     private Long    applicationPointId;
     private Long    imageId;
+    private String  buildNumber;
     @Column(columnDefinition="tinyint(1) default 0")
     private boolean autoDeploy;
     private String  envType;
