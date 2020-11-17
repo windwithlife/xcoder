@@ -9,6 +9,38 @@ var messageClient = require('../../store/message-client');
 
 
 
+function buildImage(params) {
+    console.log('************************************************begin to build docker image!....************************')
+   
+    paramsHelper.init(params);
+    pathConfig.init(params);
+   
+    var resultgit = gitTools.fetchSourceFromGit(params);
+    if (!resultgit) {
+        console.log('failed to get source from git, release is stopped!')
+        return false;
+    }
+   
+    const applicationType = paramsHelper.getApplicationType();
+
+    if (applicationType.needBuildAndInstall){
+        if(!builderTools.build(paramsHelper,pathConfig)){
+            logInfo("build", "failed to build sourcecode!");
+            return false;
+        }
+    }
+   if (applicationType.needBuildDocker){
+        if(!dockerTools.buildDockerImage(paramsHelper,pathConfig)){ 
+            logInfo("build docker image", "failed to build docker iamge!");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
 function autoRelease(params) {
     console.log('************************************************begin to fetch git source code!....************************')
     //get sourcecode or execute scripts
@@ -51,4 +83,10 @@ function autoRelease(params) {
     return true;
 }
 
-exports.autoRelease = autoRelease;
+
+module.exports = {
+    autoRelease: autoRelease,
+    buildImage: buildImage,
+   
+}
+

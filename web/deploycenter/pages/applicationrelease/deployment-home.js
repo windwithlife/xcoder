@@ -81,7 +81,21 @@ export default class EditPage extends BasePage {
         });
 
 
+        
     }
+    onRemove = (deploymentId, index,e) => {
+        let that = this;
+        e.stopPropagation();
+        console.log(deploymentId);
+        
+        this.Store().removeById(deploymentId).then(function (result) {
+            that.state.dataObject.splice(index,1);
+            that.setState({dataObject:that.state.dataObject});
+            console.log(result);
+        });
+        
+    }
+    
     getDeploymentListByEnvType(envType) {
         let that = this;
 
@@ -126,7 +140,7 @@ export default class EditPage extends BasePage {
         return (
             < div >
                 <Radio.Group value={envType} onChange={that.onChange} style={{ marginBottom: 16 }}>
-                    <Radio.Button value="ALL">全部</Radio.Button>
+                    <Radio.Button value="ALL">镜像定制发布</Radio.Button>
                     <Radio.Button value="FAT">FAT</Radio.Button>
                     <Radio.Button value="UAT">UAT</Radio.Button>
                     <Radio.Button value="PROD">PROD</Radio.Button>
@@ -137,13 +151,17 @@ export default class EditPage extends BasePage {
 
                 <Collapse accordion defaultActiveKey={['0']}>
                     {items.map(function (record, index) {
-                        let headerText = "[发布单编号=>" + record.id + "][版本=>" + record.releaseVersion +  "][状态=>" + record.releaseStatus + "]";
+                        let supportAutoDeploy = record.autoDeploy >0 ? "YES" : "NO";
+                        let headerText = "[发布单编号=>" + record.id + "][版本=>" + record.releaseVersion +  "][支持自动发布=>" + supportAutoDeploy + "]";
                         console.log(record);
                          
                         if ((!record.releaseStatus) || (record.releaseStatus == "waiting")){
                             return (
-                                <Panel header={headerText} key={index} extra={
-                                    <Button type="primary" onClick={that.onRelease.bind(that, record.id)} >发布</Button>} >
+                                <Panel header={headerText} key={index} extra={<>
+                                    <Button type="primary" onClick={that.onRelease.bind(that, record.id)} >UAT=>PROD发布</Button>
+                                    <Button type="primary" onClick={that.onRelease.bind(that, record.id)} >全流程发布</Button>
+                                    <Button onClick={that.onRemove.bind(that, record.id,index)} >删除</Button>
+                                    </>} >
                                 </Panel>);
                         }else if (record.releaseStatus == "progress"){
                             return (
@@ -153,7 +171,10 @@ export default class EditPage extends BasePage {
                         }else if  (record.releaseStatus == "finish"){
                             return (
                                 <Panel header={headerText} key={index} extra={
-                                    <Button onClick={that.onRelease.bind(that, record.id)} >重新發布</Button>} >
+                                    <>
+                                    <Button onClick={that.onRelease.bind(that, record.id)} >重新全流程发布</Button>
+                                    <Button onClick={that.onRemove.bind(that, record.id,index)} >归档</Button>
+                                    </>} >
                                 </Panel>);
                         }
                         

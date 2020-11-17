@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 @Service
 @RequiredArgsConstructor
 public class MqttService {
@@ -36,6 +37,8 @@ public class MqttService {
     private final ApplicationTypeRepository applicationTypeDao;
     private final ApplicationRepository applicationDao;
     private final DeploymentConfigRepository deploymentConfigDao;
+    private final DockerImageRepository dockerImageDao;
+    //private final ApplicationDeploymentService applicationDeploymentService;
 
     private final AppProps appProps;
 
@@ -49,8 +52,8 @@ public class MqttService {
     private MqttGateway mqttGateway;
 
 
-    public ExampleVO save(ExampleDto example){
-        try{
+    public ExampleVO save(ExampleDto example) {
+        try {
             EndPointModel model = this.convertToModel(example);
             this.exampleDao.add(model);
             System.out.println(model.toString());
@@ -59,38 +62,38 @@ public class MqttService {
             //return this.convertToVO(model);
             return vo;
 
-        }catch (Exception ex){
-            ServiceHelper.handleServiceException(ex,"failed");
+        } catch (Exception ex) {
+            ServiceHelper.handleServiceException(ex, "failed");
             throw new ServiceException("failed to add data to database!");
         }
 
 
     }
 
-    public ExampleVO update(ExampleDto example){
-        try{
+    public ExampleVO update(ExampleDto example) {
+        try {
             EndPointModel model = this.convertToModel(example);
             this.exampleDao.update(model);
 
             return this.convertToVO(model);
 
-        }catch (Exception ex){
-            ServiceHelper.handleServiceException(ex,"failed to add");
+        } catch (Exception ex) {
+            ServiceHelper.handleServiceException(ex, "failed to add");
             throw new ServiceException("failed to add data to database!");
         }
 
 
     }
 
-    public String deleteById(String id){
-        try{
-            int count =  this.exampleDao.deleteById(id);
-            if (count >0){
+    public String deleteById(String id) {
+        try {
+            int count = this.exampleDao.deleteById(id);
+            if (count > 0) {
                 return id;
-            }else{
+            } else {
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             ServiceHelper.handleServiceException(e, "failed to delete model");
             return null;
         }
@@ -106,42 +109,60 @@ public class MqttService {
         return modelMapper.map(exampleDto, EndPointModel.class);
     }
 
-    public void handleMessage(String topic, String payload){
+    public void handleMessage(String topic, String payload) {
 
         System.out.println("MQTT Service Received topic: " + topic);
         System.out.println("MQTT Service Received payload: " + payload);
-        if (!JsonUtils.isJson(payload)){
+        if (!JsonUtils.isJson(payload)) {
             System.out.println("Invalid String Message ! Received payload: " + payload);
             return;
         }
         MqttRequest request = JSON.parseObject(payload, MqttRequest.class);
-        if((null == request) || null == request.getCommand()){return;}
+        if ((null == request) || null == request.getCommand()) {
+            return;
+        }
 
-        if(request.getCommand().equals("register")){
+        if (request.getCommand().equals("register")) {
             EndPointDto endPoint = request.getParamObject(EndPointDto.class);
             registerEndpoint(endPoint);
         }
-        if(request.getCommand().equals("release")){
+        if (request.getCommand().equals("release")) {
             ReleaseRequest release = request.getParamObject(ReleaseRequest.class);
             executeRelease(release);
-            //registerEndpoint(endPoint);
+            //applicationDeploymentService.deployApplication(release);
+
         }
     }
-    private void registerEndpoint(EndPointDto dto){
-         System.out.println("start to register endpoint  " + dto.toString());
+
+    private void registerEndpoint(EndPointDto dto) {
+        System.out.println("start to register endpoint  " + dto.toString());
     }
+
+    public void deployTo(ReleaseDetail deployDto, String mqttTopic, String command) {
+        try {
+
+            MqttDto mqttDto = MqttDto.builder().command(command).build();
+            mqttDto.setCommand(command);
+            mqttDto.setParamObject(deployDto);
+            System.out.println(mqttDto.toString());
+            mqttGateway.sendToMqtt(mqttTopic, mqttDto.toString());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
 
     public void executeRelease(ReleaseRequest request){
         try{
 
             System.out.println("start to execute release  " + request.toString());
-            ApplicationReleaseModel releaseModel = releaseDao.findById(request.getReleaseId());
+            ApplicationDeploymentModel releaseModel = releaseDao.findById(request.getReleaseId());
 
             SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd-HH-mm-ss" );
             String buildNumber = sdf.format(new Date());
             System.out.println("current build number=====>  " + buildNumber);
-
-
 
 
             if(null != releaseModel){
@@ -194,6 +215,11 @@ public class MqttService {
                     }
                 }
                 dto.setDomainName(domainName);
+                //register docker image
+                String buildName = dto.getReleaseVersion() +  "-" + buildNumber;
+                DockerImageModel dockerImage = DockerImageModel.builder().buildName(buildName).name(application.getName()).applicationId(application.getId())
+                        .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
+                dockerImageDao.save(dockerImage);
 
                 MqttDto mqttDto = MqttDto.builder().command("execute").build();
                 mqttDto.setCommand("execute");
@@ -209,4 +235,5 @@ public class MqttService {
         }
 
     }
+
 }

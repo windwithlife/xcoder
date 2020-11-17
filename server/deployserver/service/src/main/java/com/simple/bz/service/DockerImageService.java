@@ -2,8 +2,8 @@ package com.simple.bz.service;
 
 
 
-import com.simple.bz.dao.ApplicationReleaseRepository;
 import com.simple.bz.dao.DockerImageRepository;
+import com.simple.bz.dto.DockerBuildRequest;
 import com.simple.bz.dto.DockerImageDto;
 import com.simple.bz.model.DockerImageModel;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,7 @@ public class DockerImageService {
 
 
     private final DockerImageRepository dao;
+    private final ApplicationDeploymentService deploymentService;
 
     public DockerImageModel convertToModel(DockerImageDto dto){
         return this.modelMapper.map(dto, DockerImageModel.class);
@@ -68,6 +69,11 @@ public class DockerImageService {
 
     }
 
+    public void buildDockerImage(DockerBuildRequest request){
+
+        deploymentService.buildImage(request);
+
+    }
     public DockerImageDto update(DockerImageDto item){
         Long id = item.getId();
         DockerImageModel model = dao.findById(id).get();

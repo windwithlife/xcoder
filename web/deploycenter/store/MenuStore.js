@@ -33,6 +33,7 @@ export default class MenuStore extends BaseModel{
     "applicationrelease":'deploy',
     "applicationtype":'deploy',
     "applicationpoint":'deploy',
+    "dockerimage": 'deploy',
     "buildrecord":'deploy',
     "pagetemplate":'component',
     "xwidget":'component',
@@ -56,7 +57,7 @@ export default class MenuStore extends BaseModel{
     {id:21,name: "當前應用詳情",url:"/applicationrelease/application-detail",level:1,type:'sider', parentId:0,channelName:"deploy"},
     {id:22,name: "部署管理",url:"/applicationrelease/deployment-home",level:1,type:'sider', parentId:0,channelName:"deploy"},
     {id:23,name: "集群管理",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"deploy"},
-    {id:24,name: "构建镜像列表",url:"/applicationpoint/home",level:1,type:'sider', parentId:0,channelName:"deploy"},
+    {id:24,name: "构建镜像列表",url:"/dockerimage/home",level:1,type:'sider', parentId:0,channelName:"deploy"},
    
     
     

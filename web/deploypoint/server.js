@@ -171,12 +171,22 @@ function deployApplication(msg) {
   params.targetPath = request.deploymentConfig.targetPath;
   params.repositoryBranch = request.deploymentConfig.repositoryBranch;
 
-  messageClient.updateReleaseStatus(request.buildId, "starting....");
-  if (releaseServer.autoRelease(params)) {
-    messageClient.updateReleaseStatus(request.buildId, "finish", request.envType);
-  } else {
-    messageClient.updateReleaseStatus(request.buildId, "error", request.envType);
+  if(msg.command === "execute"){
+    if (releaseServer.autoRelease(params)) {
+      messageClient.updateReleaseStatus(request.buildId, "finish", request.envType);
+    } else {
+      messageClient.updateReleaseStatus(request.buildId, "error", request.envType);
+    }
+
+  }else if(msg.command === 'buildImage'){
+    if (releaseServer.buildImage(params)) {
+      messageClient.updateReleaseStatus(request.buildId, "finish", "IMAGE");
+    } else {
+      messageClient.updateReleaseStatus(request.buildId, "error", "IMAGE");
+    }
   }
+ 
+  
 
 }
 console.log("starting release point");

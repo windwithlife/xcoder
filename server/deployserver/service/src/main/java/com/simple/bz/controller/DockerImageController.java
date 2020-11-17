@@ -1,16 +1,14 @@
 package com.simple.bz.controller;
 
+import com.simple.bz.dto.DockerBuildRequest;
 import com.simple.bz.dto.DockerImageDto;
-import com.simple.bz.service.ApplicationReleaseService;
 import com.simple.bz.service.DockerImageService;
 import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +50,18 @@ public class DockerImageController extends BaseController {
         return result;
     }
 
-    @GetMapping(path = "/getApplicationId")
-        GenericResponse getByProjectId (@RequestParam("id") Long applicationId){
+    @PostMapping(path = "/buildImage")
+    GenericResponse buildDockerImage (@RequestBody GenericRequest req){
+        DockerBuildRequest dto = req.getObject(DockerBuildRequest.class);
+        System.out.println(dto.toString());
+        //service.save(dto);
+        service.buildDockerImage(dto);
+        GenericResponse result = new GenericResponse(dto);
+        return result;
+    }
+
+    @GetMapping(path = "/findByApplicationId")
+        GenericResponse getByApplicationId (@RequestParam("id") Long applicationId){
 
         System.out.println("projectId:" + String.valueOf(applicationId));
 

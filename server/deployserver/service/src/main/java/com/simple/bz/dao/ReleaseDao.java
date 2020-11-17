@@ -2,7 +2,7 @@ package com.simple.bz.dao;
 
 
 import com.simple.bz.dto.ReleaseDetail;
-import com.simple.bz.model.ApplicationReleaseModel;
+import com.simple.bz.model.ApplicationDeploymentModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +16,7 @@ public interface ReleaseDao {
      * @return
      * @throws Exception
      */
-    ApplicationReleaseModel findById(@Param("id") Long id) throws Exception;
+    ApplicationDeploymentModel findById(@Param("id") Long id) throws Exception;
     ReleaseDetail findDetailById(@Param("id") Long id) throws Exception;
 
 

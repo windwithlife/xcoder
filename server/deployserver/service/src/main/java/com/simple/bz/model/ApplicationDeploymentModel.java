@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Builder
 @Entity
 @Table(name="ApplicationRelease")
-public class ApplicationReleaseModel implements Serializable {
+public class ApplicationDeploymentModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

@@ -7,7 +7,7 @@ import com.simple.bz.dto.BuildRecordRequest;
 import com.simple.bz.dto.ExampleDto;
 import com.simple.bz.dto.ExampleVO;
 import com.simple.bz.dto.ReleaseRequest;
-import com.simple.bz.service.DeployService;
+
 import com.simple.bz.service.MqttService;
 import com.simple.common.api.BaseResponse;
 import com.simple.common.api.GenericRequest;
@@ -31,8 +31,7 @@ public class MessageController {
 
     @Autowired
     private MqttService mqttService;
-    @Autowired
-    private DeployService deployService;
+
 
     @GetMapping(path = "/test")
     GenericResponse test5(@RequestParam(value = "request") String request){
@@ -51,25 +50,6 @@ public class MessageController {
     }
 
 
-    @PostMapping(path = "/createDeployment")
-    GenericResponse createDeployment (@RequestBody GenericRequest req){
-
-        BuildRecordRequest createRecordRequest = req.getObject(BuildRecordRequest.class);
-        System.out.println(createRecordRequest.toString());
-        //ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
-        deployService.createBuildRecord(createRecordRequest);
-        GenericResponse result = new GenericResponse();
-        return result;
-    }
-
-    @PostMapping(path = "/deploy")
-    GenericResponse deployment (@RequestBody GenericRequest req){
-        System.out.println(req.toString());
-        ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
-        deployService.deployApplication(releaseDto);
-        GenericResponse result = new GenericResponse(releaseDto);
-        return result;
-    }
 
 
     @PostMapping(path = "/addnew")

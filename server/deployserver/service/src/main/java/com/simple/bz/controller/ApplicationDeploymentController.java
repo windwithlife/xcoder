@@ -3,8 +3,7 @@ package com.simple.bz.controller;
 import com.simple.bz.dto.ApplicationReleaseDto;
 import com.simple.bz.dto.ApplicationReleaseListRequest;
 import com.simple.bz.dto.ReleaseRequest;
-import com.simple.bz.service.ApplicationReleaseService;
-import com.simple.bz.service.DeployService;
+import com.simple.bz.service.ApplicationDeploymentService;
 import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
@@ -16,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/applicationrelease")
-public class ApplicationReleaseController extends BaseController {
+public class ApplicationDeploymentController extends BaseController {
 
-    private final ApplicationReleaseService service;
-    private final DeployService deployService;
+    private final ApplicationDeploymentService service;
+
 
 
     @GetMapping(path = "/findAll")
@@ -69,7 +68,7 @@ public class ApplicationReleaseController extends BaseController {
     GenericResponse deployment (@RequestBody GenericRequest req){
         System.out.println(req.toString());
         ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
-        deployService.deployApplication(releaseDto);
+        service.deployApplication(releaseDto);
         GenericResponse result = new GenericResponse(releaseDto);
         return result;
     }
