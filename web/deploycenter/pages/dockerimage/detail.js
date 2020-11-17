@@ -1,9 +1,8 @@
 import React from 'react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
-import DeploymentModel from './models/DeploymentModel';
 import DocerkImageModel from './models/DockerImageModel';
-import DeploymentGroupModel from '../applicationpoint/models/DelpoymentGroupModel';
+
 import BasePage from '../common/pages/BasePage';
 const { Option } = Select;
 
@@ -19,9 +18,8 @@ export default class AddPage extends BasePage {
     }
     constructor(props) {
         super(props);
-        this.setDefaultModel(new DeploymentModel());
-        this.groupModel = new DeploymentGroupModel();
-        this.imageModel = new DocerkImageModel();
+        this.setDefaultModel(new DocerkImageModel());
+       
     }
 
     componentDidMount() {
@@ -32,24 +30,7 @@ export default class AddPage extends BasePage {
         this.Store().queryById(this.id).then(function (values) {
             that.setState({dataObject:values.data});
         })
-        this.groupModel.findAll().then(function (result) {
-            let groups = result.data.list;
-            console.log(groups);
-            that.setState({ groups: groups })
-        });
-        this.imageModel.findAll().then(function (result) {
-            const defaultImageList = [{ id: 0, name: "构建最新代码镜像" }];
-            console.log([].push(defaultImageList));
-            console.log("get imagedocker daata");
-            if (result.data) {
-                let images = result.data.list;
-                images.push.apply(images, defaultImageList);
-                that.setState({ dockerImages: images })
-            } else {
-
-                that.setState({ dockerImages: defaultImageList });
-            }
-        });
+       
 
     }
     
