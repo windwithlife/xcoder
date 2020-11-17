@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Form, Card, Input, Button, Select } from 'antd';
+const { Option } = Select;
 import router from 'next/router';
 
 import BasePage from '../common/pages/BasePage';

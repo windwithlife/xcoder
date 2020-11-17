@@ -129,11 +129,13 @@ public class ApplicationDeploymentService {
 
                 Long applicationId = request.getApplicationId();
                 ApplicationModel application  = null;
-                if(applicationId <= 0){
+                if(null == applicationId){
                      application = applicationDao.findOneByApplicationName(request.getApplicationName());
                 }else{
                     application = applicationDao.findById(request.getApplicationId()).get();
                 }
+                System.out.println("***********************Current Application info ===>");
+                System.out.println(application.toString());
                 request.setApplicationId(application.getId());
 
                 //get project information

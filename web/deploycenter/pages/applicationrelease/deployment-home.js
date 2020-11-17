@@ -3,12 +3,11 @@ import React from 'react';
 import {
     Collapse,
     Radio,
-    Steps,
     Divider,
     Button,
 } from 'antd';
 const { Panel } = Collapse;
-const { Step } = Steps;
+
 
 import router from 'next/router';
 import DeploymentModel from './models/DeploymentModel';
