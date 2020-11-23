@@ -37,28 +37,14 @@ class ParamsHelper {
         this.sideType = this.applicationType.sideType;
         this.typeId = this.applicationType.idName;
         this.website = this.gateway = this.domainName = setting.domainName;
-        // if(this.sideType === "web"){
-            
-            // if(setting.envType ==="UAT"){
-            //   this.domainName = this.website = setting.projectInfo.domainNameUAT;
-            // }else{
-            //   this.domainName = this.website = setting.projectInfo.domainName;
-            // }
-            
-        //   }else if(this.sideType==="server"){
-            // if(setting.envType ==="UAT"){
-            //   this.domainName = this.gateway = setting.projectInfo.gatewayUAT;
-            // }else{
-            //   this.domainName = this.gateway = setting.projectInfo.gateway;
-            // }
-            
-        //   }
+  
 
         this.name = setting.name;
         this.path = setting.path;
         this.applicationName = setting.applicationName;
         this.version = setting.version;
         this.label = setting.version + '-' +setting.buildNumber;
+        this.imageLabel = setting.imageLabel;
         this.setting = setting;
         this.takeOwnDeploymentFile = setting.useOwnDeploymentFile;
         this.takeOwnDockerFile = setting.useOwnDockerFile;

@@ -1,11 +1,10 @@
 package com.simple.bz.controller;
 
-import com.simple.bz.dto.ApplicationReleaseDto;
+import com.simple.bz.dto.ApplicationDeploymentDto;
 import com.simple.bz.dto.ApplicationReleaseListRequest;
 import com.simple.bz.dto.DockerBuildRequest;
 import com.simple.bz.dto.ReleaseRequest;
 import com.simple.bz.service.ApplicationDeploymentService;
-import com.simple.bz.service.DockerImageService;
 import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
@@ -22,29 +21,29 @@ public class ApplicationDeploymentController extends BaseController {
     private final ApplicationDeploymentService service;
 
 
-
-
     @GetMapping(path = "/findAll")
-    GenericResponse createDeployment (){
+    GenericResponse createDeployment() {
 
-        List<ApplicationReleaseDto> dtoLst = service.findAll();
+        List<ApplicationDeploymentDto> dtoLst = service.findAll();
         GenericResponse result = GenericResponse.build().addKey$Value("list", dtoLst);
 
         return result;
     }
+
     @GetMapping(path = "/findById")
-    GenericResponse findById (@RequestParam("id") Long applicationId){
+    GenericResponse findById(@RequestParam("id") Long applicationId) {
 
         System.out.println("applicationId:" + String.valueOf(applicationId));
 
-        ApplicationReleaseDto  application = service.findById(applicationId);
+        ApplicationDeploymentDto application = service.findById(applicationId);
         GenericResponse result = GenericResponse.build().setDataObject(application);
         return result;
     }
-    @PostMapping(path = "/save")
-    GenericResponse createDeployment (@RequestBody GenericRequest req){
 
-        ApplicationReleaseDto dto = req.getObject(ApplicationReleaseDto.class);
+    @PostMapping(path = "/save")
+    GenericResponse createDeployment(@RequestBody GenericRequest req) {
+
+        ApplicationDeploymentDto dto = req.getObject(ApplicationDeploymentDto.class);
         System.out.println(dto.toString());
         service.save(dto);
         GenericResponse result = new GenericResponse(dto);
@@ -52,32 +51,46 @@ public class ApplicationDeploymentController extends BaseController {
     }
 
     @GetMapping(path = "/getByApplicationId")
-        GenericResponse getByProjectId (@RequestParam("id") Long applicationId){
+    GenericResponse getByProjectId(@RequestParam("id") Long applicationId) {
 
         System.out.println("projectId:" + String.valueOf(applicationId));
 
-        List<ApplicationReleaseDto>  applications = service.findByApplicationId(applicationId);
+        List<ApplicationDeploymentDto> applications = service.findByApplicationId(applicationId);
         GenericResponse result = GenericResponse.build().addKey$Value("list", applications);
         return result;
     }
+
     @GetMapping(path = "/getDeploymentList")
-    GenericResponse getListByEnv (ApplicationReleaseListRequest request){
+    GenericResponse getListByEnv(ApplicationReleaseListRequest request) {
         System.out.println(request.toString());
-        List<ApplicationReleaseDto>  applications = service.findByEnvType(request);
+        List<ApplicationDeploymentDto> applications = service.findByEnvType(request);
         GenericResponse result = GenericResponse.build().addKey$Value("list", applications);
         return result;
     }
+
     @PostMapping(path = "/deployTo")
-    GenericResponse deployment (@RequestBody GenericRequest req){
+    GenericResponse deployment(@RequestBody GenericRequest req) {
         System.out.println(req.toString());
         ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
+
         service.deployApplication(releaseDto);
+
+
+        GenericResponse result = new GenericResponse(releaseDto);
+        return result;
+    }
+
+    @PostMapping(path = "/deployWithImage")
+    GenericResponse deployWithImage(@RequestBody GenericRequest req) {
+        System.out.println(req.toString());
+        ReleaseRequest releaseDto = req.getObject(ReleaseRequest.class);
+        service.deployApplicationWithImage(releaseDto);
         GenericResponse result = new GenericResponse(releaseDto);
         return result;
     }
 
     @GetMapping(path = "/autoDeployment")
-    GenericResponse buildDockerImage (DockerBuildRequest request){
+    GenericResponse buildDockerImage(DockerBuildRequest request) {
         System.out.println(request.toString());
         service.buildImage(request);
         GenericResponse result = new GenericResponse(request);
@@ -85,8 +98,8 @@ public class ApplicationDeploymentController extends BaseController {
     }
 
     @PostMapping(path = "/update/{id}")
-    public GenericResponse updateSave(@RequestBody GenericRequest req , @PathVariable Long id) {
-        ApplicationReleaseDto item = req.getObject(ApplicationReleaseDto.class);
+    public GenericResponse updateSave(@RequestBody GenericRequest req, @PathVariable Long id) {
+        ApplicationDeploymentDto item = req.getObject(ApplicationDeploymentDto.class);
         item.setId(id);
         System.out.println("applicationId:" + String.valueOf(id));
         service.update(item);
@@ -103,8 +116,6 @@ public class ApplicationDeploymentController extends BaseController {
         service.remove(id);
         return id;
     }
-
-
 
 
 }

@@ -17,6 +17,9 @@ export default class DeploymentModel extends BaseModel{
     deployTo(params,callback){
         return this.post("/deployTo",params,callback);
     }
+    deployWithImage(params,callback){
+        return this.post("/deployWithImage",params,callback);
+    }
 }
 
 

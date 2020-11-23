@@ -170,7 +170,7 @@ public class MqttService {
                 System.out.println("release data " + releaseModel.toString());
                 //bring build id info
                 dto.setBuildNumber(buildNumber);
-                dto.setBuildId(request.getBuildId());
+
                 dto.setEnvType(request.getEnvType());
 
 

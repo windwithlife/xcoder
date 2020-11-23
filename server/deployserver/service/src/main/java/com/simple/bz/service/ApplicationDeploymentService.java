@@ -42,62 +42,62 @@ public class ApplicationDeploymentService {
 
     private final ServiceHelper serviceHelper;
 
-    public ApplicationDeploymentModel convertToModel(ApplicationReleaseDto dto){
+    public ApplicationDeploymentModel convertToModel(ApplicationDeploymentDto dto){
         return this.modelMapper.map(dto, ApplicationDeploymentModel.class);
     }
-    public List<ApplicationDeploymentModel> convertToModels(List<ApplicationReleaseDto> dtos){
+    public List<ApplicationDeploymentModel> convertToModels(List<ApplicationDeploymentDto> dtos){
         List<ApplicationDeploymentModel> resultList = new ArrayList<ApplicationDeploymentModel>();
         for (int i=0; i < dtos.size(); i++){
             resultList.add(this.convertToModel(dtos.get(i)));
         }
         return resultList;
     }
-    public ApplicationReleaseDto convertToDto(ApplicationDeploymentModel model){
-        return this.modelMapper.map(model, ApplicationReleaseDto.class);
+    public ApplicationDeploymentDto convertToDto(ApplicationDeploymentModel model){
+        return this.modelMapper.map(model, ApplicationDeploymentDto.class);
     }
 
-    public List<ApplicationReleaseDto> convertToDtos(List<ApplicationDeploymentModel> models){
+    public List<ApplicationDeploymentDto> convertToDtos(List<ApplicationDeploymentModel> models){
         if(null == models) {
-            List<ApplicationReleaseDto> dtos = new ArrayList<ApplicationReleaseDto>();
+            List<ApplicationDeploymentDto> dtos = new ArrayList<ApplicationDeploymentDto>();
             return dtos;
         }
-        List<ApplicationReleaseDto> resultList = new ArrayList<ApplicationReleaseDto>();
+        List<ApplicationDeploymentDto> resultList = new ArrayList<ApplicationDeploymentDto>();
         for (int i=0; i < models.size(); i++){
             resultList.add(this.convertToDto(models.get(i)));
         }
         return resultList;
 
     }
-    public List<ApplicationReleaseDto> findAll(){
+    public List<ApplicationDeploymentDto> findAll(){
 
         List<ApplicationDeploymentModel> list =   dao.findAll();
         return  this.convertToDtos(list);
     }
 
-    public List<ApplicationReleaseDto> findByApplicationId(Long id){
+    public List<ApplicationDeploymentDto> findByApplicationId(Long id){
 
         List<ApplicationDeploymentModel> list =  dao.findByApplicationId(id);
         return  this.convertToDtos(list);
     }
 
-    public List<ApplicationReleaseDto> findByEnvType(ApplicationReleaseListRequest request){
+    public List<ApplicationDeploymentDto> findByEnvType(ApplicationReleaseListRequest request){
         List<ApplicationDeploymentModel> list =  dao.findByApplicationIdAndEnvType(request.getApplicationId(),request.getEnvType());
         return  this.convertToDtos(list);
     }
 
 
-    public ApplicationReleaseDto findById(Long id){
+    public ApplicationDeploymentDto findById(Long id){
         ApplicationDeploymentModel model =  dao.findById(id).get();
         return this.convertToDto(model);
     }
-    public void save(ApplicationReleaseDto item){
+    public void save(ApplicationDeploymentDto item){
         ApplicationDeploymentModel model = this.convertToModel(item);
         this.dao.save(model);
 
 
     }
 
-    public ApplicationReleaseDto update(ApplicationReleaseDto item){
+    public ApplicationDeploymentDto update(ApplicationDeploymentDto item){
         Long id = item.getId();
         ApplicationDeploymentModel model = dao.findById(id).get();
         if(null == model ){return null;}
@@ -125,7 +125,10 @@ public class ApplicationDeploymentService {
                 ReleaseDetail dto = ReleaseDetail.builder().build();
 
                 //bring build id info
+                String buildName = this.getBuildNumber();
+                String imageLabel = this.getImageLabel(request.getApplicationId(),request.getVersion());
                 dto.setBuildNumber(buildNumber);
+                dto.setImageLabel(imageLabel);
 
                 Long applicationId = request.getApplicationId();
                 ApplicationModel application  = null;
@@ -156,15 +159,10 @@ public class ApplicationDeploymentService {
                 String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
 
                 //register docker image
-                String buildName = this.getBuildName(request.getApplicationId(),request.getVersion());
 
-//                if(StringUtils.isNotBlank(request.getVersion())){
-//                    buildName = request.getVersion() + "-" + buildNumber;
-//                }else if(StringUtils.isNotBlank(config.getVersion())){
-//                    buildName = config.getVersion() + "-" + buildNumber;
-//                }
 
-                DockerImageModel dockerImage = DockerImageModel.builder().buildName(buildName).name(application.getName()).applicationId(application.getId())
+
+                DockerImageModel dockerImage = DockerImageModel.builder().buildNumber(buildName).buildName(imageLabel).imageLabel(imageLabel).name(application.getName()).applicationId(application.getId())
                         .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
                 mqttService.deployTo(dto, executePointTopic, "buildImage");
@@ -177,28 +175,111 @@ public class ApplicationDeploymentService {
             e.printStackTrace();
         }
     }
-    private  String getBuildName(Long applicationId,String inputVersion){
+    private  String getImageLabel(Long applicationId,String inputVersion){
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        String buildNumber = sdf.format(new Date());
+        String buildNumber = this.getBuildNumber();
         System.out.println("current build number=====>  " + buildNumber);
-        String buildName = buildNumber;
+        String imageLabel = buildNumber;
         if(StringUtils.isNotBlank(inputVersion)){
-            buildName = inputVersion + "-" + buildNumber;
-            return buildName;
+            imageLabel = inputVersion + "-" + imageLabel;
+            return imageLabel;
         }
         try{
             DeploymentConfigModel config = deploymentConfigDao.findById(applicationId).get();
             if(StringUtils.isNotBlank(config.getVersion())){
-                buildName = config.getVersion() + "-" + buildNumber;
+                imageLabel = config.getVersion() + "-" + buildNumber;
             }
+            return imageLabel;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "V1.0.0" + '-' + imageLabel;
+    }
+
+    private  String getBuildNumber(){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String buildNumber = sdf.format(new Date());
+        System.out.println("current build number=====>  " + buildNumber);
+
+        return buildNumber;
+    }
+    public void deployApplicationWithImage(ReleaseRequest request){
+        try{
+
+            System.out.println("start to execute release  " + request.toString());
+
+            ApplicationDeploymentModel releaseModel = releaseDao.findById(request.getReleaseId());
+
+
+
+
+            if(null != releaseModel){
+                ReleaseDetail dto = modelMapper.map(releaseModel, ReleaseDetail.class);//ReleaseDetail.builder().build();
+                System.out.println("release data " + releaseModel.toString());
+
+                dto.setEnvType(request.getEnvType());
+
+                //get docker image id, buildNumber information
+                DockerImageModel imageInfo = dockerImageDao.findById(releaseModel.getImageId()).get();
+                dto.setBuildNumber(imageInfo.getBuildNumber());
+                dto.setImageLabel(imageInfo.getImageLabel());
+
+                ApplicationModel application = applicationDao.findById(releaseModel.getApplicationId()).get();
+                //get project information
+                ProjectModel project = projectDao.findById(application.getProjectId());
+                dto.setProjectInfo(project);
+                dto.setApplicationInfo(application);
+
+                //get application type info
+                ApplicationTypeModel appType = applicationTypeDao.findById(application.getApplicationTypeId()).get();
+                dto.setApplicationTypeInfo(appType);
+
+
+                //get the target execute point.
+                DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                System.out.println("excute point data " + point.toString());
+                String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
+
+
+                //do with domainName
+                String domainName ="no.domain.com";
+                if(request.getEnvType().toLowerCase().equals("uat")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainNameUAT();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = "uat." + application.getDomainName();
+                        }
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGatewayUAT();
+                    }
+                }else if(request.getEnvType().toLowerCase().equals("prod")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainName();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = application.getDomainName();
+                        }
+
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGateway();
+                    }
+                }
+                dto.setDomainName(domainName);
+
+
+                mqttService.deployTo(dto, executePointTopic,"deployToGroups");
+                //mqttService.deployTo(dto, executePointTopic, command);
+
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return buildName;
     }
+
     public void deployApplication(ReleaseRequest request){
         try{
 
@@ -215,7 +296,7 @@ public class ApplicationDeploymentService {
                 System.out.println("release data " + releaseModel.toString());
                 //bring build id info
                 dto.setBuildNumber(buildNumber);
-                dto.setBuildId(request.getBuildId());
+                //dto.setBuildId(request.getBuildId());
                 dto.setEnvType(request.getEnvType());
 
 

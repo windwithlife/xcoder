@@ -18,7 +18,7 @@ export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         dataObject: [],
-        envType: 'ALL',
+        envType: 'UAT',
     }
     constructor(props) {
         super(props);
@@ -76,9 +76,9 @@ export default class EditPage extends BasePage {
         });
         
     }
-    onCreateDeployment = (record) => {
+    onCreateDeployment = (record,envType) => {
         let path = '/applicationrelease/add';
-        router.push({ pathname: path, query: { applicationId: this.applicationId, imageId: record.id,buildNumber: record.bindNumber,envType: this.state.envType } });
+        router.push({ pathname: path, query: { applicationId: this.applicationId, imageId: record.id,buildNumber: record.buildName,envType: envType } });
     }
     onRelease = ( e) => {
         e.stopPropagation();
@@ -115,7 +115,8 @@ export default class EditPage extends BasePage {
                         if ((!record.releaseStatus) || (record.releaseStatus == "progress")){
                             return (
                                 <Panel header={headerText} key={index} extra={<>
-                                    <Button type="primary" onClick={that.onCreateDeployment.bind(that, record)} >构建发布</Button>
+                                    <Button type="primary" onClick={that.onCreateDeployment.bind(that, record, 'UAT')} >构建UAT发布</Button>
+                                    <Button type="primary" onClick={that.onCreateDeployment.bind(that, record, 'PROD')} >构建生产发布</Button>
                                    
                                     <Button onClick={that.handleLineDelete.bind(that, index, record)} >删除</Button>
                                     </>} >
@@ -124,7 +125,7 @@ export default class EditPage extends BasePage {
                             return (
                                 <Panel header={headerText} key={index} extra={
                                     <>
-                                    <Button onClick={that.onCreateDeployment.bind(that, record)} >构建发布</Button>
+                                    <Button onClick={that.onCreateDeployment.bind(that, record,'PROD')} >重新生产发布</Button>
                                     <Button onClick={that.handleLineDelete.bind(that,index, record)} >删除</Button>
                                     </>} >
                                 </Panel>);

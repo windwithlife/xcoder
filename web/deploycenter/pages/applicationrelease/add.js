@@ -13,6 +13,7 @@ export default class AddPage extends BasePage {
         dataObject:{},
         groups:[],
         dockerImages:[],
+        withImage:false,
     }
     StoreData = () => {
         return this.state.dataObject;
@@ -27,28 +28,46 @@ export default class AddPage extends BasePage {
     componentDidMount() {
         let that = this;
         this.applicationId = this.params().applicationId;
+        this.buildNumber = this.params().buildNumber;
+        this.imageId = this.params().imageId;
+        this.envType =this.params().envType;
+       
         if(!this.applicationId){
             this.applicationId = this.Store().getCurrentApplicationId();
         }
         this.evnType = this.params().envType;
-        this.groupModel.findAll().then(function(result){
-            let groups = result.data.list;
-            console.log(groups);
-            that.setState({groups:groups})
-        });
-        this.imageModel.findAll().then(function(result){
-            const defaultImageList = [{id:0, name:"构建最新代码镜像"}];
-            console.log([].push(defaultImageList));
-            console.log("get imagedocker daata");
-            if(result.data){
-                let images = result.data.list;
-                images.push.apply(images,defaultImageList);
-                that.setState({dockerImages:images})
-            }else{
-                
-                that.setState({dockerImages:defaultImageList});
-            }    
-        });
+
+        if(this.imageId){
+            this.withImage = true;
+            this.groupModel.findAll().then(function(result){
+                let groups = result.data.list;
+                console.log(groups);
+                that.setState({groups:groups,imageId: that.imageId,buildNumber:that.buildNumber,envType:that.envType});
+            });
+
+        }else{
+            this.groupModel.findAll().then(function(result){
+                let groups = result.data.list;
+                console.log(groups);
+                that.setState({groups:groups});
+            });
+            this.imageModel.findAll().then(function(result){
+                const defaultImageList = [{id:0, name:"构建最新代码镜像"}];
+                console.log([].push(defaultImageList));
+                console.log("get imagedocker daata");
+                if(result.data){
+                    let images = result.data.list;
+                    images.push.apply(images,defaultImageList);
+                    that.setState({dockerImages:images})
+                }else{
+                    
+                    that.setState({dockerImages:defaultImageList});
+                }    
+            });
+        }
+
+       
+       
         
     }
     onFinish = values => {
@@ -59,9 +78,19 @@ export default class AddPage extends BasePage {
         }
         values.applicationId = this.applicationId;
         values.envType = this.params().envType;
+        values.imageId = this.imageId;
         console.log("*********************#############release params");
         console.log(values);
-        this.Store().add(values, () => { console.log('finished add row'); router.back(); });
+        this.Store().add(values, (result) => {
+             console.log('finished add row'); 
+            //  if(that.state.imageId){
+            //     let deploymentId = result.data.id;
+            //     let releaseParams = { releaseId: deploymentId, envType: this.state.envType };
+            //     that.Store().deployTo(releaseParams);
+            //  }
+            let path = '/applicationrelease/deployment-home';
+            router.push({ pathname: path, query: { applicationId: that.applicationId, envType: that.params().envType }});
+        });
     }
 
     render() {
@@ -80,12 +109,13 @@ export default class AddPage extends BasePage {
                    }}
                 >
                    <Form.Item name="dockerImage" label="发布镜像" >
-                        <Select defaultValue={0}>
+                        {!that.state.imageId && <Select defaultValue={0}>
                             {that.state.dockerImages.map(function (item, i) {
                                 return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
                             })}
                            
-                        </Select>
+                        </Select>}
+                        {that.state.imageId && that.buildNumber }
                     </Form.Item>
                     <Form.Item name="applicationPointId" label="目标集群" >
                         <Select >
@@ -128,12 +158,12 @@ export default class AddPage extends BasePage {
                             <Option value="V2.0">V2.0</Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item name="autoDeploy" label="是否支持自动发布部署">
-                        <Select  style={{ width: 200 }} >
+                    {!that.state.imageId &&<Form.Item name="autoDeploy" label="是否支持自动发布部署">
+                     <Select  style={{ width: 200 }} >
                             <Option value="0">不支持</Option>
                             <Option value="1">支持</Option>
                         </Select>
-                    </Form.Item>
+                    </Form.Item>}
                     <Card type="inner">
                         <Form.Item>
                             <Button type="primary" htmlType="submit" size="large">Save</Button>

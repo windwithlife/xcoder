@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 
-public class ApplicationReleaseDto implements Serializable {
+public class ApplicationDeploymentDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;

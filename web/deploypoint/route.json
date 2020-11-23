@@ -9,6 +9,11 @@
       "host": "soagateway.koudaibook.com",
       "path": "/simple/deployment",
       "serviceName": "deployment-server"
+    },
+    {
+      "host": "uat.manager.koudaibook.com",
+      "path": "/xcoder",
+      "serviceName": "deployment-web-web"
     }
   ]
 }

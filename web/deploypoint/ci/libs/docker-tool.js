@@ -64,16 +64,18 @@ function createK8sDeploymentFiles(paramsHelper,pathConfig){
     */
 
     //发布到带istio的k8s集群或者普通的集群。
+    let params = paramsHelper.buildParamsForDeployment();
     let templatefileName = paramsHelper.templatefile();
     let deploymentfileName = paramsHelper.deploymentfile();
     let templatefile = pathConfig.deploymentTemplateFile(templatefileName);
-    let deploymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
-    let params = paramsHelper.buildParamsForDeployment();
-    codeTools.generateCode(templatefile,params,deploymentfile);
+
+
+    //let deploymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
+    //codeTools.generateCode(templatefile,params,deploymentfile);
 
 
     //保存发布文件到项目目录中
-    deploymentfile = pathConfig.deploymentK8sTargetFile(deploymentfileName);
+    let deploymentfile = pathConfig.deploymentK8sTargetFile(deploymentfileName);
     codeTools.generateCode(templatefile,params,deploymentfile);
 
     //生成降低docker compose方案
@@ -105,9 +107,10 @@ function deployConfigFiles(paramsHelper,pathConfig){
  */
 function deploy2Cloud(paramsHelper,pathConfig){
     let deploymentfileName = paramsHelper.deploymentfile();
-    let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
-    let runUnDeployCommand = 'kubectl delete -f  ' + depolymentfile;
-    let runDeployCommand = 'kubectl create -f  ' + depolymentfile;
+    //let depolymentfile = pathConfig.deploymentTargetFile(deploymentfileName);
+    let deploymentfile = pathConfig.deploymentK8sTargetFile(deploymentfileName);
+    let runUnDeployCommand = 'kubectl delete -f  ' + deploymentfile;
+    let runDeployCommand = 'kubectl create -f  ' + deploymentfile;
     
     executeCommand(runUnDeployCommand,"delete origin k8s objects");
     return executeCommand(runDeployCommand,"application deployment");
@@ -165,7 +168,7 @@ function deploy2K8sCloud(paramsHelper,pathConfig) {
     }
 
     //Deploy the server configmap to K8s Cluster if there are a 'config' directory
-    deployConfigFiles(paramsHelper,pathConfig);
+    //deployConfigFiles(paramsHelper,pathConfig);
     if(!deploy2Cloud(paramsHelper,pathConfig)){
         isSuccessful = false;
     }
@@ -177,7 +180,7 @@ function deploy2K8sCloud(paramsHelper,pathConfig) {
 
 module.exports = {
     buildDockerImage: buildDockerImage,
-    deploy2K8sCloud:deploy2K8sCloud,
+    deploy2K8sCloud: deploy2K8sCloud,
     deployFilesToK8s:deployK8sFiles,
 }
 

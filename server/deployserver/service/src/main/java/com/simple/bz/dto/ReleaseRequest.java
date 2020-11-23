@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReleaseRequest {
     private Long releaseId;
-    private Long buildId;
+    private Long imageId;
     private String envType;
 }

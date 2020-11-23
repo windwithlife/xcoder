@@ -17,7 +17,7 @@ export default class EditPage extends BasePage {
     formRef = React.createRef();
     state = {
         dataObject: [],
-        envType: 'FAT',
+        envType: 'ALL',
     }
     constructor(props) {
         super(props);
@@ -78,8 +78,16 @@ export default class EditPage extends BasePage {
             console.log("have delpoy to");
             console.log(result);
         });
-
-
+        
+    }
+    onReleaseByImge = (deploymentId, e) => {
+        e.stopPropagation();
+        console.log(deploymentId);
+        let releaseParams = { releaseId: deploymentId, envType: this.state.envType };
+        this.Store().deployWithImage(releaseParams).then(function (result) {
+            console.log("have delpoy to");
+            console.log(result);
+        });
         
     }
     onRemove = (deploymentId, index,e) => {
@@ -101,7 +109,7 @@ export default class EditPage extends BasePage {
         let applicationId = this.applicationId; // this.params().applicationId;
         if (applicationId <= 0) { console.log("无法获取当前所属应用信息"); return; }
         let params = { applicationId: applicationId, envType: envType };
-        if (envType == "FAT") {
+        if (envType == "ALL") {
             this.Store().findAll().then(function (values) {
                 if (values.data) {
                     let applications = values.data.list;
@@ -134,31 +142,45 @@ export default class EditPage extends BasePage {
     render() {
         let that = this;
         let envType = this.state.envType;
+        let deployText = "到UAT集群";
+        if(envType ==='PROD'){
+            deployText = "从UAT集群部到生产集群"
+        }
+
         let items = that.StoreData();
         console.log('render module edit page');
         return (
             < div >
                 <Radio.Group value={envType} onChange={that.onChange} style={{ marginBottom: 16 }}>
                    
-                    <Radio.Button value="FAT">FAT</Radio.Button>
+                    <Radio.Button value="ALL">所有发布单</Radio.Button>
                     <Radio.Button value="UAT">UAT</Radio.Button>
                     <Radio.Button value="PROD">PROD</Radio.Button>
                 </Radio.Group>
                 <Divider />
-                <Button type="primary" size="large" onClick={that.onCreateDeployment} >创建发布</Button>
+                {(that.state.envType != 'ALL') && <Button type="primary" size="large" onClick={that.onCreateDeployment} >创建全流程发布单</Button>}
                 <Divider />
 
+                <Button  size="large" >发布单列表</Button>
+                <Divider />
                 <Collapse accordion defaultActiveKey={['0']}>
                     {items.map(function (record, index) {
+                        
                         let supportAutoDeploy = record.autoDeploy >0 ? "YES" : "NO";
                         let headerText = "[发布单编号=>" + record.id + "][版本=>" + record.releaseVersion +  "][支持自动发布=>" + supportAutoDeploy + "]";
                         console.log(record);
                          
                         if ((!record.releaseStatus) || (record.releaseStatus == "waiting")){
+                            let deployType = "镜像发布";
+                            let releaseHandler = that.onReleaseByImge.bind(that, record.id);
+                            if(!record.imageId) {
+                                deployType = "全流程发布";
+                                releaseHandler = that.onRelease.bind(that, record.id);
+                            }
+                            let deployTextFinal = deployType + '==>' + deployText;
                             return (
                                 <Panel header={headerText} key={index} extra={<>
-                                    <Button type="primary" onClick={that.onRelease.bind(that, record.id)} >UAT=>PROD发布</Button>
-                                    <Button type="primary" onClick={that.onRelease.bind(that, record.id)} >全流程发布</Button>
+                                    <Button type="primary" onClick={releaseHandler} >{deployTextFinal}</Button>
                                     <Button onClick={that.onRemove.bind(that, record.id,index)} >删除</Button>
                                     </>} >
                                 </Panel>);
@@ -168,11 +190,12 @@ export default class EditPage extends BasePage {
                                     <Button >发布中....</Button>} >
                                 </Panel>);
                         }else if  (record.releaseStatus == "finish"){
+                            let deployTextFinal = "重新部署" + '==>' + deployText;
                             return (
                                 <Panel header={headerText} key={index} extra={
                                     <>
-                                    <Button onClick={that.onRelease.bind(that, record.id)} >重新全流程发布</Button>
-                                    <Button onClick={that.onRemove.bind(that, record.id,index)} >归档</Button>
+                                    <Button onClick={that.onReleaseByImge.bind(that, record.id)} >{deployTextFinal}</Button>
+                                    <Button onClick={that.onRemove.bind(that, record.id,index)} >删除</Button>
                                     </>} >
                                 </Panel>);
                         }

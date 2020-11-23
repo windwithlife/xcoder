@@ -83,10 +83,37 @@ function autoRelease(params) {
     return true;
 }
 
+function deployImageToGroups(params) {
+    console.log('************************************************begin to deploy docker image to groups!....************************')
+    //get sourcecode or execute scripts
+    paramsHelper.init(params);
+    pathConfig.init(params);
+   
+    
+   
+    const applicationType = paramsHelper.getApplicationType();
+
+    if (applicationType.needExecuteScript){
+        if(!shellTools.executeScripts(paramsHelper,pathConfig)){ 
+            logInfo("execuite script", "failed to execute script!");    
+            return false;
+        } 
+    }
+    
+
+    if (applicationType.needDeploy){
+        if(!dockerTools.deploy2K8sCloud(paramsHelper,pathConfig)){ 
+            logInfo("deploy", "failed to deploy application!");
+            return false;
+        }
+    }    
+    return true;
+}
 
 module.exports = {
     autoRelease: autoRelease,
     buildImage: buildImage,
+    deployImageToGroups: deployImageToGroups,
    
 }
 

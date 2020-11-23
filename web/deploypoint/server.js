@@ -148,8 +148,9 @@ function deployApplication(msg) {
   params.releaseType = request.envType;
   params.version = request.releaseVersion ? request.releaseVersion : 'V1.0';
   params.useOwnDeploymentFile = request.useOwnDeploymentFile;
-  params.buildId = request.buildId;
+  params.buildId = request.id;
   params.buildNumber = request.buildNumber;
+  params.imageLabel = request.imageLabel;
   if (!params.buildNumber) {
     let timestamp = Date.parse(new Date());
     params.buildNumber = timestamp;
@@ -167,26 +168,37 @@ function deployApplication(msg) {
 
 
   //source code info
-  params.gitUrl = request.deploymentConfig.repository;
-  params.targetPath = request.deploymentConfig.targetPath;
-  params.repositoryBranch = request.deploymentConfig.repositoryBranch;
+  if (request.deploymentConfig) {
 
-  if(msg.command === "execute"){
+    params.gitUrl = request.deploymentConfig.repository;
+    params.targetPath = request.deploymentConfig.targetPath;
+    params.repositoryBranch = request.deploymentConfig.repositoryBranch;
+
+
+  }
+
+  if (msg.command === "execute") {
     if (releaseServer.autoRelease(params)) {
-      messageClient.updateReleaseStatus(request.buildId, "finish", request.envType);
+      messageClient.updateReleaseStatus(request.id, "finish", request.envType);
     } else {
-      messageClient.updateReleaseStatus(request.buildId, "error", request.envType);
+      messageClient.updateReleaseStatus(request.id, "error", request.envType);
     }
 
-  }else if(msg.command === 'buildImage'){
+  } else if (msg.command === 'buildImage') {
     if (releaseServer.buildImage(params)) {
-      messageClient.updateReleaseStatus(request.buildId, "finish", "IMAGE");
+      messageClient.updateReleaseStatus(request.id, "finish", "IMAGE");
     } else {
-      messageClient.updateReleaseStatus(request.buildId, "error", "IMAGE");
+      messageClient.updateReleaseStatus(request.id, "error", "IMAGE");
+    }
+  } else if (msg.command === 'deployToGroups') {
+    if (releaseServer.deployImageToGroups(params)) {
+      messageClient.updateReleaseStatus(request.id, "finish", request.envType);
+    } else {
+      messageClient.updateReleaseStatus(request.id, "error", request.envType);
     }
   }
- 
-  
+
+
 
 }
 console.log("starting release point");
