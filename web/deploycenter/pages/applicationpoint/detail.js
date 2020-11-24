@@ -33,20 +33,23 @@ export default class EditPage extends BasePage {
         let that = this;
         let groupId = this.params().id;
         if (groupId) {
-            this.Store().queryById(id).then(function (values) {
+            this.Store().queryById(groupId).then(function (values) {
                 console.log(values);
                 that.setState({ data: values.data });
             });
         }
 
     }
-
+    onEdit = () => {
+        let groupId = this.params().id;
+        router.push({ pathname: '/applicationpoint/edit', query: { id: groupId } });
+    }
     render() {
         let that = this;
         let itemData = that.StoreData();
         return (
             < div >
-                <Card size="small" title="基本信息" style={{ width: 800 }}  >
+                <Card size="small" title="基本信息" style={{ width: 800 }} extra={<a onClick={that.onEdit} >修改</a>}  >
                     <Form ref={this.formRef}>
                         < Form.Item name="name" label="名称：">
                             {itemData.name}

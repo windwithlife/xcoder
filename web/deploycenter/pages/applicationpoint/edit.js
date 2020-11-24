@@ -27,9 +27,9 @@ export default class EditPage extends BasePage {
         let that = this;
         let groupId = this.params().id;
         if (groupId) {
-            this.Store().queryById(id).then(function (values) {
-                console.log(values);
-                that.formRef.current.setFieldsValue(values);
+            this.Store().queryById(groupId).then(function (values) {
+                console.log(values.data);
+                that.formRef.current.setFieldsValue(values.data);
             });
         }
 
