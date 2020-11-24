@@ -21,6 +21,7 @@ public class DeploymentGroupDto {
     private Date     updatedDate;
 
     private String   supportActions;
+    private String   supportMesh;
     private String   topicName;
     private String   extraTopics;
     private String   serverAddress;

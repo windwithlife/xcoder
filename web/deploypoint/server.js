@@ -177,6 +177,9 @@ function deployApplication(msg) {
 
   }
 
+  //group and support mesh and actions
+  params.supportMesh = request.supportMesh;
+
   if (msg.command === "execute") {
     if (releaseServer.autoRelease(params)) {
       messageClient.updateReleaseStatus(request.id, "finish", request.envType);

@@ -48,6 +48,11 @@ class ParamsHelper {
         this.setting = setting;
         this.takeOwnDeploymentFile = setting.useOwnDeploymentFile;
         this.takeOwnDockerFile = setting.useOwnDockerFile;
+
+        if(setting.supportMesh){
+            this.releasePointSupport  = setting.supportMesh;
+        }
+        
         
         //check path
         if(this.path.substring(0,1) != '/'){this.path = "/" + this.path;}

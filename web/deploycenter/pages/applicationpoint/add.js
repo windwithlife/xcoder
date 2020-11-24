@@ -54,6 +54,12 @@ export default class EditPage extends BasePage {
                     <Form.Item name="supportActions" label="支持功能">
                         <Input />
                     </Form.Item>
+                    <Form.Item name="supportMesh" label="支持网格服务">
+                        <Select>
+                            <Select.Option key="k8s" value="k8s" >K8S</Select.Option>
+                            <Select.Option key="istio" value="istio" >ISTIO</Select.Option>
+                        </Select>
+                    </Form.Item>
                     
                     <Form.Item name="serverAddress" label="发布服务侦听地址">
                         <Input />

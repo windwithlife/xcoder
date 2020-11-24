@@ -294,6 +294,7 @@ public class ApplicationDeploymentService {
                 String targetTopic = "ci/simple/point/pointa/execute";
                 //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 DeploymentGroupModel point = executePointDao.findById(groupId);
+                dto.setSupportMesh(point.getSupportMesh());
                 System.out.println("deploy to topic " + point.getTopicName());
                 if(StringUtils.isNotBlank(point.getTopicName())){
                     targetTopic = point.getTopicName();
@@ -382,6 +383,7 @@ public class ApplicationDeploymentService {
                 String targetTopic = "ci/simple/point/pointa/execute";
                 //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 DeploymentGroupModel point = executePointDao.findById(groupId);
+                dto.setSupportMesh(point.getSupportMesh());
                 System.out.println("deploy to topic " + point.getTopicName());
                 if(StringUtils.isNotBlank(point.getTopicName())){
                     targetTopic = point.getTopicName();

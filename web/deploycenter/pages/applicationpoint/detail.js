@@ -55,20 +55,22 @@ export default class EditPage extends BasePage {
                             {itemData.description}
                         </Form.Item>
                         <Form.Item name="topicName" label="可访问主题消息">
-                        {itemData.topicName}
+                            {itemData.topicName}
                         </Form.Item>
                         <Form.Item name="extraTopics" label="可访其它主题消息">
-                        {itemData.extraTopics}
+                            {itemData.extraTopics}
                         </Form.Item>
                         <Form.Item name="supportActions" label="支持功能">
-                        {itemData.supportActions}
+                            {itemData.supportActions}
                         </Form.Item>
-
+                        <Form.Item name="supportMesh" label="支持网格服务">
+                            {itemData.supportMesh}
+                        </Form.Item>
                         <Form.Item name="serverAddress" label="服务侦听地址">
-                        {itemData.serverAddress}
+                            {itemData.serverAddress}
                         </Form.Item>
                         <Form.Item name="serverPort" label="生产服务侦听端口">
-                        {itemData.serverPort}
+                            {itemData.serverPort}
                         </Form.Item>
 
 

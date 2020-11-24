@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Form, Card, Input, Button, Select } from 'antd';
 import router from 'next/router';
 import XSelect from '../common/components/select';
-const { TextArea } = Input;
+
 import BasePage from '../common/pages/BasePage';
 import GroupModel from './models/DelpoymentGroupModel';
 
@@ -67,6 +67,12 @@ export default class EditPage extends BasePage {
                     </Form.Item>
                     <Form.Item name="supportActions" label="支持功能">
                         <Input />
+                    </Form.Item>
+                    <Form.Item name="supportMesh" label="支持网格服务">
+                        <Select>
+                            <Select.Option key="k8s" value="k8s" >K8S</Select.Option>
+                            <Select.Option key="istio" value="istio" >ISTIO</Select.Option>
+                        </Select>
                     </Form.Item>
 
                     <Form.Item name="serverAddress" label="服务侦听地址">

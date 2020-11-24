@@ -22,6 +22,7 @@ public class ReleaseDetail {
     private Long   buildId;
     private String buildNumber;
     private String imageLabel;
+    private String supportMesh;
     private String envType;
     private boolean autoDeploy;
     private int     cpu;
