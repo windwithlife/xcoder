@@ -27,4 +27,8 @@ public class ProjectDto implements Serializable {
     //SOA地址
     private String gateway;
     private String gatewayUAT;
+    //发布站点
+    private Long  buildGroupId;
+    private Long  uatGroupId;
+    private Long  prodGroupId;
 }

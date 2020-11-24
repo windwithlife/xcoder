@@ -1,2 +1,0 @@
-logging:
-  config: /etc/simple/logback-spring.xml

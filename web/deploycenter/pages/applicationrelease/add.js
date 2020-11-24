@@ -79,15 +79,11 @@ export default class AddPage extends BasePage {
         values.applicationId = this.applicationId;
         values.envType = this.params().envType;
         values.imageId = this.imageId;
+        values.buildNumber = this.buildNumber;
         console.log("*********************#############release params");
         console.log(values);
         this.Store().add(values, (result) => {
              console.log('finished add row'); 
-            //  if(that.state.imageId){
-            //     let deploymentId = result.data.id;
-            //     let releaseParams = { releaseId: deploymentId, envType: this.state.envType };
-            //     that.Store().deployTo(releaseParams);
-            //  }
             let path = '/applicationrelease/deployment-home';
             router.push({ pathname: path, query: { applicationId: that.applicationId, envType: that.params().envType }});
         });

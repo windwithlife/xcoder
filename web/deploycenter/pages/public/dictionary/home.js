@@ -12,7 +12,7 @@ import {
 import router from 'next/router';
 import BasePage from '../../common/pages/BasePage';
 import DictionaryModel from './models/DictionaryModel';
-
+import AddPage from './AddDialog';
 
 export default class EditPage extends BasePage {
     formRef = React.createRef();
@@ -127,9 +127,9 @@ export default class EditPage extends BasePage {
         return ( 
             < div >
                 <Modal visible={that.state.visible} title={that.state.operationTitle}
-                    onCancel={this.onModalConfirm.bind(that)}
+                    onCancel={that.onModalConfirm.bind(that)}
                     footer={[]}>
-                    <AddPage   onConfirm={this.onModalConfirm.bind(that)}></AddPage>
+                    <AddPage   onConfirm={that.onModalConfirm.bind(that)}></AddPage>
                 </Modal>
 
                 <div>
@@ -138,22 +138,20 @@ export default class EditPage extends BasePage {
                </Card>
                 </div>
 
-                < Table rowSelection={
-                    rowSelection
-                }
+                < Table 
                     columns={
-                        this.columns
+                        that.columns
                     }
                     dataSource={
                         Items
                     }
                     pagination={
-                        this.pagination()
+                        that.pagination()
                     }
-                    bordered title={() => (<Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
+                    bordered title={() => (<Form layout="inline"  >
 
                         < Form.Item label="分类信息：">
-                            <Button onClick={this.handleLineAdd.bind(this)} > 添加 </Button>
+                            <Button onClick={that.handleLineAdd.bind(that)} > 添加 </Button>
                         </Form.Item>
                     </Form>)}
                     

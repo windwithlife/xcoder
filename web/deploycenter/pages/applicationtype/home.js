@@ -59,8 +59,6 @@ export default class EditPage extends BasePage {
     
     componentDidMount() {
         let that = this;
-        let id = this.props.query.id;
-
         this.Store().queryAll(function (values) {
             console.log(values);
             that.setState({data:values.data.list});
@@ -95,10 +93,8 @@ export default class EditPage extends BasePage {
 
     render() {
         let that = this;
-        let editUrl = "/applicationtype/edit?id=" + this.props.query.id;
         let items = that.StoreData();
-        //let isShowPage = itemData.sideType == 'server' ? false : true;
-
+    
         console.log('render module edit page');
         return (
             < div >

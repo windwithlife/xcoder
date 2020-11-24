@@ -16,6 +16,8 @@ public class DockerImageDto {
     private Long     id;
     private String   name;
     private String   buildName;
+    private String   buildNumber;
+    private String   imageLabel;
     private String   version;
     private Long     applicationId;
     private Long     deploymentId;

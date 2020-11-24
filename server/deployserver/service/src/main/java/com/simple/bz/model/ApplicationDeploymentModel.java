@@ -29,6 +29,7 @@ public class ApplicationDeploymentModel implements Serializable {
     private Long    applicationPointId;
     private Long    imageId;
     private String  buildNumber;
+    private String  imageLabel;
     @Column(columnDefinition="tinyint(1) default 0")
     private boolean autoDeploy;
     private String  envType;
@@ -42,6 +43,9 @@ public class ApplicationDeploymentModel implements Serializable {
     private int     memSize;
     @Column(columnDefinition="int(1) default 1")
     private int     instanceCount;
+
+    @Column(columnDefinition="tinyint(1) default 0")
+    private boolean useOwnDeploymentFile;
 
 
 

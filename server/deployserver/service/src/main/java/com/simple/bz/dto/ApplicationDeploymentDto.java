@@ -25,6 +25,7 @@ public class ApplicationDeploymentDto implements Serializable {
     private Long    applicationPointId;
     private Long    imageId;
     private String  buildNumber;
+    private String  imageLabel;
     private boolean autoDeploy;
     private String  envType;
     private String  releaseVersion;

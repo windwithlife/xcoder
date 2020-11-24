@@ -91,6 +91,17 @@ export default class EditPage extends BasePage {
                         <Form.Item name="gatewayUAT" label="网关(UAT)">
                         {itemData.gatewayUAT}
                         </Form.Item>
+                        <Form.Item name="buildGroupId" label="构建镜像集群">
+                        {itemData.buildGroupId}
+                        </Form.Item>
+                        <Form.Item name="uatGroupId" label="UAT集群">
+                        {itemData.uatGroupId}
+                        </Form.Item>
+                        <Form.Item name="prodGroupId" label="生产集群">
+                        {itemData.prodGroupId}
+                            
+                        </Form.Item>
+
 
                     </Form>
 

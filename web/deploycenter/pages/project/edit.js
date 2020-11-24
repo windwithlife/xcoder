@@ -1,16 +1,17 @@
 import React from 'react';
 import {
-    Modal,
     Form,
     Input,
     Card,
     Button,
+    Select,
 } from 'antd';
-const { TextArea } = Input;
+
 import router from 'next/router';
 
 
 import ProjectModel from './models/ProjectModel';
+import DeploymentGroupModel from '../applicationpoint/models/DelpoymentGroupModel';
 import BasePage from '../common/pages/BasePage';
 
 
@@ -20,12 +21,14 @@ export default class EditPage extends BasePage {
     state = {
         visible: false,
         data: {},
+        groups: [],
     }
 
     constructor() {
         super();
         this.setDefaultModel(new ProjectModel());
-        // this.startHeader();
+        this.groupModel = new DeploymentGroupModel();
+
 
     }
 
@@ -38,9 +41,16 @@ export default class EditPage extends BasePage {
         let that = this;
         let id = this.params().id;
         console.log("edit id:=" + id);
-        this.Store().queryById(id, function (values) {
-            that.formRef.current.setFieldsValue(values.data);
+        this.groupModel.findAll().then(function (result) {
+            let groups = result.data.list;
+            console.log(groups);
+            that.setState({ groups: groups });
+            that.Store().queryById(id, function (values) {
+                that.formRef.current.setFieldsValue(values.data);
+            });
         });
+
+
     }
 
     onFinish = values => {
@@ -75,6 +85,27 @@ export default class EditPage extends BasePage {
                         </Form.Item>
                         <Form.Item name="gatewayUAT" label="网关(UAT)">
                             <Input />
+                        </Form.Item>
+                        <Form.Item name="buildGroupId" label="构建镜像集群">
+                            <Select >
+                                {that.state.groups.map(function (item, i) {
+                                    return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
+                                })}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="uatGroupId" label="UAT集群">
+                            <Select >
+                                {that.state.groups.map(function (item, i) {
+                                    return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
+                                })}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="prodGroupId" label="生产集群">
+                            <Select >
+                                {that.state.groups.map(function (item, i) {
+                                    return (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>);
+                                })}
+                            </Select>
                         </Form.Item>
 
                         <Form.Item className="form-item-clear" >

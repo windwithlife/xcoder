@@ -92,6 +92,11 @@ public class ApplicationDeploymentService {
     }
     public void save(ApplicationDeploymentDto item){
         ApplicationDeploymentModel model = this.convertToModel(item);
+        if (null != item.getImageId()){
+            DockerImageModel image = dockerImageDao.findById(item.getImageId()).get();
+            model.setBuildNumber(image.getBuildNumber());
+            model.setImageLabel(image.getImageLabel());
+        }
         this.dao.save(model);
 
 
@@ -127,6 +132,7 @@ public class ApplicationDeploymentService {
                 //bring build id info
                 String buildName = this.getBuildNumber();
                 String imageLabel = this.getImageLabel(request.getApplicationId(),request.getVersion());
+                String version = this.getVersion(request.getApplicationId(),request.getVersion());
                 dto.setBuildNumber(buildNumber);
                 dto.setImageLabel(imageLabel);
 
@@ -156,16 +162,26 @@ public class ApplicationDeploymentService {
                 //get the target execute point.
                 //DeploymentGroupModel point = executePointDao.findById(request.getApplicationPointId());
                 //System.out.println("excute point data " + point.toString());
-                String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
+                ///String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
 
                 //register docker image
 
 
 
                 DockerImageModel dockerImage = DockerImageModel.builder().buildNumber(buildName).buildName(imageLabel).imageLabel(imageLabel).name(application.getName()).applicationId(application.getId())
-                        .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
+                        .version(version).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
-                mqttService.deployTo(dto, executePointTopic, "buildImage");
+
+
+                DeploymentGroupModel point = executePointDao.findById(project.getBuildGroupId());
+                System.out.println("deploy to topic " + point.getTopicName());
+                String targetTopic =  "ci/simple/point/pointa/execute";
+                if(StringUtils.isNotBlank(point.getTopicName())){
+                    targetTopic = point.getTopicName();
+                }
+
+
+                mqttService.deployTo(dto, targetTopic, "buildImage");
 
 
             }
@@ -179,24 +195,32 @@ public class ApplicationDeploymentService {
 
         String buildNumber = this.getBuildNumber();
         System.out.println("current build number=====>  " + buildNumber);
-        String imageLabel = buildNumber;
+        String version = this.getVersion(applicationId,inputVersion);
+        String imageLabel = version + '-' + buildNumber;
+        return imageLabel;
+
+    }
+
+    private String getVersion(Long applicationId,String inputVersion){
+
+        String versionDefault = "V1.0.0";
         if(StringUtils.isNotBlank(inputVersion)){
-            imageLabel = inputVersion + "-" + imageLabel;
-            return imageLabel;
+
+            return inputVersion;
         }
         try{
             DeploymentConfigModel config = deploymentConfigDao.findById(applicationId).get();
             if(StringUtils.isNotBlank(config.getVersion())){
-                imageLabel = config.getVersion() + "-" + buildNumber;
+                return config.getVersion();
             }
-            return imageLabel;
+
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return "V1.0.0" + '-' + imageLabel;
-    }
+        return versionDefault;
 
+    }
     private  String getBuildNumber(){
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -237,14 +261,9 @@ public class ApplicationDeploymentService {
                 dto.setApplicationTypeInfo(appType);
 
 
-                //get the target execute point.
-                DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
-                System.out.println("excute point data " + point.toString());
-                String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
-
-
                 //do with domainName
                 String domainName ="no.domain.com";
+                Long groupId = 0L;
                 if(request.getEnvType().toLowerCase().equals("uat")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainNameUAT();
@@ -254,6 +273,8 @@ public class ApplicationDeploymentService {
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGatewayUAT();
                     }
+                    groupId = project.getUatGroupId();
+
                 }else if(request.getEnvType().toLowerCase().equals("prod")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainName();
@@ -264,12 +285,20 @@ public class ApplicationDeploymentService {
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGateway();
                     }
+                    groupId = project.getProdGroupId();
                 }
                 dto.setDomainName(domainName);
 
 
-                mqttService.deployTo(dto, executePointTopic,"deployToGroups");
-                //mqttService.deployTo(dto, executePointTopic, command);
+                //get the target execute point.
+                String targetTopic = "ci/simple/point/pointa/execute";
+                //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                DeploymentGroupModel point = executePointDao.findById(groupId);
+                System.out.println("deploy to topic " + point.getTopicName());
+                if(StringUtils.isNotBlank(point.getTopicName())){
+                    targetTopic = point.getTopicName();
+                }
+                mqttService.deployTo(dto, targetTopic,"deployToGroups");
 
             }
 
@@ -312,14 +341,12 @@ public class ApplicationDeploymentService {
                 ApplicationTypeModel appType = applicationTypeDao.findById(application.getApplicationTypeId()).get();
                 dto.setApplicationTypeInfo(appType);
 
-                //get the target execute point.
-                DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
-                System.out.println("excute point data " + point.toString());
-                String executePointTopic = "ci/simple/point/pointa/execute"; //point.getTopicName();
+
 
 
                 //do with domainName
                 String domainName ="no.domain.com";
+                Long groupId = 0L;
                 if(request.getEnvType().toLowerCase().equals("uat")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainNameUAT();
@@ -329,6 +356,7 @@ public class ApplicationDeploymentService {
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGatewayUAT();
                     }
+                    groupId = project.getUatGroupId();
                 }else if(request.getEnvType().toLowerCase().equals("prod")){
                     if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
                         domainName = project.getDomainName();
@@ -339,6 +367,7 @@ public class ApplicationDeploymentService {
                     }else if(appType.getSideType().toLowerCase().equals("server")){
                         domainName = project.getGateway();
                     }
+                    groupId = project.getProdGroupId();
                 }
                 dto.setDomainName(domainName);
                 //register docker image
@@ -347,7 +376,18 @@ public class ApplicationDeploymentService {
                         .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
 
-                mqttService.deployTo(dto, executePointTopic,"execute");
+                //get the target execute point.
+                //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                //get the target execute point.
+                String targetTopic = "ci/simple/point/pointa/execute";
+                //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                DeploymentGroupModel point = executePointDao.findById(groupId);
+                System.out.println("deploy to topic " + point.getTopicName());
+                if(StringUtils.isNotBlank(point.getTopicName())){
+                    targetTopic = point.getTopicName();
+                }
+
+                mqttService.deployTo(dto, targetTopic,"execute");
                 //mqttService.deployTo(dto, executePointTopic, command);
 
             }
