@@ -54,63 +54,7 @@ server.all('*', function (req, res, next) {
       }
 
     })
-    server.post('/releaseByParams/', function (req, res) {
-      console.log("begin deploy project-------------")
-      console.log('current directory is:' + process.cwd());
-      console.log(req.body.defines);
-
-      var params = { releaseType: "prod",isUseOwnDockerFile: false, isSubWebSite: true, useOwnDeploymentFile: false, targetPath: './MedialLive/server/live-svc/', gitUrl: 'https://github.com/windwithlife/projects.git', branch: 'master' };
-      let request = req.body.defines;
-      let buildRecord = req.body.buildRecord;
-      if (req.body.repository) {
-        params.name = params.codeName = req.body.repository.name;
-        params.gitUrl = req.body.repository.git_url;
-        params.cloneUrl = req.body.repository.clone_url;
-        params.sshUrl = req.body.repository.ssh_url;
-        console.log(req.body.repository);
-
-      }
-      if(request.repository){
-        params.gitUrl = request.repository;
-      }
-      if(request.releaseType){
-        params.releaseType = request.releaseType;
-      }
-      console.log("Current repo url:" + params.gitUrl);
-
-      params.name = request.name;
-      params.applicationType = request.applicationType;
-      params.isLib = request.isLib;
-      params.useOwnDeploymentFile = request.useOwnDeploymentFile;
-      params.useOwnDockerFile = request.useOwnDeploymentFile;
-      params.applicationName = request.applicationName;
-      params.path = request.path;
-      params.version = request.releaseVersion ? request.releaseVersion : "1.0.8";
-      
-      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
-      params.sideType = request.sideType;
-      params.language = request.language;
-      params.framework = request.framework;
-      params.platform = request.platform;
-      params.serviceName = request.name;
-      params.webDomainName = request.webDN;
-      params.domainName = request.domainName;
-      params.targetPath = request.targetPath ? request.targetPath : params.targetPath;
-      params.label = params.version;
-      params.buildId = buildRecord.id;
-
-
-      console.log("release request params is *****************8:", params);
-      //res.send('begin to fetch source code.....')
-      
-      if (releaseServer.autoRelease(params)) {
-        //messageClient.updateReleaseStatus(buildRecord.id, "success");
-        res.send('successful to auto release!')    
-      } else {
-        //messageClient.updateReleaseStatus(buildRecord.id, "failure");
-        res.send('failed to auto release!')
-      }
-    })
+    
  */
 
 

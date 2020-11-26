@@ -17,6 +17,7 @@ export default class EditPage extends BasePage {
     state = {
         editMode: false,
         data:[],
+        refresh:false,
     }
     constructor() {
         super();
@@ -84,9 +85,14 @@ export default class EditPage extends BasePage {
     }
 
     handleLineDelete(index, record) {
+        let that = this;
         let id = record.id;
-        this.Store().removeById(index, record.id, function (value) {
+        
+        this.Store().removeById(id, function (value) {
            console.log('sucessful to detele one xrlease');
+           that.state.data.splice(index,1);
+           that.setState({refresh:true})
+
         });
     }
 

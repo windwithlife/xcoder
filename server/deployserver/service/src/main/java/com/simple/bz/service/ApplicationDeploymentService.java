@@ -289,6 +289,9 @@ public class ApplicationDeploymentService {
                 }
                 dto.setDomainName(domainName);
 
+                if(null != releaseModel.getApplicationPointId()){
+                    groupId =  releaseModel.getApplicationPointId();
+                }
 
                 //get the target execute point.
                 String targetTopic = "ci/simple/point/pointa/execute";
@@ -380,6 +383,11 @@ public class ApplicationDeploymentService {
                 //get the target execute point.
                 //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 //get the target execute point.
+
+                if(null != releaseModel.getApplicationPointId()){
+                    groupId =  releaseModel.getApplicationPointId();
+                }
+
                 String targetTopic = "ci/simple/point/pointa/execute";
                 //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 DeploymentGroupModel point = executePointDao.findById(groupId);
