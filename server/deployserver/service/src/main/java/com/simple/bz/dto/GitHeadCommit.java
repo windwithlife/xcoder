@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GitHeadCommit {
-    public String commitId;
+    public String id;
     public String message;
+    public String getCommitId(){
+        return this.id;
+    }
 }

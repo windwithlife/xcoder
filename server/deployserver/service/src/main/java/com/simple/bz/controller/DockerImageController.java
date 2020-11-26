@@ -23,27 +23,29 @@ public class DockerImageController extends BaseController {
 
 
     @GetMapping(path = "/findAll")
-    GenericResponse findAll (){
+    GenericResponse findAll() {
 
         List<DockerImageDto> dtoList = service.findAll();
-        if(null == dtoList) {
+        if (null == dtoList) {
             dtoList = new ArrayList<DockerImageDto>();
         }
         GenericResponse result = GenericResponse.build().addKey$Value("list", dtoList);
 
         return result;
     }
+
     @GetMapping(path = "/findById")
-    GenericResponse findById (@RequestParam("id") Long applicationId){
+    GenericResponse findById(@RequestParam("id") Long applicationId) {
 
         System.out.println("applicationId:" + String.valueOf(applicationId));
 
-        DockerImageDto  application = service.findById(applicationId);
+        DockerImageDto application = service.findById(applicationId);
         GenericResponse result = GenericResponse.build().setDataObject(application);
         return result;
     }
+
     @PostMapping(path = "/save")
-    GenericResponse createDeployment (@RequestBody GenericRequest req){
+    GenericResponse createDeployment(@RequestBody GenericRequest req) {
 
         DockerImageDto dto = req.getObject(DockerImageDto.class);
         System.out.println(dto.toString());
@@ -53,7 +55,7 @@ public class DockerImageController extends BaseController {
     }
 
     @PostMapping(path = "/buildImage")
-    GenericResponse buildDockerImage (@RequestBody GenericRequest req){
+    GenericResponse buildDockerImage(@RequestBody GenericRequest req) {
         DockerBuildRequest dto = req.getObject(DockerBuildRequest.class);
         System.out.println(dto.toString());
         //service.save(dto);
@@ -62,23 +64,35 @@ public class DockerImageController extends BaseController {
         return result;
     }
 
-    @GetMapping(path = "/gitAutoDeployment")
-    GenericResponse buildDockerImage (DockerBuildRequest request, @RequestBody DockerBuildGitRequest gitRequest){
-        System.out.println("Current Head Commit Message of this Git Push ====>" + gitRequest.getHead_commit().toString());
+    @PostMapping(path = "/gitAutoDeployment")
+    GenericResponse buildDockerImage(DockerBuildRequest request, @RequestBody DockerBuildGitRequest gitRequest) {
+        String commitMessage = null;
+        if ((null != gitRequest) && (null != gitRequest.getHead_commit())) {
+            commitMessage = gitRequest.getHead_commit().getMessage();
+            System.out.println("Message ===>" + commitMessage + "Current Head Commit Message of this Git Push ====>" + gitRequest.getHead_commit().toString());
 
-        boolean needDeployment =  StringUtils.contains(gitRequest.getHead_commit().getMessage(), "release");
-        String commitMessage = gitRequest.getHead_commit().getMessage();
-        if(needDeployment){
-            if (StringUtils.isBlank(request.getApplicationName())){
-                String[] params = StringUtils.substringsBetween(commitMessage,"[","]");
+        } else {
+            GenericResponse result = new GenericResponse(request);
+            return result;
+        }
+
+        boolean needDeployment = StringUtils.contains(gitRequest.getHead_commit().getMessage(), "release");
+
+        if (needDeployment) {
+
+
+            String[] params = StringUtils.substringsBetween(commitMessage, "[", "]");
+            if (params.length >= 1){
                 String applicationName = params[0];
-                String version = params[1];
-                request.setApplicationName(applicationName);
-                request.setVersion(version);
+                System.out.println("applicationName ==>" + applicationName);
+                if (StringUtils.isNotBlank(applicationName)) {
+                    request.setApplicationName(applicationName);
+                }
             }
+
             System.out.println("Final request =====>" + request.toString());
             service.buildDockerImage(request);
-        }else{
+        } else {
             System.out.println("No deployment requirement!");
         }
         GenericResponse result = new GenericResponse(request);
@@ -86,19 +100,18 @@ public class DockerImageController extends BaseController {
     }
 
     @GetMapping(path = "/findByApplicationId")
-        GenericResponse getByApplicationId (@RequestParam("id") Long applicationId){
+    GenericResponse getByApplicationId(@RequestParam("id") Long applicationId) {
 
         System.out.println("projectId:" + String.valueOf(applicationId));
 
-        List<DockerImageDto>  applications = service.findByApplicationId(applicationId);
+        List<DockerImageDto> applications = service.findByApplicationId(applicationId);
         GenericResponse result = GenericResponse.build().addKey$Value("list", applications);
         return result;
     }
 
 
-
     @PostMapping(path = "/update/{id}")
-    public GenericResponse updateSave(@RequestBody GenericRequest req , @PathVariable Long id) {
+    public GenericResponse updateSave(@RequestBody GenericRequest req, @PathVariable Long id) {
         DockerImageDto dto = req.getObject(DockerImageDto.class);
         dto.setId(id);
         System.out.println("applicationId:" + String.valueOf(id));
@@ -116,8 +129,6 @@ public class DockerImageController extends BaseController {
         service.remove(id);
         return id;
     }
-
-
 
 
 }
