@@ -46,7 +46,7 @@ server.post('/gitAutoDeployment/', function (req, res) {
     console.log("post body =====>")
     console.log(req.body)
   }
-  console.log("release params is ===++>", params);
+  console.log("release params is ===+>", params);
 
 })
 
