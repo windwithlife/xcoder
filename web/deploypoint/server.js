@@ -29,33 +29,26 @@ server.all('*', function (req, res, next) {
   next();
 });
 
-/* 
-    server.post('/gitPushEventXCI/', function (req, res) {
-      var params = { releaseType: "prod",isUseOwnDockerFile: true, webDomainName: 'release.koudaibook.com', isSubWebSite: false, isUseOwnDeploymentFile: false, targetPath: './', name: "xci", lang: 'xcijs', type: 'web', label: 'latest', cloneUrl: 'https://github.com/windwithlifezyq/xci.git', branch: 'master' };
-      if (req.query.name) {
-        params.name = req.query.name;
-      }
-      if (req.query.webDN) {
-        params.webDomainName = req.query.webDN;
-      }
-      if (req.body.repository) {
-        params.name = req.body.repository.name;
-        params.gitUrl = req.body.repository.git_url;
-        params.cloneUrl = req.body.repository.clone_url;
-        params.sshUrl = req.body.repository.ssh_url;
 
-      }
-      console.log("release params is :", params);
-      if (releaseServer.autoRelease(params)) {
-        
-        res.send('successful to auto release!')
-      } else {
-        res.send('failed to auto release!')
-      }
+server.post('/gitAutoDeployment/', function (req, res) {
+  var params = { releaseType: "prod", isUseOwnDockerFile: true, webDomainName: 'release.koudaibook.com', isSubWebSite: false, isUseOwnDeploymentFile: false, targetPath: './', name: "xci", lang: 'xcijs', type: 'web', label: 'latest', cloneUrl: 'https://github.com/windwithlifezyq/xci.git', branch: 'master' };
+  if (req.query.name) {
+    params.name = req.query.name;
+  }
+  if (req.query) {
+    console.log(req.query);
+  }
+  if (req.body.repository) {
+    params.name = req.body.repository.name;
+    params.gitUrl = req.body.repository.git_url;
+    params.cloneUrl = req.body.repository.clone_url;
+    params.sshUrl = req.body.repository.ssh_url;
+    console.log("post body =====>")
+    console.log(req.body)
+  }
+  console.log("release params is :", params);
 
-    })
-    
- */
+})
 
 
 server.get('/test/', function (req, res) {
