@@ -82,7 +82,7 @@ public class DockerImageController extends BaseController {
 
 
             String[] params = StringUtils.substringsBetween(commitMessage, "[", "]");
-            if (params.length >= 1){
+            if ((null != params) && (params.length >= 1)){
                 String applicationName = params[0];
                 System.out.println("applicationName ==>" + applicationName);
                 if (StringUtils.isNotBlank(applicationName)) {
