@@ -121,28 +121,30 @@ public class ApplicationDeploymentService {
         try {
 
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-            String buildNumber = sdf.format(new Date());
-            System.out.println("current build number=====>  " + buildNumber);
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+//            String buildNumber = sdf.format(new Date());
+//            System.out.println("current build number=====>  " + buildNumber);
 
 
             if (null != request) {
                 ReleaseDetail dto = ReleaseDetail.builder().build();
 
-                //bring build id info
-                String buildName = this.getBuildNumber();
-                String imageLabel = this.getImageLabel(request.getApplicationId(),request.getVersion());
-                String version = this.getVersion(request.getApplicationId(),request.getVersion());
-                dto.setBuildNumber(buildNumber);
-                dto.setImageLabel(imageLabel);
-
                 Long applicationId = request.getApplicationId();
                 ApplicationModel application  = null;
                 if(null == applicationId){
-                     application = applicationDao.findOneByApplicationName(request.getApplicationName());
+                    application = applicationDao.findOneByApplicationName(request.getApplicationName());
                 }else{
                     application = applicationDao.findById(request.getApplicationId()).get();
                 }
+
+                //bring build id info
+                String buildNumber = this.getBuildNumber();
+                String imageLabel = this.getImageLabel(application.getId(),request.getVersion());
+                String version = this.getVersion(application.getId(),request.getVersion());
+                dto.setBuildNumber(buildNumber);
+                dto.setImageLabel(imageLabel);
+
+
                 System.out.println("***********************Current Application info ===>");
                 System.out.println(application.toString());
                 request.setApplicationId(application.getId());
@@ -168,7 +170,7 @@ public class ApplicationDeploymentService {
 
 
 
-                DockerImageModel dockerImage = DockerImageModel.builder().buildNumber(buildName).buildName(imageLabel).imageLabel(imageLabel).name(application.getName()).applicationId(application.getId())
+                DockerImageModel dockerImage = DockerImageModel.builder().buildNumber(buildNumber).buildName(imageLabel).imageLabel(imageLabel).name(application.getName()).applicationId(application.getId())
                         .version(version).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
 

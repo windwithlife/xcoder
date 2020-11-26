@@ -1,5 +1,6 @@
 package com.simple.bz.controller;
 
+import com.simple.bz.dto.DockerBuildGitRequest;
 import com.simple.bz.dto.DockerBuildRequest;
 import com.simple.bz.dto.DockerImageDto;
 import com.simple.bz.service.DockerImageService;
@@ -7,6 +8,7 @@ import com.simple.common.api.GenericRequest;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -60,10 +62,25 @@ public class DockerImageController extends BaseController {
         return result;
     }
 
-    @GetMapping(path = "/autoDeployment")
-    GenericResponse buildDockerImage (DockerBuildRequest request){
-        System.out.println(request.toString());
-        service.buildDockerImage(request);
+    @GetMapping(path = "/gitAutoDeployment")
+    GenericResponse buildDockerImage (DockerBuildRequest request, @RequestBody DockerBuildGitRequest gitRequest){
+        System.out.println("Current Head Commit Message of this Git Push ====>" + gitRequest.getHead_commit().toString());
+
+        boolean needDeployment =  StringUtils.contains(gitRequest.getHead_commit().getMessage(), "release");
+        String commitMessage = gitRequest.getHead_commit().getMessage();
+        if(needDeployment){
+            if (StringUtils.isBlank(request.getApplicationName())){
+                String[] params = StringUtils.substringsBetween(commitMessage,"[","]");
+                String applicationName = params[0];
+                String version = params[1];
+                request.setApplicationName(applicationName);
+                request.setVersion(version);
+            }
+            System.out.println("Final request =====>" + request.toString());
+            service.buildDockerImage(request);
+        }else{
+            System.out.println("No deployment requirement!");
+        }
         GenericResponse result = new GenericResponse(request);
         return result;
     }
