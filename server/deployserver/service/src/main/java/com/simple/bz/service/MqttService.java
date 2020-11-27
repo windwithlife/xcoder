@@ -122,6 +122,11 @@ public class MqttService {
             return;
         }
 
+        if (request.getCommand().equals("status")) {
+            EndPointDto endPoint = request.getParamObject(EndPointDto.class);
+            registerEndpoint(endPoint);
+        }
+
         if (request.getCommand().equals("register")) {
             EndPointDto endPoint = request.getParamObject(EndPointDto.class);
             registerEndpoint(endPoint);

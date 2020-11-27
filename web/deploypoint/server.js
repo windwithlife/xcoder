@@ -73,14 +73,14 @@ messageClient.onExecute(function (topic, msg) {
   deployApplication(msg);
 });
 messageClient.registerPoint({ command: "register", params: { name: "pointa", active: "true", status: "running", locationTopic: "ci/simple/point/pointa/", supportType: "k8s", supportActions: ["build", "deploy"] } });
-messageClient.updateReleaseStatus(0, "starting phase1....");
+messageClient.updateStatus(0, "starting phase1....");
 
 function deployApplication(msg) {
   let request = msg.params;
   console.log("begin deploy project-------------")
   console.log(request);
   //console.log("release request params is *****************8:", request);
-  messageClient.updateReleaseStatus(33, "starting phase2....");
+  messageClient.updateStatus(33, "starting phase2....");
   let params = { releaseType: 'UAT' };
   params.releaseType = request.envType;
   params.version = request.releaseVersion ? request.releaseVersion : 'V1.0';
@@ -119,22 +119,22 @@ function deployApplication(msg) {
 
   if (msg.command === "execute") {
     if (releaseServer.autoRelease(params)) {
-      messageClient.updateReleaseStatus(request.id, "finish", request.envType);
+      messageClient.updateStatus(request.id, "finish");
     } else {
-      messageClient.updateReleaseStatus(request.id, "error", request.envType);
+      messageClient.updateStatus(request.id, "error");
     }
 
   } else if (msg.command === 'buildImage') {
     if (releaseServer.buildImage(params)) {
-      messageClient.updateReleaseStatus(request.id, "finish", "IMAGE");
+      messageClient.updateStatus(request.id, "finish");
     } else {
-      messageClient.updateReleaseStatus(request.id, "error", "IMAGE");
+      messageClient.updateStatus(request.id, "error");
     }
   } else if (msg.command === 'deployToGroups') {
     if (releaseServer.deployImageToGroups(params)) {
-      messageClient.updateReleaseStatus(request.id, "finish", request.envType);
+      messageClient.updateStatus(request.id, "finish");
     } else {
-      messageClient.updateReleaseStatus(request.id, "error", request.envType);
+      messageClient.updateStatus(request.id, "error");
     }
   }
 

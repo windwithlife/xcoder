@@ -6,9 +6,8 @@ const pointName = config.APPLICATION.name;
 const serverLocation = 'ci/simple/center/server/';
 const pointLocation = 'ci/simple/point/' + pointName + '/';
 const TOPIC_SUB_CENTER   = pointLocation + '#' ;
-const TOPIC_PUB_STATUS    =  serverLocation + 'status/test';
-const TOPIC_PUB_LOGS      = serverLocation + 'logs/test';
-const TOPIC_PUB_REGISTER  = serverLocation + 'register/test';
+const TOPIC_PUB_TARGET  = serverLocation;
+
 
 const isString = (data) => {
 	return Object.prototype.toString.call(data) === '[object String]';
@@ -24,27 +23,25 @@ const isString = (data) => {
     onExecute(callback){
         messageClient.setCallback(TOPIC_SUB_CENTER,callback);
     }
-    sendStatus(status){
-        messageClient.sendMsg(TOPIC_PUB_STATUS,status);
+    sendMsg(command, params){
+        let finalParams = { command: command, params: params};
+        let targetTopic = TOPIC_PUB_TARGET;
+        messageClient.sendMsg(targetTopic,finalParams);
     }
-    sendLogs(logs){
-        messageClient.sendMsg(TOPIC_PUB_LOGS,logs);
+    sendStatus(params){
+        this.sendMsg("status",params);
     }
-    updateReleaseStatus(buildId, releaseStatus, envType){
-        let currentEnvType = "UAT";
-        if(envType){currentEnvType = envType}
-        let requestData = {buildId: buildId, status:releaseStatus, envType: currentEnvType};
-        this.sendStatus(requestData);
+    sendLogs(params){
+        this.sendMsg("logs",params);
     }
     registerPoint(params){
-        if (params){
-            params.pointName = pointName;
-            messageClient.sendMsg(TOPIC_PUB_REGISTER,params);
-        }else{
-            messageClient.sendMsg(TOPIC_PUB_REGISTER,{pointName: pointName});
-        }
-          
+        this.sendMsg("register",params);
     }
+    updateStatus(id, releaseStatus){
+        let params = {id: id, status:releaseStatus};
+        this.sendStatus(params);
+    }
+    
     
 }
 
