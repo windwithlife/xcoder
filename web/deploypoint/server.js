@@ -73,14 +73,14 @@ messageClient.onExecute(function (topic, msg) {
   deployApplication(msg);
 });
 messageClient.registerPoint({ command: "register", params: { name: "pointa", active: "true", status: "running", locationTopic: "ci/simple/point/pointa/", supportType: "k8s", supportActions: ["build", "deploy"] } });
-messageClient.updateStatus(0, "starting phase1....");
+
 
 function deployApplication(msg) {
   let request = msg.params;
   console.log("begin deploy project-------------")
   console.log(request);
-  //console.log("release request params is *****************8:", request);
-  messageClient.updateStatus(33, "starting phase2....");
+
+  messageClient.updateStatus(request.id, "progress");
   let params = { releaseType: 'UAT' };
   params.releaseType = request.envType;
   params.version = request.releaseVersion ? request.releaseVersion : 'V1.0';
