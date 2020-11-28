@@ -411,5 +411,101 @@ public class ApplicationDeploymentService {
 
     }
 
+    public void deployApplicationAuto(DockerBuildRequest request){
+        try{
+
+            System.out.println("start to execute release  " + request.toString());
+            //ApplicationDeploymentModel releaseModel = releaseDao.findById(request.getReleaseId());
+
+            ApplicationDeploymentModel releaseModel = ApplicationDeploymentModel.builder().envType(request.getEnvType()).applicationId(request.getApplicationId())
+                    .releaseVersion(request.getVersion()).build();
+
+
+            if(null != releaseModel){
+                ReleaseDetail dto = modelMapper.map(releaseModel, ReleaseDetail.class);//ReleaseDetail.builder().build();
+                System.out.println("release data " + releaseModel.toString());
+                //bring build id info
+                String buildNumber = this.getBuildNumber();
+                dto.setBuildNumber(buildNumber);
+                //dto.setBuildId(request.getBuildId());
+                dto.setEnvType(request.getEnvType());
+
+
+                ApplicationModel application = applicationDao.findById(releaseModel.getApplicationId()).get();
+                //get project information
+                ProjectModel project = projectDao.findById(application.getProjectId());
+                dto.setProjectInfo(project);
+                dto.setApplicationInfo(application);
+
+                DeploymentConfigModel config = deploymentConfigDao.findById(application.getDeploymentConfigId()).get();
+                dto.setDeploymentConfig(config);
+                //get application type info
+                ApplicationTypeModel appType = applicationTypeDao.findById(application.getApplicationTypeId()).get();
+                dto.setApplicationTypeInfo(appType);
+
+
+
+
+                //do with domainName
+                String domainName ="no.domain.com";
+                Long groupId = 0L;
+                if(request.getEnvType().toLowerCase().equals("uat")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainNameUAT();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = "uat." + application.getDomainName();
+                        }
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGatewayUAT();
+                    }
+                    groupId = project.getUatGroupId();
+                }else if(request.getEnvType().toLowerCase().equals("prod")){
+                    if(appType.getSideType().toLowerCase().equals("web") || appType.getSideType().toLowerCase().equals("website")){
+                        domainName = project.getDomainName();
+                        if(StringUtils.isNotBlank(application.getDomainName())){
+                            domainName = application.getDomainName();
+                        }
+
+                    }else if(appType.getSideType().toLowerCase().equals("server")){
+                        domainName = project.getGateway();
+                    }
+                    groupId = project.getProdGroupId();
+                }
+                dto.setDomainName(domainName);
+                //register docker image
+                String buildName = dto.getReleaseVersion() +  "-" + buildNumber;
+                DockerImageModel dockerImage = DockerImageModel.builder().buildName(buildName).name(application.getName()).applicationId(application.getId())
+                        .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
+                dockerImageDao.save(dockerImage);
+
+                //get the target execute point.
+                //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                //get the target execute point.
+
+                if(null != releaseModel.getApplicationPointId()){
+                    groupId =  releaseModel.getApplicationPointId();
+                }
+
+                String targetTopic = "ci/simple/point/pointa/execute";
+                //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
+                DeploymentGroupModel point = executePointDao.findById(groupId);
+                dto.setSupportMesh(point.getSupportMesh());
+                System.out.println("deploy to topic " + point.getTopicName());
+                if(StringUtils.isNotBlank(point.getTopicName())){
+                    targetTopic = point.getTopicName();
+                }
+
+                mqttService.deployTo(dto, targetTopic,"execute");
+                //mqttService.deployTo(dto, executePointTopic, command);
+
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
