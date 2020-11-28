@@ -100,7 +100,7 @@ public class DockerImageController extends BaseController {
 
             System.out.println("Final request =====>" + request.toString());
             if(StringUtils.isNotBlank(request.getEnvType())){
-                service.buildDockerImageAndDeploy();
+                service.buildDockerImageAndDeploy(request);
             }else{
                 service.buildDockerImage(request);
             }
