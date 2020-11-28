@@ -431,7 +431,14 @@ public class ApplicationDeploymentService {
                 dto.setEnvType(request.getEnvType());
 
 
-                ApplicationModel application = applicationDao.findById(releaseModel.getApplicationId()).get();
+                Long applicationId = request.getApplicationId();
+                ApplicationModel application  = null;
+                if(null == applicationId){
+                    application = applicationDao.findOneByApplicationName(request.getApplicationName());
+                }else{
+                    application = applicationDao.findById(request.getApplicationId()).get();
+                }
+
                 //get project information
                 ProjectModel project = projectDao.findById(application.getProjectId());
                 dto.setProjectInfo(project);

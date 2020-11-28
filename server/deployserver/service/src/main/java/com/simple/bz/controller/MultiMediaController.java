@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 import java.util.UUID;
@@ -25,8 +26,8 @@ import java.util.UUID;
 @RequestMapping("/media")
 public class MultiMediaController extends BaseController {
 
-    //private UploadManager uploadManager;
-    //private Auth auth ;
+    private UploadManager uploadManager;
+    private Auth auth ;
     //private Auth auth;
     private String upToken;
     @Value("${qiniu.accessKey}")
@@ -40,13 +41,13 @@ public class MultiMediaController extends BaseController {
     //private String bucket = "ehealthcare";
     private final String GROUP = "public";
 
-//    @PostConstruct
-//    private void init() {
-//
-//        uploadManager = new UploadManager();
-//        auth = Auth.create(accessKey, secretKey);
-//        upToken = auth.uploadToken(bucket);
-//    }
+    @PostConstruct
+    private void init() {
+        Configuration cf = new Configuration(Zone.zone0());
+        uploadManager = new UploadManager(cf);
+        auth = Auth.create(accessKey, secretKey);
+        upToken = auth.uploadToken(bucket);
+    }
 
     /**
      * 上传文件
@@ -56,10 +57,10 @@ public class MultiMediaController extends BaseController {
      */
     @PostMapping("/uploadImage/{group}")
     public GenericResponse upload(@PathVariable("group") String group, @RequestParam("file") MultipartFile file) {
-        Configuration cf = new Configuration(Zone.zone0());
-        UploadManager uploadManager = new UploadManager(cf);
-        Auth auth = Auth.create(this.accessKey, this.secretKey);
-        String upToken = auth.uploadToken(this.bucket);
+//        Configuration cf = new Configuration(Zone.zone0());
+//        UploadManager uploadManager = new UploadManager(cf);
+//        Auth auth = Auth.create(this.accessKey, this.secretKey);
+//        String upToken = auth.uploadToken(this.bucket);
 
         if(StringUtils.isEmpty(group)) {
             group = GROUP;
