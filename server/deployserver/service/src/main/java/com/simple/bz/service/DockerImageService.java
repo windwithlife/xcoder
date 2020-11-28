@@ -69,6 +69,9 @@ public class DockerImageService {
 
     }
 
+    public void buildDockerImageAndDeploy (DockerBuildRequest request){
+        deploymentService.deployApplicationAuto(request);
+    }
     public void buildDockerImage(DockerBuildRequest request){
 
         deploymentService.buildImage(request);

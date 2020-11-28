@@ -90,8 +90,21 @@ public class DockerImageController extends BaseController {
                 }
             }
 
+            if ((null != params) && (params.length >= 2)){
+                String targetEnvType = params[1];
+                System.out.println("targetEnvType ==>" + targetEnvType);
+                if (StringUtils.isNotBlank(targetEnvType)) {
+                    request.setEnvType(targetEnvType);
+                }
+            }
+
             System.out.println("Final request =====>" + request.toString());
-            service.buildDockerImage(request);
+            if(StringUtils.isNotBlank(request.getEnvType())){
+                service.buildDockerImageAndDeploy();
+            }else{
+                service.buildDockerImage(request);
+            }
+
         } else {
             System.out.println("No deployment requirement!");
         }
