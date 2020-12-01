@@ -7,6 +7,8 @@ import com.qiniu.storage.Configuration;
 
 import com.qiniu.util.Auth;
 
+import com.simple.bz.service.GatewayDeviceService;
+import com.simple.bz.service.MultimediaService;
 import com.simple.common.api.GenericResponse;
 import com.simple.common.controller.BaseController;
 
@@ -25,29 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/media")
 public class MultiMediaController extends BaseController {
-
-    private UploadManager uploadManager;
-    private Auth auth ;
-    //private Auth auth;
-    private String upToken;
-    @Value("${qiniu.accessKey}")
-    private String accessKey;
-
-    @Value("${qiniu.secretKey}")
-    private String secretKey;
-
-    @Value("${qiniu.bucket}")
-    private String bucket;
-    //private String bucket = "ehealthcare";
-    private final String GROUP = "public";
-
-    @PostConstruct
-    private void init() {
-        Configuration cf = new Configuration(Zone.zone0());
-        uploadManager = new UploadManager(cf);
-        auth = Auth.create(accessKey, secretKey);
-        upToken = auth.uploadToken(bucket);
-    }
+    private final MultimediaService service;
 
     /**
      * 上传文件
@@ -57,36 +37,12 @@ public class MultiMediaController extends BaseController {
      */
     @PostMapping("/uploadImage/{group}")
     public GenericResponse upload(@PathVariable("group") String group, @RequestParam("file") MultipartFile file) {
-//        Configuration cf = new Configuration(Zone.zone0());
-//        UploadManager uploadManager = new UploadManager(cf);
-//        Auth auth = Auth.create(this.accessKey, this.secretKey);
-//        String upToken = auth.uploadToken(this.bucket);
 
-        if(StringUtils.isEmpty(group)) {
-            group = GROUP;
-        }
-        System.out.println("current group ==> " + group + "accessKey" + this.accessKey + "secreteKey=>" + this.secretKey);
-        if(file == null || file.getSize() <= 0) {
-            return GenericResponse.error("file not found");
-        }
-
-        try {
-
-            String key = fileName(group , file.getOriginalFilename());
-            System.out.println("current filename ==>" +  key +"upToken==>" + upToken);
-            Response response = uploadManager.put(file.getBytes(), key, upToken);
-            if(response.isOK()) {
-                System.out.println("current status ==> OK");
-                return GenericResponse.ok(key);
-            }else {
-                System.out.println("current status ==> failure");
-                System.out.println(response.toString());
-                return GenericResponse.error("上传文件失败，请重试或联系管理员！");
-            }
-
-        }catch(IOException e) {
-            e.printStackTrace();
-            return GenericResponse.error("上传文件异常，请联系管理员！");
+        String filename = service.uploadImage(group,file);
+        if(null == filename){
+            return GenericResponse.error("failed to upload image");
+        }else{
+            return GenericResponse.build().addKey$Value("url", filename);
         }
 
     }
@@ -97,8 +53,5 @@ public class MultiMediaController extends BaseController {
         String newFileName = UUID.randomUUID().toString().replaceAll("-", "") + fileSuffix;
         return group +"/"+ newFileName;
     }
-
-
-
 
 }

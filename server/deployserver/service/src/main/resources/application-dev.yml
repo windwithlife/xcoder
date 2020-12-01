@@ -38,4 +38,5 @@ qiniu:
   accessKey: JMVsA4svqk_TUAjq9jOKy0fLVxBaJpiaAAhcn0gr
   secretKey: 39xrdVIpTa65jjPkAB9RCjzdDKN_VY4KdcPkhNjD
   bucket: windwithlife
+  domainName: http://images.koudaibook.com
 

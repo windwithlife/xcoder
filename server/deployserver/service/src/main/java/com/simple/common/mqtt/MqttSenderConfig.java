@@ -2,7 +2,6 @@ package com.simple.common.mqtt;
 
 
 
-import com.simple.bz.service.MqttService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 @Configuration
@@ -43,7 +41,8 @@ public class MqttSenderConfig {
     private int completionTimeout;
 
     @Autowired
-    private MqttService mqttService;
+    private MqttProxy mqttProxy;
+
 
     @Bean
     public MqttConnectOptions getMqttConnectOptions() {
@@ -105,7 +104,7 @@ public class MqttSenderConfig {
         //启动项目执行：把所有当前主题保存到redis缓存
         //RedisUtil redisUtil = new RedisUtil();
         //redisUtil.addObject("topics", topicDOS);
-        String[] topics = {"ci/simple/center/server/test","ci/simple/center/server/#"};
+        String[] topics = {"ci/simple/center/server/test","tele/#","stat/#"};
         //String[] topics = new String[];
 //        if (topicDOS != null && topicDOS.size() > 0) {
 //            for (int i = 0; i < topicDOS.size(); i++) {
@@ -136,13 +135,14 @@ public class MqttSenderConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
+
         return message -> {
             String payload = message.getPayload().toString();
             String topic = message.getHeaders().get("mqtt_receivedTopic").toString();
             //用线程池处理订阅到的消息
             try {
                 dealMessageByThreadPool(payload, topic);
-                //System.out.println("topic: " + topic);
+                System.out.println("topic: " + topic);
                 //System.out.println("payload: " + payload);
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -164,12 +164,9 @@ public class MqttSenderConfig {
      */
     public void dealMessageByThreadPool(String payload, String topic) throws ExecutionException, InterruptedException {
 
-        //保存mongodb部分
-        //log.info(": 处理消息 " + payload);
-        //通用保存到mongodb的方法（集合存在则新增，不存在则先创建再新增）
-       // mongoTemplate.insert(payload, topic);
 
-        mqttService.handleMessage(topic,payload);
+
+        mqttProxy.handleMessage(topic,payload);
 
     }
 

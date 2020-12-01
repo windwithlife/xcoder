@@ -2,26 +2,34 @@ package com.simple.bz.service;
 
 
 
+import com.alibaba.fastjson.JSON;
+import com.simple.JsonUtils;
 import com.simple.bz.dao.*;
 import com.simple.bz.dto.*;
 import com.simple.bz.model.*;
 import com.simple.common.env.EnvConfig;
 import com.simple.common.error.ServiceHelper;
+import com.simple.common.mqtt.MqttAdapter;
+import com.simple.common.mqtt.MqttDto;
+import com.simple.common.mqtt.MqttProxy;
+import com.simple.common.mqtt.MqttRequest;
 import com.simple.common.props.AppProps;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 //此注解保证变量被DI
 @RequiredArgsConstructor
 @Service
-public class ApplicationDeploymentService {
+public class ApplicationDeploymentService extends MqttAdapter {
     private final ModelMapper modelMapper;
 
 
@@ -34,13 +42,21 @@ public class ApplicationDeploymentService {
     private final ApplicationRepository applicationDao;
     private final DeploymentConfigRepository deploymentConfigDao;
     private final DockerImageRepository dockerImageDao;
-    private final MqttService mqttService;
+
+    private final MqttProxy mqttProxy;
+
 
     private final AppProps appProps;
 
     private final EnvConfig envConfig;
 
     private final ServiceHelper serviceHelper;
+
+    @PostConstruct
+    private void init() {
+        this.mqttProxy.registerHandler("ci/simple/",this);
+    }
+
 
     public ApplicationDeploymentModel convertToModel(ApplicationDeploymentDto dto){
         return this.modelMapper.map(dto, ApplicationDeploymentModel.class);
@@ -121,9 +137,7 @@ public class ApplicationDeploymentService {
         try {
 
 
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-//            String buildNumber = sdf.format(new Date());
-//            System.out.println("current build number=====>  " + buildNumber);
+
 
 
             if (null != request) {
@@ -183,7 +197,7 @@ public class ApplicationDeploymentService {
                 }
 
 
-                mqttService.deployTo(dto, targetTopic, "buildImage");
+                this.deployTo(dto, targetTopic, "buildImage");
 
 
             }
@@ -304,7 +318,7 @@ public class ApplicationDeploymentService {
                 if(StringUtils.isNotBlank(point.getTopicName())){
                     targetTopic = point.getTopicName();
                 }
-                mqttService.deployTo(dto, targetTopic,"deployToGroups");
+                this.deployTo(dto, targetTopic,"deployToGroups");
 
             }
 
@@ -399,7 +413,7 @@ public class ApplicationDeploymentService {
                     targetTopic = point.getTopicName();
                 }
 
-                mqttService.deployTo(dto, targetTopic,"execute");
+                this.deployTo(dto, targetTopic,"execute");
                 //mqttService.deployTo(dto, executePointTopic, command);
 
             }
@@ -502,7 +516,7 @@ public class ApplicationDeploymentService {
                     targetTopic = point.getTopicName();
                 }
 
-                mqttService.deployTo(dto, targetTopic,"execute");
+                this.deployTo(dto, targetTopic,"execute");
                 //mqttService.deployTo(dto, executePointTopic, command);
 
             }
@@ -514,5 +528,52 @@ public class ApplicationDeploymentService {
 
     }
 
+    public void deployTo(ReleaseDetail deployDto, String mqttTopic, String command) {
+        try {
+            mqttProxy.sendMsg(mqttTopic,command,deployDto);
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void handleMessage(String topic, String payload) {
+        //System.out.println("Process in deployment service!==>" + topic + payload);
+
+        if(!StringUtils.startsWith(topic,"ci/simple/")){
+            //System.out.println("Topic is not my message!!!");
+            return;
+        }
+        if (!JsonUtils.isJson(payload)) {
+            System.out.println("Invalid String Message ! Received payload: " + payload);
+            return;
+        }
+        MqttRequest request = JSON.parseObject(payload, MqttRequest.class);
+        if ((null == request) || null == request.getCommand()) {
+            return;
+        }
+        System.out.println("Process in deployment service!==> Start....");
+
+        if(request.getCommand().toLowerCase().equals("status")){
+            this.processDeploymentStatus();
+
+        }
+        if(request.getCommand().toLowerCase().equals("logs")){
+            this.processLogs();
+
+        }
+
+    }
+    protected void processBuildImageStatus(){
+
+    }
+
+    protected void processDeploymentStatus(){
+
+    }
+    protected void processLogs(){
+
+    }
 }

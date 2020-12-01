@@ -83,26 +83,30 @@ public class DockerImageController extends BaseController {
 
             String[] params = StringUtils.substringsBetween(commitMessage, "[", "]");
             if ((null != params) && (params.length >= 1)){
-                String applicationName = params[0];
+                String targetEnvType = params[0];
+                System.out.println("targetEnvType ==>" + targetEnvType);
+                if (StringUtils.isNotBlank(targetEnvType)) {
+                    request.setEnvType(targetEnvType);
+                }
+            }
+            if ((null != params) && (params.length >= 2)){
+                String applicationName = params[1];
                 System.out.println("applicationName ==>" + applicationName);
                 if (StringUtils.isNotBlank(applicationName)) {
                     request.setApplicationName(applicationName);
                 }
             }
 
-            if ((null != params) && (params.length >= 2)){
-                String targetEnvType = params[1];
-                System.out.println("targetEnvType ==>" + targetEnvType);
-                if (StringUtils.isNotBlank(targetEnvType)) {
-                    request.setEnvType(targetEnvType);
-                }
-            }
+
 
             System.out.println("Final request =====>" + request.toString());
-            if(StringUtils.isNotBlank(request.getEnvType())){
-                service.buildDockerImageAndDeploy(request);
-            }else{
+            if(StringUtils.isBlank(request.getEnvType()) || request.getEnvType().toLowerCase().equals("image")){
                 service.buildDockerImage(request);
+            }else if(request.getEnvType().toLowerCase().equals("uat") || request.getEnvType().toLowerCase().equals("prod")){
+                service.buildDockerImageAndDeploy(request);
+
+            }else{
+                System.out.println("No deployment need to do!");
             }
 
         } else {
