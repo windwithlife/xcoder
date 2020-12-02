@@ -43,17 +43,18 @@ public class IOTService extends MqttAdapter {
             statusType = params[0];
             gatewayDevice = params[1];
             command = params[2];
+            System.out.println("statusType==>" + statusType + "gatewayDevice==>" + gatewayDevice + "command ==>" + command );
         }
 
-        if(statusType == "tele"){
+        if(statusType.equals("tele")){
 
             if(command.toUpperCase().equals("STATE")){
-                this.processGatewayState();
+                //this.processGatewayState();
             }
             if(command.toUpperCase().equals("SENSOR")){
 
                 String [] validPayload = StringUtils.substringsBetween(payload, "{","}");
-                System.out.println("Payload ====>" + validPayload[0]);
+                System.out.println("Payload ============>" + validPayload[0]);
                 this.processSensorState();
             }
         }
@@ -68,7 +69,7 @@ public class IOTService extends MqttAdapter {
 
     }
 
-    public void processGatewayState(){
+    public void processGatewayState(String topic,String payload){
 
     }
 

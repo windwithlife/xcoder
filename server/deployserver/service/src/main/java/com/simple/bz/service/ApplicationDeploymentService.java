@@ -35,7 +35,6 @@ public class ApplicationDeploymentService extends MqttAdapter {
 
     private final ApplicationDeploymentRepository dao;
     private final ReleaseDao releaseDao;
-    private final ExampleDao exampleDao;
     private final ExecutePointDao executePointDao;
     private final ProjectDao projectDao;
     private final ApplicationTypeRepository applicationTypeDao;
@@ -453,6 +452,8 @@ public class ApplicationDeploymentService extends MqttAdapter {
                     application = applicationDao.findById(request.getApplicationId()).get();
                 }
 
+                releaseModel.setApplicationId(application.getId());
+
                 //get project information
                 ProjectModel project = projectDao.findById(application.getProjectId());
                 dto.setProjectInfo(project);
@@ -498,7 +499,7 @@ public class ApplicationDeploymentService extends MqttAdapter {
                 DockerImageModel dockerImage = DockerImageModel.builder().buildName(buildName).name(application.getName()).applicationId(application.getId())
                         .version(dto.getReleaseVersion()).deploymentId(dto.getId()).build();
                 dockerImageDao.save(dockerImage);
-
+                releaseModel.setImageId(dockerImage.getId());
                 //get the target execute point.
                 //DeploymentGroupModel point = executePointDao.findById(releaseModel.getApplicationPointId());
                 //get the target execute point.
@@ -518,6 +519,8 @@ public class ApplicationDeploymentService extends MqttAdapter {
 
                 this.deployTo(dto, targetTopic,"execute");
                 //mqttService.deployTo(dto, executePointTopic, command);
+
+                dao.save(releaseModel);
 
             }
 
