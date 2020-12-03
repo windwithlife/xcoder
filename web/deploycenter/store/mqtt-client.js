@@ -2,12 +2,12 @@
 
 import PahoMQTT from 'paho-mqtt';
 
-import config from '../utils/page-config';
+import config from '../utils/config';
 
 const MQTT_ENDPOINT_PREFIX = "ClientID_";
-const MQTT_HOST = config.MQTT_SERVER.host; // 'mq.koudaibook.com';
-const MQTT_PORT = config.MQTT_SERVER.port;
-const MQTT_PATH = config.MQTT_SERVER.path;
+const MQTT_HOST = config.servers.mqttServer; // 'mq.koudaibook.com';
+const MQTT_PORT = 30883;
+const MQTT_PATH = '/mqtt';
 
 
 

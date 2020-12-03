@@ -1,9 +1,8 @@
 
-const config = require('../utils/server-config');
+const config = require('../utils/config');
 const mqtt = require('mqtt')
 const msgpack = require('msgpack-lite');
 
-//let MQTT_HOST  =  config.MQTT_HOST;
 const MQTT_HOST = "mqtt://mq.koudaibook.com:31883/";
 const ON_CREATE = "ci/oncreate";
 

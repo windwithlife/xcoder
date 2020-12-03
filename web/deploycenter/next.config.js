@@ -4,20 +4,20 @@ const withLess = require('@zeit/next-less')
 const lessToJS = require('less-vars-to-js')
 const fs = require('fs')
 const path = require('path')
-var configfile = require('./utils/server-config');
-let resourcePath = configfile.RESOURCE_PATH;
-//const envName    = configfile.ENV_NAME;
-//resourcePathMatchSource = resourcePath + "/_next/:slug*";
-// Where your antd-custom.less file lives
+
+const config    = require('./utils/config');
+const BASE_PATH = config.application.contextPath;
+const ENV_NAME  = config.envName;
+
 const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './assets/antd-custom.less'), 'utf8')
 )
 
 module.exports = withLess({
   publicRuntimeConfig: {
-    envName: configfile.ENV_NAME,
+    envName: ENV_NAME,
   },
-  basePath: resourcePath, //process.env.NODE_ENV === "production" ? resourcePath: "" ,
+  basePath: BASE_PATH, //process.env.NODE_ENV === "production" ? resourcePath: "" ,
   async rewrites() {
     return [
       // {
@@ -39,11 +39,6 @@ module.exports = withLess({
     if (isServer) {
       const antStyles = /antd\/.*?\/style.*?/
       const origExternals = [...config.externals]
-    //   config.node = {
-    //     fs: 'empty',
-    //     net: 'empty',
-    //     tls: 'empty'
-    // }
       config.externals = [
         (context, request, callback) => {
           if (request.match(antStyles)) return callback()

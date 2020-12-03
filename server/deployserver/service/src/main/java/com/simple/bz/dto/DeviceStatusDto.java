@@ -21,21 +21,17 @@ public class DeviceStatusDto {
     private Long id;
 
     private Long     deviceId;
-    private String   shortAddress; //短地址
-    private String   address;      //长地址
+    private String   Device;
+    private String   BatteryVoltage; //电压；
+    private int      BatteryPercentage; //当前电池电量
+    private int      LinkQuality;    //当前Zigbee网络联接质量
+    private String   Temperature;    //当前温度
 
-    private String   batteryVoltage; //电压；
-    private int      batteryPercentage; //当前电池电量
-    private int      linkQuality;    //当前Zigbee网络联接质量
-    private String   temperature;    //当前温度
-
-    private String   endpoint;       //当前能力组
-    private String   clusterId;      //能力分组ID
-    private String   statusValue;    //当前值。
+    private String   Endpoint;       //当前能力组
+    private String   ClusterId;      //能力分组ID
+    private String   ClusterValue;    //当前值。
 
     private boolean  online;
-    private Date     upTime;
-    private Date     createTime;
-
-
+    private String   UpTime;
+    private String   Time;
 }

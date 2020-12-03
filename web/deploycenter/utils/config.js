@@ -19,9 +19,9 @@ function detectEnvironment() {
       env = ENV_UAT;
     }
   } else {
-    //let getConfig = require('next/config').default;
-    //const envName = getConfig().publicRuntimeConfig.envName;
-    //if (envName) { env = envName; }
+    let getConfig = require('next/config').default;
+    const envName = getConfig().publicRuntimeConfig.envName;
+    if (envName) { env = envName; }
   }
   console.log(env);
   return env;

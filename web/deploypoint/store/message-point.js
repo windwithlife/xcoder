@@ -1,8 +1,8 @@
 
-const config = require('../utils/server-config');
+const config = require('../utils/config');
 const messageClient = require('./message-client');
 
-const pointName = config.APPLICATION.name;
+const pointName = config.application.groupName;
 const serverLocation = 'ci/simple/center/server/';
 const pointLocation = 'ci/simple/point/' + pointName + '/';
 const TOPIC_SUB_CENTER   = pointLocation + '#' ;

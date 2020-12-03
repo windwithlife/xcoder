@@ -5,7 +5,7 @@ const low = require('lowdb');
 var codeTools = require('./code_tools');
 const FileSync = require('lowdb/adapters/FileSync');  // 有多种适配器可选择
 const adapter = new FileSync('route.json');
-var config = require('../../utils/server-config');
+var config = require('../../utils/config');
 
 const db = low(adapter);
 
@@ -24,7 +24,7 @@ class ParamsHelper {
         this.gateway = 'gateway.koudaibook.com';
         this.website = 'www.koudaibook.com';
         this.hostName = this.gateway;
-        this.dockerRepo = config.DOCKER_REPO;
+        this.dockerRepo = config.repositories.dockerRepo;
         this.releasePointSupport = "k8s";
         console.log('init application config')
 

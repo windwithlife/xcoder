@@ -1,11 +1,11 @@
 
-const config = require('../utils/server-config');
+const config = require('../utils/config');
 const mqtt = require('mqtt')
 const msgpack = require('msgpack-lite');
 
-//let MQTT_HOST  =  config.MQTT_HOST;
-const MQTT_HOST = "mqtt://mq.koudaibook.com:30883/";
-const ON_CREATE = "ci/oncreate";
+//const MQTT_HOST = "mqtt://mq.koudaibook.com:30883/";
+const MQTT_HOST = config.servers.mqttServer;
+
 
 
 const isString = (data) => {
@@ -57,15 +57,7 @@ class MessageCenter {
                     });
                 }
             });
-            // if((that.onConnect) && (that.onConnect instanceof Function)){
-            //     that.onConnect();
-            // }
            
-            // const cacheSize = that.messageCache.length;
-            // for (var i=0; i < cacheSize; i++){
-            //     let item = that.messageCache.shift();
-            //     that.sendMsg(item.topic,item.msg);
-            // }
 
         });
 
@@ -107,17 +99,7 @@ class MessageCenter {
             let client = mqtt.connect(MQTT_HOST,options);
             client.on('connect', function (){
                 console.log(" send connected,client_id:" + options.clientId);
-                //that.isSendOnline = true;
-                // that.callbacks.forEach(function (value, key) {
-                //     if ((key) && (isString(key))) {
-                //         that.client.subscribe(key, { qos: 1 }, function () {
-                //             console.log("successful to  subscribe " + key);
-                //         });
-                //     }
-                // });
-                // if((that.onConnect) && (that.onConnect instanceof Function)){
-                //     that.onConnect();
-                // }
+               
                
                 const cacheSize = that.messageCache.length;
                 for (var i=0; i < cacheSize; i++){
@@ -129,7 +111,6 @@ class MessageCenter {
     
             client.on('message', function (topic, message) {
                 // console.log("**************** Received mqtt data topic:" + topic + "******************");
-                // console.log("message:" + message.toString());
                 // console.log("**************** The end of receiving mqtt data ******************");
                 that.handleRecievedMsg(topic, message);
     

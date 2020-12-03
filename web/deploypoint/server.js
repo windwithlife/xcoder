@@ -4,10 +4,10 @@ const express = require('express')
 const https = require('https');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const config = require('./utils/server-config');
+const config = require('./utils/config');
 const releaseServer = require('./ci/libs/release');
 const messageClient = require('./store/message-point');
-let serverPort = config.APPLICATION.port;
+let serverPort = config.application.servicePort;
 const port = serverPort || parseInt(process.env.PORT, 10) || 8080;
 const dev = process.env.NODE_ENV !== 'production'
 //const app = next({ dev })
