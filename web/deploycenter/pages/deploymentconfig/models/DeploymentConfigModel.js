@@ -1,6 +1,4 @@
 import {Network} from '../../../store/Network';
-import config from '../../../utils/page-config';
-console.log(config);
 const network = new Network("simple/deployment/");
 network.switchDevServerHost("localhost:8888");
 
