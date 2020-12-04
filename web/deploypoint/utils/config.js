@@ -10,6 +10,7 @@ const prodConfig = require('../config/application-prod.json');
 
 const configOptions = {"DEV":devConfig,"UAT":uatConfig,"PROD":prodConfig};
 
+
 function detectEnvironment() {
   let env = ENV_DEVELOPMENT;
   if (isServer) {
