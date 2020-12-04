@@ -1,0 +1,21 @@
+{
+    "envName" : "PROD",
+    "application":
+    {
+        "serviceName":"pointhealth",
+        "groupName":"pointhealth",
+        "servicePort": 8081,
+        "contextPath": "/deploypoint"
+    },
+    "servers":
+    {
+        "soaServer": "https://soagateway.koudaibook.com",
+        "mqttServer" : "mqtt://mq.koudaibook.com:30883",
+        "resourceServer": "https://soagateway.koudaibook.com/simple/deployment/media/uploadImage"
+    },
+    "repositories":
+    {
+        "dockerRepo" : "registry.cn-hangzhou.aliyuncs.com/windwithlife/"
+    }
+  
+}

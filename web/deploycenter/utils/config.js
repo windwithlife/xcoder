@@ -4,9 +4,9 @@ const isServer = typeof window === 'undefined';
 const ENV_DEVELOPMENT = 'DEV';
 const ENV_UAT = 'UAT';
 const ENV_PRODUCTION = 'PROD';
-const devConfig = require('../config/application-dev');
-const uatConfig = require('../config/application-uat');
-const prodConfig = require('../config/application-prod');
+const devConfig  = require('../config/application-dev.json');
+const uatConfig  = require('../config/application-uat.json');
+const prodConfig = require('../config/application-prod.json');
 
 const configOptions = {"DEV":devConfig,"UAT":uatConfig,"PROD":prodConfig};
 
@@ -35,15 +35,6 @@ function getConfigOption(){
 }
 function getConfigValues(){
    let configOption = getConfigOption();
-  //  const current = {
-  //   ENV_NAME: configOption.envName,
-  //   SOA_GATE: configOption.servers.soaServer,
-  //   MQTT_SERVER: configOption.servers.mqttServer,
-  //   RESOURCE_SERVER: configOption.servers.resourceServer,
-  //   APPLICATION_PATH: configOption.application.contextPath,
-  //   DOCKER_REPO: configOption.repositories.dockerRepo,
-  //   }
-  //   return current;
   return configOption;
 
 }

@@ -1,0 +1,21 @@
+
+
+{
+    "envName" : "UAT",
+    "application":
+    {
+        "name":"deploycenter",
+        "contextPath": "/xcoder"
+    },
+    "servers":
+    {
+        "soaServer": "https://soagateway.koudaibook.com",
+        "mqttServer" : "mqtt://localhost:8083/mqtt",
+        "resourceServer": "https://soagateway.koudaibook.com/simple/deployment/media/uploadImage"
+    },
+    "repositories":
+    {
+        "dockerRepo" : "registry.cn-hangzhou.aliyuncs.com/windwithlife/"
+    }
+  
+}

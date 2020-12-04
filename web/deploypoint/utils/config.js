@@ -4,9 +4,9 @@ const isServer = typeof window === 'undefined';
 const ENV_DEVELOPMENT = 'DEV';
 const ENV_UAT = 'UAT';
 const ENV_PRODUCTION = 'PROD';
-const devConfig = require('../config/application-dev');
-const uatConfig = require('../config/application-uat');
-const prodConfig = require('../config/application-prod');
+const devConfig = require('../config/application-dev.json');
+const uatConfig = require('../config/application-uat.json');
+const prodConfig = require('../config/application-prod.json');
 
 const configOptions = {"DEV":devConfig,"UAT":uatConfig,"PROD":prodConfig};
 
