@@ -1,27 +1,23 @@
+helm install sentry stable/sentry -n sentry 
+--set ingress.enabled=true,ingress.hostname=sentry.iamle.com,service.type=ClusterIP \
 
+--wait
 
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://mq.koudaibook.com:31883/')
+作者：流水理鱼
+链接：https://www.imooc.com/article/303501
+来源：慕课网
+本文原创发布于慕课网 ，转载请注明出处，谢谢合作
+helm install sentry stable/sentry -n sentry 
 
-//var messageClient = require('./ci/libs/message_client');
+--set persistence.enabled=true,user.email=i@iamle.com,user.password=i@iamle.com \
+--set ingress.enabled=true,ingress.hostname=sentry.iamle.com,service.type=ClusterIP \
+--set email.host=smtp.yourhost.com,email.port=25 \
+--set email.user=user,email.password=password,email.use_tls=false \
+--wait
 
-client.on('connect', function () {
-  console.log("connected!");
-  client.subscribe('ci/release/#', function (err) {
-    if (!err) {
-      client.publish('ci/release/test', 'Hello mqtt');
-      console.log("published message~");
-    }
-  })
-})
- 
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log("received data:"+message.toString())
-  //client.end()// close clint
-})
+helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator
 
-//messageClient.sendLogs("testlog");
-console.log("starting to register mq");
-
-//var messageClient = require('./ci/libs/message_client');
+作者：流水理鱼
+链接：https://www.imooc.com/article/303501
+来源：慕课网
+本文原创发布于慕课网 ，转载请注明出处，谢谢合作
