@@ -16,7 +16,7 @@ spring:
     port: 31379
   mqtt:
     server:
-      username: ""
+      username: ""Password!&
       password: ""
       url:  tcp://mq.koudaibook.com:30883
     client:

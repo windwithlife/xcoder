@@ -56,6 +56,7 @@ metadata:
   name: <%=data.ingressName%>
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: 'false' #http 自动转https
 spec:
   ingressClassName: nginx
