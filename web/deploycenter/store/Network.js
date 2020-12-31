@@ -86,7 +86,7 @@ export async function invoke_post(url, params = {}) {
         Loading.show();
         //let urlPrefix = 'https://soagateway.e-healthcare.net/meeting-server/pc/'
         let urlPrefix = SOA_GATEWAY + '/' +  config.application.contextPath + url;
-        axios.defaults.withCredentials = true;
+        //axios.defaults.withCredentials = true;
         axios.defaults.crossDomain = true;
         let token = localStorage.getItem('token');
         let result = await axios({
@@ -111,7 +111,7 @@ export async function invoke_post(url, params = {}) {
 export async function invoke_get(url, params = {}) {
     try {
         let urlPrefix = SOA_GATEWAY + '/' +  config.application.contextPath + url;
-        axios.defaults.withCredentials = true;
+        //axios.defaults.withCredentials = true;
         axios.defaults.crossDomain = true;
         let token = getToken();
         params.platType = 4;
@@ -187,7 +187,7 @@ export class Network {
         try {
             //Loading.show();
             const fullUrl = this.composeBaseUrl(url, true);
-            axios.defaults.withCredentials = true;
+            //axios.defaults.withCredentials = true;
             axios.defaults.crossDomain = true;
             let token = getToken();
             let result = await axios({
@@ -209,7 +209,7 @@ export class Network {
     async fetch_get(url, params = {}) {
         try {
             const fullUrl = this.composeBaseUrl(url, true);
-            axios.defaults.withCredentials = true;
+            //axios.defaults.withCredentials = true;
             axios.defaults.crossDomain = true;
             let token = getToken();
             params.version = 1;
