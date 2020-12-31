@@ -10,7 +10,7 @@
     "servers":
     {
       
-        "soaServer": "http://soagateway.koudaibook.com",
+        "soaServer": "https://soagateway.koudaibook.com",
         "mqttServer" : "mqtt://localhost:8083/mqtt",
         "resourceServer": "http://localhost:8888/simple/deployment/media/uploadImage"
     },
